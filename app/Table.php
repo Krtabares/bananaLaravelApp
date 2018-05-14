@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Table extends Model
 {
     protected $fillable = ['table_name', 'description'];
+
+    public function columns()
+    {
+        return $this->hasMany('App\Column');
+    }
 }

@@ -12,7 +12,7 @@ class UsersOrganizationsSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users_organizations')
+        DB::table('organization_user')
             ->insert([
                 'user_id' => 1,
                 'organization_id' => 1

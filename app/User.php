@@ -26,4 +26,22 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function rol()
+    {
+        return $this->belongsTo('App\Rol');
+    }
+
+    public function organizations()
+    {
+        return $this->belongsToMany('App\Organization')->withTimestamps();
+    }
+
+    public function columns()
+    {
+        return $this->belongsToMany('App\Column', 'permissions_users')
+            ->as('permission_user')
+            ->withPivot('create', 'read', 'update', 'delete')
+            ->withTimestamps();
+    }
 }
