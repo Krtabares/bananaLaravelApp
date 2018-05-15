@@ -17,7 +17,8 @@ class UsersSeeder extends Seeder
         	'user_name' => 'super_user',
         	'email' => 'super_user@admin.com',
         	'password' => 'super_user',
-        	'all_access_organization' => 1
+        	'all_access_organization' => 1,
+            'all_access_column' => 1
         ]);
     }
 }

@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('user_name', 45)->unique();
             $table->string('email', 45)->unique();
             $table->boolean('all_access_organization')->default(0);
+            $table->boolean('all_access_column')->default(0);
             $table->string('password', 65);
             $table->boolean('archived')->default(0);
             $table->rememberToken();

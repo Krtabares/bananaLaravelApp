@@ -15,8 +15,8 @@ class Rol extends Model
 
     public function columns()
     {
-        return $this->belongsToMany('App\Column', 'permissions_users')
-            ->as('permission_user')
+        return $this->belongsToMany('App\Column', 'permissions_rols')
+            ->as('permission_rol')
             ->withPivot('create', 'read', 'update', 'delete')
             ->withTimestamps();
     }
