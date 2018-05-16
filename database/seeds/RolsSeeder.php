@@ -17,5 +17,10 @@ class RolsSeeder extends Seeder
         	'description' => 'All access',
         	'all_access_column' => 1
         ]);
+
+        Rol::create([
+            'rol_name' => 'Secretary',
+            'description' => 'Only view'
+        ]);
     }
 }

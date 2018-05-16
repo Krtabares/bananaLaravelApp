@@ -22,10 +22,10 @@ class CreatePermissionsUsersTable extends Migration
             $table->unsignedInteger('column_id');
             $table->foreign('column_id')->references('id')->on('columns');
 
-            $table->boolean('create')->default(0);
-            $table->boolean('read')->default(0);
-            $table->boolean('update')->default(0);
-            $table->boolean('delete')->default(0);
+            $table->boolean('create')->nullable();
+            $table->boolean('read')->nullable();
+            $table->boolean('update')->nullable();
+            $table->boolean('delete')->nullable();
             
             $table->timestamps();
         });
