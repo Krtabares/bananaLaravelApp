@@ -16,3 +16,21 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/* Rutas de Acceso */
+
+Route::get('/access/rol/permits', 'AccessController@rolPermits')
+	->name('access.rol.permits');
+
+Route::get('/access/user/permits', 'AccessController@userPermits')
+	->name('access.user.permits');
+
+Route::get('/access/compare/permits', 'AccessController@comparePermits')
+	->name('access.compare.permits');
+
+/* Rutas de Rol */
+Route::get('rols', 'RolController@indexRol')
+	->name('rols');
+
+Route::post('rols/create', 'RolController@storeRol')
+	->name('rols.storeRol');

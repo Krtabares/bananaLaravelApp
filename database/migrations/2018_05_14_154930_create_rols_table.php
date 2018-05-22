@@ -15,7 +15,7 @@ class CreateRolsTable extends Migration
     {
         Schema::create('rols', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('rol_name', 45);
+            $table->string('rol_name', 45)->unique();
             $table->string('description', 45);
             $table->boolean('all_access_column')->default(0);
             $table->boolean('archived')->default(0);

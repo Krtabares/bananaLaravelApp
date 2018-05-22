@@ -11,17 +11,6 @@
 |
 */
 
-/* Rutas de acceso */
-
-Route::get('/access/rol/permits', 'AccessController@rolPermits')
-	->name('access.rol.permits');
-
-Route::get('/access/user/permits', 'AccessController@userPermits')
-	->name('access.user.permits');
-
-Route::get('/access/compare/permits', 'AccessController@comparePermits')
-	->name('access.compare.permits');
-
 Route::get('/', function () {
     return view('contenido.contenido');
 })->name('contenido');

@@ -55,7 +55,7 @@ class AccessController extends Controller
 			FROM permissions_rols pr, permissions_users pu
 		    WHERE pr.rol_id = :rol_id
 			    AND pr.column_id NOT IN (
-			        SELECT column_id from permissions_users WHERE user_id = 2
+			        SELECT column_id from permissions_users WHERE user_id = :user_id
 			    )
 			UNION
 		    	SELECT pu.column_id, pu.create, pu.read, pu.update, pu.delete
