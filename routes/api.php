@@ -34,3 +34,6 @@ Route::get('rols', 'RolController@indexRol')
 
 Route::post('rols/create', 'RolController@storeRol')
 	->name('rols.storeRol');
+
+Route::post('rols/permits/create', 'RolController@storePermits')
+	->name('rols.storeRol');
