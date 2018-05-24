@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Constant extends Model
+class Constant
 {
 	/* Status Code */
 	const OK = 200;
