@@ -31,13 +31,16 @@ class ExceptionAnalizer{
                     $MSG = Constant::MSG_TOO_LONG;
                 break;
 
+                case Constant::NOT_NULL :
+                    $MSG = Constant::MSG_NOT_NULL;
+                break;
+
                 case Constant::TB_NOT_FOUND :
                     $MSG = Constant::MSG_TB_NOT_FOUND;
                 break;
 
                 default:
-                    //$MSG = Constant::MSG_ERROR_DB; 
-                    dd($exception->errorInfo);
+                    $MSG = Constant::MSG_ERROR_DB;
                 break;
             }
 

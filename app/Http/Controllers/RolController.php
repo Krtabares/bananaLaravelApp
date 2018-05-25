@@ -45,11 +45,19 @@ class RolController extends Controller
 
         try {
 
-            //dd( $request->header('authorization') );
-
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
             $response = $this->rol_implement->insertRol($conection, $request->rol_name, $request->description, $request->all_access_column);
+
+            if ( $request->permits_rol != null ) {
+                
+                foreach ($request->permits_rol as $key => $permit_rol) {
+                    
+                    // $response = $this->rol_implement->insertPermitsRol($conection, $request->);
+
+                }
+
+            }
             
         } catch (\Exception $e) {
             
@@ -63,10 +71,49 @@ class RolController extends Controller
         return response($response, Constant::OK)->header('Content-Type', 'application/json');
     }
 
-
-    public function storePermitsRol(Request $request)
+    public function updateRol(Request $request)
     {
-        return $request->permits;
+
+        $db_manager = new DBManager();
+
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            $response = $this->rol_implement->updateRol($conection, $request->rol_id, $request->rol_name, $request->description, $request->all_access_column);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response($response, Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function archivedRol(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            $response = $this->rol_implement->archivedRol($conection, $request->rol_id, $request->archived);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response($response, Constant::OK)->header('Content-Type', 'application/json');
     }
 
 }

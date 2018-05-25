@@ -35,5 +35,8 @@ Route::get('rols', 'RolController@indexRol')
 Route::post('rols/create', 'RolController@storeRol')
 	->name('rols.storeRol');
 
-Route::post('rols/permits/create', 'RolController@storePermits')
-	->name('rols.storeRol');
+Route::put('rols/update', 'RolController@updateRol')
+	->name('rols.updateRol');
+
+Route::put('rols/archived', 'RolController@archivedRol')
+	->name('rols.archivedRol');
