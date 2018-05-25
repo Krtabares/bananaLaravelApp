@@ -47,13 +47,18 @@ class RolController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            $response = $this->rol_implement->insertRol($conection, $request->rol_name, $request->description, $request->all_access_column);
+            $last_rol_id = $this->rol_implement
+                ->insertRol($conection, $request->rol_name, $request->description, $request->all_access_column);
+
+            dd($last_rol_id[0]->id);
 
             if ( $request->permits_rol != null ) {
                 
                 foreach ($request->permits_rol as $key => $permit_rol) {
                     
-                    // $response = $this->rol_implement->insertPermitsRol($conection, $request->);
+                    $this->rol_implement
+                        ->insertPermitsRol($conection, $last_rol_id, $permit_rol['column_id'], $permit_rol['create'],
+                        $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
 
                 }
 
@@ -68,7 +73,7 @@ class RolController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response($response, Constant::OK)->header('Content-Type', 'application/json');
+        return response(Constant::MSG_INSERT, Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function updateRol(Request $request)
@@ -80,7 +85,8 @@ class RolController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            $response = $this->rol_implement->updateRol($conection, $request->rol_id, $request->rol_name, $request->description, $request->all_access_column);
+            $this->rol_implement
+                ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description, $request->all_access_column);
             
         } catch (\Exception $e) {
             
@@ -91,7 +97,7 @@ class RolController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response($response, Constant::OK)->header('Content-Type', 'application/json');
+        return response(Constant::MSG_UPDATE, Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function archivedRol(Request $request)
@@ -102,7 +108,7 @@ class RolController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            $response = $this->rol_implement->archivedRol($conection, $request->rol_id, $request->archived);
+            $this->rol_implement->archivedRol($conection, $request->rol_id, $request->archived);
             
         } catch (\Exception $e) {
             
@@ -113,7 +119,7 @@ class RolController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response($response, Constant::OK)->header('Content-Type', 'application/json');
+        return response(Constant::MSG_ARCHIVED, Constant::OK)->header('Content-Type', 'application/json');
     }
 
 }

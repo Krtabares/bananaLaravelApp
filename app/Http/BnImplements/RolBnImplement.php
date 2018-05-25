@@ -14,15 +14,11 @@ class RolBnImplement
 
     public function insertRol($conection, $rol_name, $description, $all_access_column)
     {
-
-        $conection->select('CALL CR_InsertRols(:rol_name, :description, :all_access_column)', [
+        return $conection->select('CALL CR_InsertRols(:rol_name, :description, :all_access_column)', [
             'rol_name' => $rol_name,
             'description' => $description,
             'all_access_column' => $all_access_column
         ]);
-
-
-        return Constant::MSG_INSERT;
     }
 
     public function updateRol($conection, $rol_id, $rol_name, $description, $all_access_column)
@@ -33,8 +29,6 @@ class RolBnImplement
             'description' => $description,
             'all_access_column' => $all_access_column
         ]);
-
-        return Constant::MSG_UPDATE;
     }
 
     public function archivedRol($conection, $rol_id, $archived)
@@ -43,8 +37,6 @@ class RolBnImplement
             'rol_id' => $rol_id,
             'archived' => $archived
         ]);
-
-        return Constant::MSG_ARCHIVED;
     }
 
     public function insertPermitsRol($conection, $rol_id, $column_id, $create, $read, $update, $delete)
@@ -57,8 +49,6 @@ class RolBnImplement
             'update' => $update,
             'delete' => $delete
         ]);
-
-        return Constant::MSG_INSERT;
     }
 
 }
