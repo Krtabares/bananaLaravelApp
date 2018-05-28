@@ -25,7 +25,7 @@ class RolController extends Controller
              
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            $rols = $this->rol_implement->selectRol($conection);
+            $rols = $this->rol_implement->selectRols($conection);
 
         } catch (\Exception $e) {
 
@@ -39,6 +39,28 @@ class RolController extends Controller
         return response(json_encode(['rols' => $rols]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
+    public function indexFilterRol(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {   
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            $filter_rols = $this->rol_implement->selectFilterRols($conection, $request->filter);
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['filter_rols' => $filter_rols]), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
     public function storeRol(Request $request)
     {
         $db_manager = new DBManager();
@@ -46,11 +68,10 @@ class RolController extends Controller
         try {
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+            $conection->beginTransaction();
 
             $last_rol_id = $this->rol_implement
                 ->insertRol($conection, $request->rol_name, $request->description, $request->all_access_column);
-
-            dd($last_rol_id[0]->id);
 
             if ( $request->permits_rol != null ) {
                 
@@ -63,9 +84,12 @@ class RolController extends Controller
                 }
 
             }
+
+            $conection->commit();
             
         } catch (\Exception $e) {
             
+            $conection->rollBack();
             return ExceptionAnalizer::analizerHTTPResponse($e);
 
         } finally {
@@ -84,12 +108,28 @@ class RolController extends Controller
         try {
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+            $conection->beginTransaction();
 
             $this->rol_implement
                 ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description, $request->all_access_column);
+
+            if ( $request->permits_rol != null ) {
+                
+                foreach ($request->permits_rol as $key => $permit_rol) {
+                    
+                    $this->rol_implement
+                        ->updatePermitsRol($conection, $request->rol_id, $permit_rol['column_id'], $permit_rol['create'],
+                        $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
+
+                }
+
+            }
+
+            $conection->commit();
             
         } catch (\Exception $e) {
             
+            $conection->rollBack();
             return ExceptionAnalizer::analizerHTTPResponse($e);
 
         } finally {

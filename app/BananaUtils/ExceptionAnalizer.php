@@ -20,6 +20,7 @@ class ExceptionAnalizer{
 
             $MSG = Constant::MSG_ERROR_DB;
             $status = Constant::NOT_IMPLEMENTED;
+            //dd($exception->errorInfo);
 
             switch ($exception->errorInfo[1]) {
 

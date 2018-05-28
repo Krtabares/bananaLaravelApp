@@ -19,10 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 /* Rutas de Acceso */
 
-Route::get('/access/rol/permits', 'AccessController@rolPermits')
+Route::get('/access/rol/permits', 'AccessController@rolPermitsAccess')
 	->name('access.rol.permits');
 
-Route::get('/access/user/permits', 'AccessController@userPermits')
+Route::get('/access/user/permits', 'AccessController@userPermitsAccess')
 	->name('access.user.permits');
 
 Route::get('/access/compare/permits', 'AccessController@comparePermits')
@@ -31,6 +31,9 @@ Route::get('/access/compare/permits', 'AccessController@comparePermits')
 /* Rutas de Rol */
 Route::get('rols', 'RolController@indexRol')
 	->name('rols');
+
+Route::get('rols/filter', 'RolController@indexFilterRol')
+	->name('rols.filterRol');
 
 Route::post('rols/create', 'RolController@storeRol')
 	->name('rols.storeRol');
