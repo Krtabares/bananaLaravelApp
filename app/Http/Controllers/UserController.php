@@ -27,7 +27,6 @@ class UserController extends Controller
 
         try {   
 
-
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
             if($request->filled('email')){
@@ -36,7 +35,7 @@ class UserController extends Controller
             	 throw new \Exception("Email es un campo requerido", Constant::BAD_REQUEST);
 
         } catch (\Exception $e) {
-        	
+
             return ExceptionAnalizer::analizerHTTPResponse($e);
 
         } finally {
@@ -44,6 +43,6 @@ class UserController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(json_encode(['user' => $user]), Constant::OK)->header('Content-Type', 'application/json');
+        return response(json_encode($user), Constant::OK)->header('Content-Type', 'application/json');
     }
 }

@@ -28,6 +28,7 @@ class Constant
     const PROCEDURE_NOT_EXIST = 1305;
     const TB_NOT_FOUND = 1146;
     const ACCESS_DENIED = 1045;
+    const UNKNOWN_DATABASE = 1049;
 
     /* Error Codes DB Messages */
     const MSG_ERROR_DB = 'Error in database';
@@ -37,4 +38,5 @@ class Constant
     const MSG_PROCEDURE_NOT_EXIST = 'PROCEDURE does not exist';
     const MSG_TB_NOT_FOUND = 'Table not found';
     const MSG_ACCESS_DENIED = 'Access denied';
+    const MSG_UNKNOWN_DATABASE = 'Unknown database';
 }
