@@ -7,17 +7,20 @@ use App\Constant;
 use App\BananaUtils\DBManager;
 use App\BananaUtils\ExceptionAnalizer;
 use App\Http\BnImplements\RolBnImplement;
+use App\Http\BnImplements\UserBnImplement;
 use App\User;
 use App\Rol;
 
 class AccessController extends Controller
 {
     private $rol_implement;
+    private $user_implement;
 
-    public function __construct(RolBnImplement $rol_implement){
+    public function __construct(RolBnImplement $rol_implement, UserBnImplement $user_implement){
         $this->rol_implement = $rol_implement;
+        $this->user_implement = $user_implement;
     }
-    
+
     public function rolPermitsAccess(Request $request)
     {
     	$db_manager = new DBManager();
@@ -40,32 +43,28 @@ class AccessController extends Controller
         return response(json_encode(['permits_rol' => $permits_rol]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
-   //  public function userPermits(Request $request)
-   //  {
+    public function userPermitsAccess(Request $request)
+    {
 
-   //      $user = User::findOrFail($request->id);
+        $db_manager = new DBManager();
 
-   //      if ($user->all_access_column) return ['all_access_column' => 1];
+        try {   
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-   //      $user->columns; //relacion de usuarios con columnas y permisos
+            $permits_user = $this->user_implement->selectPermitsUser($conection, $request->user_id);
 
-   //      return ['permits_user' => $user];
-   //  }
+        } catch (\Exception $e) {
 
-   //  /*
-   //      Metodo privado que permite obtener los permisos del rol de un usuario
-   //      usando como parametro el id del usuario
-   //  */
-   //  private function permitsRolOfUser(Request $request)
-   //  {
-   //      $rol = User::findOrFail($request->id)->rol;
+            return ExceptionAnalizer::analizerHTTPResponse($e);
 
-   //      if ($rol->all_access_column) return ['all_access_column' => 1];
-        
-   //      $rol->columns; //relacion de roles con columnas y permisos
+        } finally {
 
-   //      return ['permits_rol' => $rol];
-   //  }
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['permits_user' => $permits_user]), Constant::OK)->header('Content-Type', 'application/json');
+    }
 
    //  public function comparePermits(Request $request)
    //  {
