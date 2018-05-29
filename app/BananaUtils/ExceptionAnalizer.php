@@ -50,7 +50,7 @@ class ExceptionAnalizer{
 
             $status = Constant::INTERNAL_SERVER_ERROR;
 
-            if ($exception->getMessage() == Constant::MSG_BAD_REQUEST) {
+            if ($exception->getCode() == Constant::BAD_REQUEST) {
                  $status = Constant::BAD_REQUEST;
             }
 

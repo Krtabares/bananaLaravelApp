@@ -26,16 +26,17 @@ class UserController extends Controller
         $db_manager = new DBManager();
 
         try {   
-             
+
+
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
             if($request->filled('email')){
             	 $user = $this->user_implement->getUserByEmail($conection,$request->email);
             }else 
-            	 throw new \Exception(Constant::MSG_BAD_REQUEST, 1);
+            	 throw new \Exception("Email es un campo requerido", Constant::BAD_REQUEST);
 
         } catch (\Exception $e) {
-
+        	
             return ExceptionAnalizer::analizerHTTPResponse($e);
 
         } finally {
