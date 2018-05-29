@@ -20,9 +20,11 @@ class ExceptionAnalizer{
 
             $MSG = Constant::MSG_ERROR_DB;
             $status = Constant::NOT_IMPLEMENTED;
-            //dd($exception->errorInfo);
+            // dd($exception->getCode());
 
-            switch ($exception->errorInfo[1]) {
+            $code = ($exception->errorInfo != null)? $exception->errorInfo[1] : $exception->getCode();
+
+            switch ($code) {
 
                 case Constant::DUPLICATE :
                     $MSG = Constant::MSG_DUPLICATE;
@@ -38,6 +40,14 @@ class ExceptionAnalizer{
 
                 case Constant::TB_NOT_FOUND :
                     $MSG = Constant::MSG_TB_NOT_FOUND;
+                break;
+
+                case Constant::ACCESS_DENIED :
+                    $MSG = Constant::MSG_ACCESS_DENIED;
+                break;
+
+                case Constant::UNKNOWN_DATABASE :
+                    $MSG = Constant::MSG_UNKNOWN_DATABASE;
                 break;
 
                 default:

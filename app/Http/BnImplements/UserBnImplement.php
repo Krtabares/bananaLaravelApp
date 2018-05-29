@@ -12,7 +12,7 @@ class UserBnImplement
     {
         return $conection->select('CALL RD_SelectPermitsUser(:user_id)',
             ['user_id' => $user_id]
-        );
+        )->first();
     }
 
 

@@ -27,6 +27,7 @@ class Constant
     const DUPLICATE = 1062;
     const PROCEDURE_NOT_EXIST = 1305;
     const TB_NOT_FOUND = 1146;
+    const ACCESS_DENIED = 1045;
 
     /* Error Codes DB Messages */
     const MSG_ERROR_DB = 'Error in database';
@@ -35,4 +36,5 @@ class Constant
     const MSG_DUPLICATE = 'It already exists';
     const MSG_PROCEDURE_NOT_EXIST = 'PROCEDURE does not exist';
     const MSG_TB_NOT_FOUND = 'Table not found';
+    const MSG_ACCESS_DENIED = 'Access denied';
 }
