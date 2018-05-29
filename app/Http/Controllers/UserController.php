@@ -30,7 +30,6 @@ class UserController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            // if($request->filled('email')){
             if(!is_null($email) && strlen(trim($email)) > 1){
             	 $user = $this->user_implement->getUserByEmail($conection,$email);
             }else 

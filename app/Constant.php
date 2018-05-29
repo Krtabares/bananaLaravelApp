@@ -12,6 +12,7 @@ class Constant
 	const INTERNAL_SERVER_ERROR = 500;
 	const NOT_IMPLEMENTED = 501;
     const BAD_REQUEST = 400;
+    const UNAUTHORIZED = 406;
 
 	/* Success DB Message */
 	const MSG_INSERT = 'Created successfully';
@@ -20,6 +21,7 @@ class Constant
 
     /* Error Request Message */
     const MSG_BAD_REQUEST = 'Bad Request';
+    const MSG_UNAUTHORIZED = 'Unauthorized';
 
 	/* Error Codes DB */
     const TOO_LONG = 1406;

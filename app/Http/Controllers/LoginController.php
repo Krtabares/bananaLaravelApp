@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\User;
+use App\Constant;
+use App\BananaUtils\DBManager;
+use App\BananaUtils\ExceptionAnalizer;
+use App\Http\BnImplements\LoginBnImplement;
+
+
+class LoginController extends Controller
+{
+
+    private $login_implement;
+
+    function __construct(LoginBnImplement $login_implement)
+    {
+        $this->login_implement = $login_implement;
+    }
+
+	public function login(Request $request)
+	{
+
+        $db_manager = new DBManager();
+
+        try {   
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if(!$request->filled('email')){
+            	throw new \Exception("Email es un campo requerido", Constant::BAD_REQUEST);
+            }
+            if(!$request->filled('password')){
+            	throw new \Exception("Password es un campo requerido", Constant::BAD_REQUEST);
+            }
+
+            $user = $this->login_implement->login($conection,$request->email,$request->password);
+
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode($user), Constant::OK)->header('Content-Type', 'application/json');
+    }
+	
+}

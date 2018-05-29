@@ -58,10 +58,21 @@ class ExceptionAnalizer{
             return response( $MSG , $status)->header('Content-Type', 'application/json'); 
         }else{
 
-            $status = Constant::INTERNAL_SERVER_ERROR;
+            
 
-            if ($exception->getCode() == Constant::BAD_REQUEST) {
-                 $status = Constant::BAD_REQUEST;
+            switch ($exception->getCode()) {
+
+                case Constant::BAD_REQUEST:
+                    $status = Constant::BAD_REQUEST;
+                    break;
+                    
+                case Constant::UNAUTHORIZED:
+                    $status = Constant::UNAUTHORIZED;
+                    break;
+
+                default:
+                    $status = Constant::INTERNAL_SERVER_ERROR;
+                    break;
             }
 
             return response($exception->getMessage(),$status)->header('Content-Type', 'application/json');
