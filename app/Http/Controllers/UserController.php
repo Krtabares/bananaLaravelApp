@@ -21,16 +21,18 @@ class UserController extends Controller
 	}
 
 
-    public function getUserByEmail(Request $request)
+    public function getUserByEmail(Request $request,$email)
     {        
+    	// dd($email);
         $db_manager = new DBManager();
 
         try {   
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            if($request->filled('email')){
-            	 $user = $this->user_implement->getUserByEmail($conection,$request->email);
+            // if($request->filled('email')){
+            if(!is_null($email) && strlen(trim($email)) > 1){
+            	 $user = $this->user_implement->getUserByEmail($conection,$email);
             }else 
             	 throw new \Exception("Email es un campo requerido", Constant::BAD_REQUEST);
 
