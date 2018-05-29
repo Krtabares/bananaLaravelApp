@@ -46,8 +46,19 @@ class ExceptionAnalizer{
             }
 
             return response( $MSG , $status)->header('Content-Type', 'application/json'); 
-        }else
-            return response($exception->getMessage(),500)->header('Content-Type', 'application/json');
+        }else{
+
+            $status = Constant::INTERNAL_SERVER_ERROR;
+
+            if ($exception->getMessage() == Constant::MSG_BAD_REQUEST) {
+                 $status = Constant::BAD_REQUEST;
+            }
+
+            return response($exception->getMessage(),$status)->header('Content-Type', 'application/json');
+
+        }
+
+
 
     }
   

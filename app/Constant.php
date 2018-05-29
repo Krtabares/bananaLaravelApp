@@ -18,6 +18,9 @@ class Constant
     const MSG_UPDATE = 'Updated successfully';
     const MSG_ARCHIVED = 'Successfully updated status';
 
+    /* Error Request Message */
+    const MSG_BAD_REQUEST = 'Bad Request';
+
 	/* Error Codes DB */
     const TOO_LONG = 1406;
     const NOT_NULL = 1048;
