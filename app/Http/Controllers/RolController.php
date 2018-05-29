@@ -47,7 +47,13 @@ class RolController extends Controller
              
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            $filter_rols = $this->rol_implement->selectFilterRols($conection, $request->filter);
+            if ( $request->filled('filter') ) {
+
+                $filter_rols = $this->rol_implement->selectFilterRols($conection, $request->filter);
+
+            } else 
+                throw new \Exception("Filter is required", Constant::BAD_REQUEST);
+            
 
         } catch (\Exception $e) {
 
@@ -70,11 +76,16 @@ class RolController extends Controller
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
             $conection->beginTransaction();
 
-            $last_rol_id = $this->rol_implement
-                ->insertRol($conection, $request->rol_name, $request->description, $request->all_access_column);
+            if ( $request->filled('rol_name') && $request->filled('description') && $request->filled('all_access_column') ) {
 
-            if ( $request->permits_rol != null ) {
-                
+                $last_rol_id = $this->rol_implement
+                    ->insertRol($conection, $request->rol_name, $request->description, $request->all_access_column);
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+
+            if ( $request->filled('permits_rol') ) {
+
                 foreach ($request->permits_rol as $key => $permit_rol) {
                     
                     $this->rol_implement
@@ -110,11 +121,16 @@ class RolController extends Controller
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
             $conection->beginTransaction();
 
-            $this->rol_implement
-                ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description, $request->all_access_column);
+            if ( $request->filled('rol_id') && $request->filled('rol_name') && $request->filled('description') && $request->filled('all_access_column') ) {
 
-            if ( $request->permits_rol != null ) {
-                
+                $this->rol_implement
+                    ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description, $request->all_access_column);
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+
+            if ( $request->filled('rol_id') && $request->filled('permits_rol') ) {
+
                 foreach ($request->permits_rol as $key => $permit_rol) {
                     
                     $this->rol_implement
@@ -122,7 +138,7 @@ class RolController extends Controller
                         $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
 
                 }
-
+                
             }
 
             $conection->commit();
@@ -148,7 +164,12 @@ class RolController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            $this->rol_implement->archivedRol($conection, $request->rol_id, $request->archived);
+            if ( $request->filled('rol_id') && $request->filled('archived') ) {
+
+                $this->rol_implement->archivedRol($conection, $request->rol_id, $request->archived);
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
             
         } catch (\Exception $e) {
             
