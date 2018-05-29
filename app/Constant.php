@@ -11,6 +11,7 @@ class Constant
 	const OK = 200;
 	const INTERNAL_SERVER_ERROR = 500;
 	const NOT_IMPLEMENTED = 501;
+    const BAD_REQUEST = 400;
 
 	/* Success DB Message */
 	const MSG_INSERT = 'Created successfully';
