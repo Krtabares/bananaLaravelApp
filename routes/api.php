@@ -42,16 +42,16 @@ Route::get('rols', 'RolController@indexRol')
 	->name('rols');
 
 Route::get('rols/filter', 'RolController@indexFilterRol')
-	->name('rols.filterRol');
+	->name('rols.filter.rol');
 
 Route::post('rols/create', 'RolController@storeRol')
-	->name('rols.storeRol');
+	->name('rols.store.rol');
 
 Route::put('rols/update', 'RolController@updateRol')
-	->name('rols.updateRol');
+	->name('rols.update.rol');
 
 Route::put('rols/archived', 'RolController@archivedRol')
-	->name('rols.archivedRol');
+	->name('rols.archived.rol');
 
 /* Rutas de User */
 Route::get('user/{email}', 'UserController@getUserByEmail')
@@ -60,3 +60,9 @@ Route::get('user/{email}', 'UserController@getUserByEmail')
 
 Route::get('users', 'userController@indexUser')
 	->name('users');
+
+Route::get('users/filter', 'UserController@indexFilterUser')
+	->name('users.filter.user');
+
+Route::post('usres/create', 'UserController@storeUser')
+	->name('usres.store.user');
