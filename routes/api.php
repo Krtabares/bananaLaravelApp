@@ -25,9 +25,6 @@ Route::post('login', 'LoginController@login')
 Route::get('/access/user/tables', 'AccessController@userTableAccess')
 	->name('access.user.tables');
 
-Route::get('/access/table/columns', 'AccessController@tableAccess')
-	->name('access.table.columns');
-
 Route::get('/access/rol/permits', 'AccessController@rolPermitsAccess')
 	->name('access.rol.permits');
 
