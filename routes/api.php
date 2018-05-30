@@ -22,6 +22,9 @@ use Illuminate\Http\Request;
 Route::post('login', 'LoginController@login')
 	->name('login');
 
+Route::get('/access/tables/columns', 'AccessController@columnsTableAccess')
+	->name('access.tables');
+
 Route::get('/access/user/tables', 'AccessController@userTableAccess')
 	->name('access.user.tables');
 

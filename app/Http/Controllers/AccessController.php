@@ -7,6 +7,7 @@ use App\Constant;
 use App\BananaUtils\DBManager;
 use App\BananaUtils\ExceptionAnalizer;
 use App\Http\BnImplements\AccessBnImplement;
+use App\Http\BnImplements\TableBnImplement;
 use App\Http\BnImplements\RolBnImplement;
 use App\Http\BnImplements\UserBnImplement;
 use App\User;
@@ -16,12 +17,42 @@ class AccessController extends Controller
 {
     private $rol_implement;
     private $user_implement;
+    private $table_implement;
     private $access_implement;
 
-    public function __construct(RolBnImplement $rol_implement, UserBnImplement $user_implement, AccessBnImplement $access_implement){
+    public function __construct(RolBnImplement $rol_implement, UserBnImplement $user_implement, AccessBnImplement $access_implement,
+        TableBnImplement $table_implement){
         $this->rol_implement = $rol_implement;
         $this->user_implement = $user_implement;
         $this->access_implement = $access_implement;
+        $this->table_implement = $table_implement;
+    }
+
+    public function columnsTableAccess(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {   
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( $request->filled('table_id') ) {
+
+                $columns = $this->table_implement->selectColumnsTable($conection, $request->table_id);
+
+            } else 
+                throw new \Exception("Table id is required", Constant::BAD_REQUEST);
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['columns' => $columns]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function userTableAccess(Request $request)
