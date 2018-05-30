@@ -15,4 +15,11 @@ class AccessBnImplement
         );
     }
 
+    public function selectTotalAccess($conection, $user_id)
+    {
+    	return $conection->select('CALL RD_SelectTotalAccess(:user_id)', 
+    		['user_id' => $user_id]
+    	);
+    }
+
 }

@@ -31,8 +31,8 @@ Route::get('/access/rol/permits', 'AccessController@rolPermitsAccess')
 Route::get('/access/user/permits', 'AccessController@userPermitsAccess')
 	->name('access.user.permits');
 
-Route::get('/access/compare/permits', 'AccessController@comparePermits')
-	->name('access.compare.permits');
+Route::get('/access/total/permits', 'AccessController@totalAccess')
+	->name('access.total.permits');
 
 /* Rutas de Rol */
 Route::get('rols', 'RolController@indexRol')

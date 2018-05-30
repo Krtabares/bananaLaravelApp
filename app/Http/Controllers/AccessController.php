@@ -24,7 +24,6 @@ class AccessController extends Controller
         $this->access_implement = $access_implement;
     }
 
-    /* NO TERMINADO */
     public function tableAccess(Request $request)
     {
         $db_manager = new DBManager();
@@ -107,8 +106,7 @@ class AccessController extends Controller
         return response(json_encode(['permits_user' => $permits_user]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    /* NO TERMINADO */
-    public function comparativePermitsAccess(Request $request)
+    public function totalAccess(Request $request)
     {
         $db_manager = new DBManager();
 
@@ -118,7 +116,7 @@ class AccessController extends Controller
 
             if ( $request->filled('user_id') ) {
 
-                $permits = $this->user_implement->selectComparativePermits($conection, $request->user_id);
+                $total_permits = $this->access_implement->selectTotalAccess($conection, $request->user_id);
 
             } else 
                 throw new \Exception("User id is required", Constant::BAD_REQUEST);
@@ -132,6 +130,6 @@ class AccessController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(json_encode(['permits' => $permits]), Constant::OK)->header('Content-Type', 'application/json');
+        return response(json_encode(['total_permits' => $total_permits]), Constant::OK)->header('Content-Type', 'application/json');
     }
 }
