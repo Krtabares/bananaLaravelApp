@@ -57,3 +57,6 @@ Route::put('rols/archived', 'RolController@archivedRol')
 Route::get('user/{email}', 'UserController@getUserByEmail')
 	//->where('email', '[A-Za-z]+')
 	->name('user.get');
+
+Route::get('users', 'userController@indexUser')
+	->name('users');

@@ -20,6 +20,27 @@ class UserController extends Controller
 		$this->user_implement = $user_implement;
 	}
 
+    public function indexUser(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {   
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            $users = $this->user_implement->selectUsers($conection);
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['users' => $users]), Constant::OK)->header('Content-Type', 'application/json');
+    }
 
     public function getUserByEmail(Request $request,$email)
     {        

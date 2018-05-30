@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class UserBnImplement
 {
+    public function selectUsers($conection)
+    {
+        return $conection->select('CALL RD_SelectUsers()');
+    }
 
 	public function selectPermitsUser($conection, $user_id)
     {
@@ -21,4 +25,3 @@ class UserBnImplement
     }
 
 }
-
