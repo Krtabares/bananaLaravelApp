@@ -24,7 +24,7 @@ class AccessController extends Controller
         $this->access_implement = $access_implement;
     }
 
-    public function tableAccess(Request $request)
+    public function userTableAccess(Request $request)
     {
         $db_manager = new DBManager();
 
@@ -110,7 +110,7 @@ class AccessController extends Controller
     {
         $db_manager = new DBManager();
 
-        try {   
+        try {
              
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
