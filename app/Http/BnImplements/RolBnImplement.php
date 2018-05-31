@@ -43,6 +43,13 @@ class RolBnImplement
 
     public function selectPermitsRol($conection, $rol_id)
     {
+        $array_object = $conection->select('SELECT all_access_column from rols where rols.id = :rol_id', [
+            'rol_id' => $rol_id
+        ]);
+
+        if ($array_object[0]->all_access_column)
+            return ['all_access_column' => 1];
+
         return $conection->select('CALL RD_SelectPermitsRol(:rol_id)',
             ['rol_id' => $rol_id]
         );

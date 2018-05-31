@@ -19,6 +19,13 @@ class UserBnImplement
 
 	public function selectPermitsUser($conection, $user_id)
     {
+        $array_object = $conection->select('SELECT all_access_column from users where users.id = :user_id', [
+            'user_id' => $user_id
+        ]);
+
+        if ($array_object[0]->all_access_column)
+            return ['all_access_column' => 1];
+
         return $conection->select('CALL RD_SelectPermitsUser(:user_id)',
             ['user_id' => $user_id]
         );
