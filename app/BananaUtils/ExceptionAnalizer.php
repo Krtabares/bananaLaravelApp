@@ -21,6 +21,7 @@ class ExceptionAnalizer{
             $MSG = Constant::MSG_ERROR_DB;
             $status = Constant::NOT_IMPLEMENTED;
             // dd($exception->getCode());
+            //dd($exception->errorInfo);
 
             $code = ($exception->errorInfo != null)? $exception->errorInfo[1] : $exception->getCode();
 
@@ -28,6 +29,10 @@ class ExceptionAnalizer{
 
                 case Constant::DUPLICATE :
                     $MSG = Constant::MSG_DUPLICATE;
+                break;
+
+                case Constant::PROCEDURE_NOT_EXIST :
+                    $MSG = Constant::MSG_PROCEDURE_NOT_EXIST;
                 break;
 
                 case Constant::TOO_LONG :

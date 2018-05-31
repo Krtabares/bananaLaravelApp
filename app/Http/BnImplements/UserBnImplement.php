@@ -29,7 +29,7 @@ class UserBnImplement
     {
         $token = 'GENERAR TOKEN';
 
-        $array_object = $conection->select('CALL CR_InsertRol(:rol_id, :user_name, :password,
+        $array_object = $conection->select('CALL CR_InsertUser(:rol_id, :user_name, :password,
             :email, :all_access_organization, :all_access_column, :token)', [
                 'rol_id' => $rol_id,
                 'user_name' => $user_name,
@@ -43,7 +43,53 @@ class UserBnImplement
         return $array_object[0]->id;
     }
 
-    /*INSERT PERMITS*/
+    public function updateUser($conection, $user_id, $rol_id, $user_name, $password, $email,
+        $all_access_organization, $all_access_column)
+    {
+
+        $conection->select('CALL UP_UpdateUser(:user_id, :rol_id, :user_name, :password,
+            :email, :all_access_organization, :all_access_column)', [
+                'user_id' => $user_id,
+                'rol_id' => $rol_id,
+                'user_name' => $user_name,
+                'password' => bcrypt( $password ),
+                'email' => $email,
+                'all_access_organization' => $all_access_organization,
+                'all_access_column' => $all_access_column
+            ]);
+    }
+
+    public function archivedUser($conection, $user_id, $archived)
+    {
+        $conection->select('CALL DL_ArchivedUser(:user_id, :archived)', [
+            'user_id' => $user_id,
+            'archived' => $archived
+        ]);
+    }
+
+    public function insertPermitsUser($conection, $user_id, $column_id, $create, $read, $update, $delete)
+    {
+        $conection->select('CALL CR_InsertPermitsUser(:user_id, :column_id, :create, :read, :update, :delete)', [
+            'user_id' => $user_id,
+            'column_id' => $column_id,
+            'create' => $create,
+            'read' => $read,
+            'update' => $update,
+            'delete' => $delete
+        ]);
+    }
+
+    public function updatePermitsUser($conection, $user_id, $column_id, $create, $read, $update, $delete)
+    {
+        $conection->select('CALL UP_UpdatePermitsUser(:user_id, :column_id, :create, :read, :update, :delete)', [
+            'user_id' => $user_id,
+            'column_id' => $column_id,
+            'create' => $create,
+            'read' => $read,
+            'update' => $update,
+            'delete' => $delete
+        ]);
+    }
 
     public function getUserByEmail($conection,$email)
     {

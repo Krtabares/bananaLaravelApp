@@ -77,37 +77,20 @@ class UserController extends Controller
         try {
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
-            $conection->beginTransaction();
 
-            if ( $request->filled('rol_id') && $request->filled('user_name')
-                && $request->filled('email') && $request->filled('password')
-                && $request->filled('all_access_organization') && $request->filled('all_access_column') ) {
+            if ( $request->filled('rol_id') && $request->filled('user_name') && $request->filled('email')
+                && $request->filled('password') && $request->filled('all_access_organization')
+                && $request->filled('all_access_column') ) {
 
-                $last_user_id = $this->user_implement
-                    ->insertUser($conection, $request->rol_id, $request->user_name,
-                        $request->password, $request->email, $request->all_access_organization,
-                        $request->all_access_column);
+                $this->user_implement
+                    ->insertUser($conection, $request->rol_id, $request->user_name, $request->password,
+                        $request->email, $request->all_access_organization, $request->all_access_column);
 
             } else 
                 throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
-
-            if ( $request->filled('permits_user') ) {
-
-                foreach ($request->permits_user as $key => $permit_user) {
-                    
-                    $this->user_implement
-                        ->insertPermitsUser($conection, $last_user_id, $permit_user['column_id'], $permit_user['create'],
-                        $permit_user['read'], $permit_user['update'], $permit_user['delete']);
-
-                }
-
-            }
-
-            $conection->commit();
             
         } catch (\Exception $e) {
             
-            $conection->rollBack();
             return ExceptionAnalizer::analizerHTTPResponse($e);
 
         } finally {
@@ -116,6 +99,131 @@ class UserController extends Controller
         }
 
         return response(Constant::MSG_INSERT, Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function updateUser(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( $request->filled('user_id') && $request->filled('rol_id') && $request->filled('user_name')
+                && $request->filled('email') && $request->filled('password')
+                && $request->filled('all_access_organization') && $request->filled('all_access_column') ) {
+
+                $this->user_implement
+                    ->updateUser($conection, $request->user_id, $request->rol_id, $request->user_name,
+                        $request->password, $request->email, $request->all_access_organization,
+                        $request->all_access_column);
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(Constant::MSG_UPDATE, Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function archivedUser(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( $request->filled('user_id') && $request->filled('archived') ) {
+
+                $this->user_implement->archivedUser($conection, $request->user_id, $request->archived);
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(Constant::MSG_ARCHIVED, Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function storePermitsUser(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( $request->filled('user_id') && $request->filled('permits_user') ) {
+
+                foreach ($request->permits_user as $key => $permit_user) {
+                    
+                    $this->user_implement
+                        ->insertPermitsUser($conection, $request->user_id, $permit_user['column_id'], $permit_user['create'],
+                        $permit_user['read'], $permit_user['update'], $permit_user['delete']);
+
+                }
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(Constant::MSG_INSERT, Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function updatePermitsUser(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( $request->filled('user_id') && $request->filled('permits_user') ) {
+
+                foreach ($request->permits_user as $key => $permit_user) {
+                    
+                    $this->user_implement
+                        ->updatePermitsUser($conection, $request->user_id, $permit_user['column_id'], $permit_user['create'],
+                        $permit_user['read'], $permit_user['update'], $permit_user['delete']);
+
+                }
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(Constant::MSG_UPDATE, Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function getUserByEmail(Request $request,$email)

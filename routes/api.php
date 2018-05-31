@@ -23,7 +23,7 @@ Route::post('login', 'LoginController@login')
 	->name('login');
 
 Route::get('/access/tables/columns', 'AccessController@columnsTableAccess')
-	->name('access.tables');
+	->name('access.tables.columns');
 
 Route::get('/access/user/tables', 'AccessController@userTableAccess')
 	->name('access.user.tables');
@@ -42,16 +42,16 @@ Route::get('rols', 'RolController@indexRol')
 	->name('rols');
 
 Route::get('rols/filter', 'RolController@indexFilterRol')
-	->name('rols.filter.rol');
+	->name('rols.filter');
 
 Route::post('rols/create', 'RolController@storeRol')
-	->name('rols.store.rol');
+	->name('rols.store');
 
 Route::put('rols/update', 'RolController@updateRol')
-	->name('rols.update.rol');
+	->name('rols.update');
 
 Route::put('rols/archived', 'RolController@archivedRol')
-	->name('rols.archived.rol');
+	->name('rols.archived');
 
 /* Rutas de User */
 Route::get('user/{email}', 'UserController@getUserByEmail')
@@ -62,7 +62,19 @@ Route::get('users', 'userController@indexUser')
 	->name('users');
 
 Route::get('users/filter', 'UserController@indexFilterUser')
-	->name('users.filter.user');
+	->name('users.filter');
 
-Route::post('usres/create', 'UserController@storeUser')
-	->name('usres.store.user');
+Route::post('users/create', 'UserController@storeUser')
+	->name('users.store');
+
+Route::put('users/update', 'UserController@updateUser')
+	->name('users.update');
+
+Route::put('users/archived', 'UserController@archivedUser')
+	->name('users.archived');
+
+Route::post('users/permits/create', 'UserController@storePermitsUser')
+	->name('users.permits.store');
+
+Route::put('users/permits/update', 'UserController@updatePermitsUser')
+	->name('users.permits.update');

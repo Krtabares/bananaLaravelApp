@@ -121,10 +121,12 @@ class RolController extends Controller
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
             $conection->beginTransaction();
 
-            if ( $request->filled('rol_id') && $request->filled('rol_name') && $request->filled('description') && $request->filled('all_access_column') ) {
+            if ( $request->filled('rol_id') && $request->filled('rol_name') && $request->filled('description')
+                    && $request->filled('all_access_column') ) {
 
                 $this->rol_implement
-                    ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description, $request->all_access_column);
+                    ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description,
+                        $request->all_access_column);
 
             } else 
                 throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
