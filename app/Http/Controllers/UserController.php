@@ -79,12 +79,11 @@ class UserController extends Controller
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
             if ( $request->filled('rol_id') && $request->filled('user_name') && $request->filled('email')
-                && $request->filled('password') && $request->filled('all_access_organization')
-                && $request->filled('all_access_column') ) {
+                && $request->filled('password') && $request->filled('all_access_organization') ) {
 
                 $this->user_implement
                     ->insertUser($conection, $request->rol_id, $request->user_name, $request->password,
-                        $request->email, $request->all_access_organization, $request->all_access_column);
+                        $request->email, $request->all_access_organization);
 
             } else 
                 throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);

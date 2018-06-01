@@ -31,19 +31,17 @@ class UserBnImplement
         );
     }
 
-    public function insertUser($conection, $rol_id, $user_name, $password, $email,
-        $all_access_organization, $all_access_column)
+    public function insertUser($conection, $rol_id, $user_name, $password, $email, $all_access_organization)
     {
         $token = 'GENERAR TOKEN';
 
         $array_object = $conection->select('CALL CR_InsertUser(:rol_id, :user_name, :password,
-            :email, :all_access_organization, :all_access_column, :token)', [
+            :email, :all_access_organization, :token)', [
                 'rol_id' => $rol_id,
                 'user_name' => $user_name,
                 'password' => bcrypt( $password ),
                 'email' => $email,
                 'all_access_organization' => $all_access_organization,
-                'all_access_column' => $all_access_column,
                 'token' => $token
             ]);
 
