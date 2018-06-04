@@ -9,7 +9,7 @@ class RolBnImplement
 {
     public function selectRols($conection)
     {
-        return $conection->select('CALL RD_SelectRols()');
+        return $conection->select('SELECT * FROM rols ORDER BY rol_name, id;');
     }
 
     public function insertRol($conection, $rol_name, $description, $all_access_column)
@@ -50,7 +50,9 @@ class RolBnImplement
         if ($array_object[0]->all_access_column)
             return ['all_access_column' => 1];
 
-        return $conection->select('CALL RD_SelectPermitsRol(:rol_id)',
+        return $conection->select('SELECT permissions_rols.*, columns.column_name
+            FROM permissions_rols, columns
+            WHERE ( rol_id = :rol_id ) AND ( columns.id = permissions_rols.column_id );',
             ['rol_id' => $rol_id]
         );
     }
