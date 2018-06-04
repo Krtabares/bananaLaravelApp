@@ -9,7 +9,12 @@ class UserBnImplement
 {
     public function selectUsers($conection)
     {
-        return $conection->select('CALL RD_SelectUsers()');
+        return $conection->select('SELECT users.id, users.rol_id, rols.rol_name, users.user_name,
+                users.email, users.all_access_organization, users.all_access_column,
+                users.archived, users.created_at, users.updated_at
+            FROM users, rols
+            WHERE rols.id = users.rol_id
+            ORDER BY user_name;');
     }
 
     public function selectFilterUsers($conection, $search)
@@ -26,7 +31,9 @@ class UserBnImplement
         if ($array_object[0]->all_access_column)
             return ['all_access_column' => 1];
 
-        return $conection->select('CALL RD_SelectPermitsUser(:user_id)',
+        return $conection->select('SELECT permissions_users.*, columns.column_name
+            FROM permissions_users, columns
+            WHERE ( user_id = :user_id ) AND ( columns.id = permissions_users.column_id );',
             ['user_id' => $user_id]
         );
     }
