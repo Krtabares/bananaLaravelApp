@@ -4,6 +4,7 @@ namespace App\BananaUtils;
 
 use App\constant;
 use App\BananaClient;
+use App\BananaUtils\ExceptionAnalizer;
 
 class DBManager{
 
@@ -41,7 +42,8 @@ class DBManager{
             }
 
         } catch (\Illuminate\Database\QueryException  $e) {
-           dd($e);
+
+            throw new \Exception(Constant::MSG_CONNECTION_ERROR, Constant::CONNECTION_ERROR);
         }
 
         return $conectionSQL; 

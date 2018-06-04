@@ -13,11 +13,13 @@ class Constant
 	const NOT_IMPLEMENTED = 501;
     const BAD_REQUEST = 400;
     const UNAUTHORIZED = 406;
+    const NOT_FOUND = 407;
 
 	/* Success DB Message */
 	const MSG_INSERT = 'Created successfully';
     const MSG_UPDATE = 'Updated successfully';
     const MSG_ARCHIVED = 'Successfully updated status';
+    const MSG_NOT_FOUND = 'Not Found';
 
     /* Error Request Message */
     const MSG_BAD_REQUEST = 'Bad Request';
@@ -31,6 +33,8 @@ class Constant
     const TB_NOT_FOUND = 1146;
     const ACCESS_DENIED = 1045;
     const UNKNOWN_DATABASE = 1049;
+    const CONNECTION_ERROR = 2002;
+    
 
     /* Error Codes DB Messages */
     const MSG_ERROR_DB = 'Error in database';
@@ -41,4 +45,5 @@ class Constant
     const MSG_TB_NOT_FOUND = 'Table not found';
     const MSG_ACCESS_DENIED = 'Access denied';
     const MSG_UNKNOWN_DATABASE = 'Unknown database';
+    const MSG_CONNECTION_ERROR = 'No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión';
 }

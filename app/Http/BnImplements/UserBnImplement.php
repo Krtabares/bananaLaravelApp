@@ -98,7 +98,11 @@ class UserBnImplement
 
     public function getUserByEmail($conection,$email)
     {
-        return $conection->select('CALL RD_LoginUser(:email_user)',['email_user' => $email]);
+        $result = $conection->select('CALL RD_LoginUser(:email_user)',['email_user' => $email]);
+        if (count($result)==0) {
+            throw new \Exception('User : ' . $email.' '.Constant::MSG_NOT_FOUND, Constant::NOT_FOUND);
+        }
+        return $result;
     }
 
 }

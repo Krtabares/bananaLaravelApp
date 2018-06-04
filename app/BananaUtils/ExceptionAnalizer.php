@@ -55,6 +55,8 @@ class ExceptionAnalizer{
                     $MSG = Constant::MSG_UNKNOWN_DATABASE;
                 break;
 
+
+
                 default:
                     $MSG = Constant::MSG_ERROR_DB;
                 break;
@@ -75,12 +77,17 @@ class ExceptionAnalizer{
                     $status = Constant::UNAUTHORIZED;
                     break;
 
+                case Constant::CONNECTION_ERROR :
+                    $status = Constant::INTERNAL_SERVER_ERROR;
+                break;
+
                 default:
                     $status = Constant::INTERNAL_SERVER_ERROR;
                     break;
             }
 
-            return response($exception->getMessage(),$status)->header('Content-Type', 'application/json');
+             return response($exception->getMessage(),$status)->header('Content-Type', 'application/json');
+
 
         }
 

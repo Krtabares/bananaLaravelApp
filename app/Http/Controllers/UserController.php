@@ -237,7 +237,7 @@ class UserController extends Controller
             if(!is_null($email) && strlen(trim($email)) > 1){
             	 $user = $this->user_implement->getUserByEmail($conection,$email);
             }else 
-            	 throw new \Exception("Email es un campo requerido", Constant::BAD_REQUEST);
+            	 throw new \Exception(json_encode("Email es un campo requerido"), Constant::BAD_REQUEST);
 
         } catch (\Exception $e) {
 
