@@ -3,125 +3,152 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Constant;
 use App\State;
-use Illuminate\Support\Facades\DB;
+use App\BananaUtils\DBManager;
+use App\BananaUtils\ExceptionAnalizer;
+use App\Http\BnImplements\StateBnImplement;
 
 class StateController extends Controller
 {
-    public function index(Request $request)
+    private $state_implement;
+
+    function __construct(StateBnImplement $state_implement)
     {
-        if ( ! $request->ajax() ) return redirect('/');
+        $this->state_implement = $state_implement;
+    }
 
-        $search = $request->search;
-        $criterion = $request->criterion;
+    public function indexState(Request $request)
+    {
+        $db_manager = new DBManager();
 
-        if ($search == '') {
+        try {
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            $states = State::orderBy('state', 'ASC')
-                ->paginate(5);
+            $states = $this->state_implement->selectStates($conection);
 
-            foreach ($states as $key => $state) {
-                
-                $state->country;
+        } catch (\Exception $e) {
 
-            }
+            return ExceptionAnalizer::analizerHTTPResponse($e);
 
-        } elseif ($criterion == 'country') {
+        } finally {
 
-            $states = State::whereHas('country', function ($query) use ($criterion, $search) {
-
-                    $query->where($criterion, 'like', '%'.$search.'%');
-
-                })
-                ->orderBy('state', 'ASC')                
-                ->paginate(5);
-
-            foreach ($states as $key => $state) {
-                
-                $state->country;
-
-            }
-
-        } else {
-
-            $states = State::where($criterion, 'like', '%'.$search.'%')
-                ->orderBy('state', 'ASC')                
-                ->paginate(5);
-
-            foreach ($states as $key => $state) {
-                
-                $state->country;
-
-            }
-
+            $db_manager->terminateClientBDConecction();
         }
 
-        return [
-            'pagination' => [
-                'total' => $states->total(),
-                'current_page' => $states->currentPage(),
-                'per_page' => $states->perPage(),
-                'last_page' => $states->lastPage(),
-                'from' => $states->firstItem(),
-                'to' => $states->lastItem()
-            ],
-            'states' => $states
-        ];
+        return response(json_encode(['states' => $states]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function listCountries(Request $request)
+    public function indexFilterState(Request $request)
     {
-        if ( ! $request->ajax() ) return redirect('/');
+        $db_manager = new DBManager();
 
-        $countries = DB::table('countries')
-            ->select('id', 'country')
-            ->where('archived', 0)
-            ->orWhere('id', $request->country_id)
-            ->orderBy('country')
-            ->get();
+        try {   
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-        return $countries;
+            if ( $request->filled('filter') ) {
+
+                $filter_states = $this->state_implement->selectFilterStates($conection, $request->filter);
+
+            } else 
+                throw new \Exception("Filter is required", Constant::BAD_REQUEST);
+            
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['filter_states' => $filter_states]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function store(Request $request)
+    public function storeState(Request $request)
     {
-        if ( ! $request->ajax() ) return redirect('/');
+        $db_manager = new DBManager();
 
-        $state = new State();
-        $state->country_id = $request->country_id;
-        $state->iso = $request->iso;
-        $state->state = $request->state;
-        $state->archived = '0';
-        $state->save();
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( $request->filled('country_id') && $request->filled('iso') && $request->filled('state_name') ) {
+
+                $this->state_implement
+                    ->insertState($conection, $request->country_id, $request->state_name, $request->iso);
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(Constant::MSG_INSERT, Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function update(Request $request)
+    public function updateState(Request $request)
     {
-        if ( ! $request->ajax() ) return redirect('/');
+        $db_manager = new DBManager();
 
-        $state = State::findOrFail($request->id);
-        $state->country_id = $request->country_id;
-        $state->iso = $request->iso;
-        $state->state = $request->state;
-        $state->archived = '0';
-        $state->save();
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( $request->filled('state_id') && $request->filled('country_id') && $request->filled('iso')
+                && $request->filled('state_name') ) {
+
+                $this->state_implement
+                    ->updateState($conection, $request->state_id, $request->country_id, $request->state_name, $request->iso);
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(Constant::MSG_UPDATE, Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function archived(Request $request)
+    public function archivedState(Request $request)
     {
-        if ( ! $request->ajax() ) return redirect('/');
+        $db_manager = new DBManager();
 
-        $state = State::findOrFail($request->id);
-        $state->archived = '1';
-        $state->save();
-    }
+        try {
 
-    public function desarchived(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-        $state = State::findOrFail($request->id);
-        $state->archived = '0';
-        $state->save();
+            if ( $request->filled('state_id') && $request->filled('archived') ) {
+
+                $this->state_implement->archivedState($conection, $request->state_id, $request->archived);
+
+            } else 
+                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(Constant::MSG_ARCHIVED, Constant::OK)->header('Content-Type', 'application/json');
     }
 }

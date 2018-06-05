@@ -78,3 +78,37 @@ Route::post('users/permits/create', 'UserController@storePermitsUser')
 
 Route::put('users/permits/update', 'UserController@updatePermitsUser')
 	->name('users.permits.update');
+
+/*  Rutas de paises  */
+
+Route::get('/countries', 'CountryController@indexCountry')
+	->name('countries');
+
+Route::get('countries/filter', 'CountryController@indexFilterCountry')
+	->name('countries.filter');
+
+Route::post('/countries/create', 'CountryController@storeCountry')
+	->name('countries.create');
+
+Route::put('/countries/update', 'CountryController@updateCountry')
+	->name('countries.update');
+
+Route::put('countries/archived', 'CountryController@archivedCountry')
+	->name('countries.archived');
+
+/*  Rutas de estados  */
+
+Route::get('states', 'StateController@indexState')
+	->name('states.index');
+
+Route::get('states/filter', 'StateController@indexFilterState')
+	->name('states.filter');
+
+Route::post('/states/create', 'StateController@storeState')
+	->name('states.create');
+
+Route::put('/states/update', 'StateController@updateState')
+	->name('states.update');
+
+Route::put('states/archived', 'StateController@archivedState')
+	->name('states.archived');
