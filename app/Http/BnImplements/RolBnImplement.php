@@ -52,9 +52,44 @@ class RolBnImplement
 
     public function selectAllPermitsRol($conection, $rol_id)
     {
-        return $conection->select('CALL RD_SelectPermitsAssociatesAll(:rol_id);',
+        $permits = $conection->select('CALL RD_SelectPermitsAssociatesAll(:rol_id);',
             ['rol_id' => $rol_id]
         );
+
+        $table['table_id'] = '';
+
+        foreach ($permits as $key => $permit) {
+
+            if (  $table['table_id'] != $permit->table_id ) {
+                
+                $table['table_id'] = $permit->table_id;
+                $table['table_name'] = $permit->table_name;
+                $tables_name[] = $table;
+
+            }
+        }
+
+        $tables = $tables_name;
+
+        foreach ($tables_name as $key_1 => $table) {
+            
+            foreach ($permits as $key_2 => $permit) {
+                
+                if ( $permit->table_id == $table['table_id'] ) {
+                    
+                    $columns['column_id'] = $permit->column_id;
+                    $columns['column_name'] = $permit->column_name;
+                    $columns['create'] = $permit->create;
+                    $columns['read'] = $permit->read;
+                    $columns['update'] = $permit->update;
+                    $columns['delete'] = $permit->delete;
+
+                    $tables[$key_1]['columns'][] = $columns;
+                }
+            }
+        }
+
+        return $tables;
     }
 
     public function insertPermitsRol($conection, $rol_id, $column_id, $create, $read, $update, $delete)

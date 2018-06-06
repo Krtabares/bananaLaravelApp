@@ -42,6 +42,27 @@ class UserController extends Controller
         return response(json_encode(['users' => $users]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
+    public function selectUserById(Request $request, $user_id)
+    {
+        $db_manager = new DBManager();
+
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            $user = $this->user_implement->selectUserById($conection, $user_id);
+
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode($user), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
     public function indexFilterUser(Request $request)
     {
         $db_manager = new DBManager();

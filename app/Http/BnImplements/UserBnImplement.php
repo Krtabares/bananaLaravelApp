@@ -17,6 +17,13 @@ class UserBnImplement
             ORDER BY user_name;');
     }
 
+    public function selectUserByid($conection, $user_id)
+    {
+        return $conection->select('SELECT * FROM users WHERE id = :user_id', [
+            'user_id' => $user_id
+        ]);
+    }
+
     public function selectFilterUsers($conection, $search)
     {
         return $conection->select('CALL RD_SelectFilteredUsers(:search)', ['search' => $search]);

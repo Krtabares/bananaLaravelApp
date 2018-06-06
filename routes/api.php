@@ -61,6 +61,10 @@ Route::get('user/{email}', 'UserController@getUserByEmail')
 	//->where('email', '[A-Za-z]+')
 	->name('user.get');
 
+Route::get('user/by/{user_id}', 'UserController@selectUserById')
+	->where('user_id', '[0-9]+')
+	->name('user.by.id');
+
 Route::get('users', 'userController@indexUser')
 	->name('users');
 
