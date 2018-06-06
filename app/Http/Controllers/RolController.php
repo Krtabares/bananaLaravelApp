@@ -39,6 +39,28 @@ class RolController extends Controller
         return response(json_encode(['rols' => $rols]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
+    public function selectRolById(Request $request, $id)
+    {        
+        $db_manager = new DBManager();
+
+        try {
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            $rol = $this->rol_implement->selectRolById($conection, $id);
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode($rol), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
     public function indexFilterRol(Request $request)
     {
         $db_manager = new DBManager();

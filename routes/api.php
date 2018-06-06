@@ -41,6 +41,9 @@ Route::get('/access/total/permits', 'AccessController@totalAccess')
 Route::get('rols', 'RolController@indexRol')
 	->name('rols');
 
+Route::get('rol/{id}', 'RolController@selectRolById')
+	->name('rol');
+
 Route::get('rols/filter', 'RolController@indexFilterRol')
 	->name('rols.filter');
 

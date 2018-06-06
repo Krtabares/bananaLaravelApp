@@ -12,6 +12,11 @@ class RolBnImplement
         return $conection->select('SELECT * FROM rols ORDER BY rol_name, id;');
     }
 
+    public function selectRolById($conection, $id)
+    {
+        return $conection->select('SELECT * FROM rols where id = :id_rol', ['id_rol'=>$id]);
+    }
+
     public function insertRol($conection, $rol_name, $description, $all_access_column)
     {
         $array_object = $conection->select('CALL CR_InsertRol(:rol_name, :description, :all_access_column)', [
