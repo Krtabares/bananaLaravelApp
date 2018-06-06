@@ -81,7 +81,7 @@ class UserController extends Controller
             if ( $request->filled('rol_id') && $request->filled('user_name') && $request->filled('email')
                 && $request->filled('password') && $request->filled('all_access_organization') ) {
 
-                $this->user_implement
+                $user_insert = $this->user_implement
                     ->insertUser($conection, $request->rol_id, $request->user_name, $request->password,
                         $request->email, $request->all_access_organization);
 
@@ -97,7 +97,7 @@ class UserController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_INSERT, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['user_insert' => $user_insert], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function updateUser(Request $request)
@@ -112,7 +112,7 @@ class UserController extends Controller
                 && $request->filled('email') && $request->filled('password')
                 && $request->filled('all_access_organization') && $request->filled('all_access_column') ) {
 
-                $this->user_implement
+                $user_update = $this->user_implement
                     ->updateUser($conection, $request->user_id, $request->rol_id, $request->user_name,
                         $request->password, $request->email, $request->all_access_organization,
                         $request->all_access_column);
@@ -129,7 +129,7 @@ class UserController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_UPDATE, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['user_update' => $user_update], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function archivedUser(Request $request)
@@ -142,7 +142,7 @@ class UserController extends Controller
 
             if ( $request->filled('user_id') && $request->filled('archived') ) {
 
-                $this->user_implement->archivedUser($conection, $request->user_id, $request->archived);
+                $user_archived = $this->user_implement->archivedUser($conection, $request->user_id, $request->archived);
 
             } else 
                 throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
@@ -156,7 +156,7 @@ class UserController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_ARCHIVED, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['user_archived' => $user_archived], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function storePermitsUser(Request $request)
@@ -177,6 +177,8 @@ class UserController extends Controller
 
                 }
 
+                $permits_user = $this->user_implement->selectAllPermitsUser($conection, $request->user_id);
+
             } else 
                 throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
             
@@ -189,7 +191,7 @@ class UserController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_INSERT, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['permits_user' => $permits_user], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function updatePermitsUser(Request $request)
@@ -210,6 +212,8 @@ class UserController extends Controller
 
                 }
 
+                $permits_user = $this->user_implement->selectAllPermitsUser($conection, $request->user_id);
+
             } else 
                 throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
             
@@ -222,7 +226,7 @@ class UserController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_UPDATE, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['permits_user' => $permits_user], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function getUserByEmail(Request $request,$email)
