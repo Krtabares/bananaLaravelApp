@@ -92,7 +92,7 @@ class AccessController extends Controller
 
             if ( $request->filled('rol_id') ) {
 
-                $permits_rol = $this->rol_implement->selectPermitsRol($conection, $request->rol_id);
+                $permits_rol = $this->rol_implement->selectAllPermitsRol($conection, $request->rol_id);
 
             } else 
                 throw new \Exception("Rol id is required", Constant::BAD_REQUEST);
@@ -120,7 +120,7 @@ class AccessController extends Controller
 
             if ( $request->filled('user_id') ) {
 
-                $permits_user = $this->user_implement->selectPermitsUser($conection, $request->user_id);
+                $permits_user = $this->user_implement->selectAllPermitsUser($conection, $request->user_id);
 
             } else 
                 throw new \Exception("User id is required", Constant::BAD_REQUEST);

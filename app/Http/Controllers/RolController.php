@@ -78,7 +78,7 @@ class RolController extends Controller
 
             if ( $request->filled('rol_name') && $request->filled('description') && $request->filled('all_access_column') ) {
 
-                $last_rol_id = $this->rol_implement
+                $rol_insert = $this->rol_implement
                     ->insertRol($conection, $request->rol_name, $request->description, $request->all_access_column);
 
             } else 
@@ -89,12 +89,14 @@ class RolController extends Controller
                 foreach ($request->permits_rol as $key => $permit_rol) {
                     
                     $this->rol_implement
-                        ->insertPermitsRol($conection, $last_rol_id, $permit_rol['column_id'], $permit_rol['create'],
+                        ->insertPermitsRol($conection, $rol_insert->id, $permit_rol['column_id'], $permit_rol['create'],
                         $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
 
                 }
 
             }
+
+            $permits_rol = $this->rol_implement->selectAllPermitsRol($conection, $rol_insert->id);
 
             $conection->commit();
             
@@ -108,7 +110,8 @@ class RolController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_INSERT, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['rol_insert' => $rol_insert, 'permits_rol' => $permits_rol], Constant::OK)
+            ->header('Content-Type', 'application/json');
     }
 
     public function updateRol(Request $request)
@@ -124,7 +127,7 @@ class RolController extends Controller
             if ( $request->filled('rol_id') && $request->filled('rol_name') && $request->filled('description')
                     && $request->filled('all_access_column') ) {
 
-                $this->rol_implement
+                $rol_update = $this->rol_implement
                     ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description,
                         $request->all_access_column);
 
@@ -143,6 +146,8 @@ class RolController extends Controller
                 
             }
 
+            $permits_rol = $this->rol_implement->selectAllPermitsRol($conection, $rol_update->id);
+
             $conection->commit();
             
         } catch (\Exception $e) {
@@ -155,7 +160,7 @@ class RolController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_UPDATE, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['rol_update' => $rol_update, 'permits_rol' => $permits_rol], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function archivedRol(Request $request)
@@ -168,7 +173,7 @@ class RolController extends Controller
 
             if ( $request->filled('rol_id') && $request->filled('archived') ) {
 
-                $this->rol_implement->archivedRol($conection, $request->rol_id, $request->archived);
+                $rol_archived = $this->rol_implement->archivedRol($conection, $request->rol_id, $request->archived);
 
             } else 
                 throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
@@ -182,7 +187,7 @@ class RolController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_ARCHIVED, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['rol_archived' => $rol_archived], Constant::OK)->header('Content-Type', 'application/json');
     }
 
 }

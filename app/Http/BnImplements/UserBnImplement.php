@@ -22,18 +22,9 @@ class UserBnImplement
         return $conection->select('CALL RD_SelectFilteredUsers(:search)', ['search' => $search]);
     }
 
-	public function selectPermitsUser($conection, $user_id)
+	public function selectAllPermitsUser($conection, $user_id)
     {
-        $array_object = $conection->select('SELECT all_access_column from users where users.id = :user_id', [
-            'user_id' => $user_id
-        ]);
-
-        if ($array_object[0]->all_access_column)
-            return ['all_access_column' => 1];
-
-        return $conection->select('SELECT permissions_users.*, columns.column_name
-            FROM permissions_users, columns
-            WHERE ( user_id = :user_id ) AND ( columns.id = permissions_users.column_id );',
+        return $conection->select('CALL RD_SelectPermitsAssociatesUserAll(:user_id);',
             ['user_id' => $user_id]
         );
     }
@@ -52,14 +43,14 @@ class UserBnImplement
                 'token' => $token
             ]);
 
-        return $array_object[0]->id;
+        return $array_object[0];
     }
 
     public function updateUser($conection, $user_id, $rol_id, $user_name, $password, $email,
         $all_access_organization, $all_access_column)
     {
 
-        $conection->select('CALL UP_UpdateUser(:user_id, :rol_id, :user_name, :password,
+        $array_object = $conection->select('CALL UP_UpdateUser(:user_id, :rol_id, :user_name, :password,
             :email, :all_access_organization, :all_access_column)', [
                 'user_id' => $user_id,
                 'rol_id' => $rol_id,
@@ -69,14 +60,18 @@ class UserBnImplement
                 'all_access_organization' => $all_access_organization,
                 'all_access_column' => $all_access_column
             ]);
+
+        return $array_object[0];
     }
 
     public function archivedUser($conection, $user_id, $archived)
     {
-        $conection->select('CALL DL_ArchivedUser(:user_id, :archived)', [
+        $array_object = $conection->select('CALL DL_ArchivedUser(:user_id, :archived)', [
             'user_id' => $user_id,
             'archived' => $archived
         ]);
+
+        return $array_object[0];
     }
 
     public function insertPermitsUser($conection, $user_id, $column_id, $create, $read, $update, $delete)
