@@ -14,7 +14,9 @@ class RolBnImplement
 
     public function selectRolById($conection, $id)
     {
-        return $conection->select('SELECT * FROM rols where id = :id_rol', ['id_rol'=>$id]);
+        $rol = $conection->select('SELECT * FROM rols where id = :id_rol', ['id_rol'=>$id]);
+        $permissions_rols = $conection->select('CALL RD_SelectPermitsAssociatesAll(:rol_id)', ['rol_id' => $id]);
+        return ['rol'=>$rol,'permissions'=>$permissions_rols];
     }
 
     public function insertRol($conection, $rol_name, $description, $all_access_column)

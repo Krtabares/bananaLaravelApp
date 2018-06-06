@@ -21,7 +21,7 @@ class ExceptionAnalizer{
             $MSG = Constant::MSG_ERROR_DB;
             $status = Constant::NOT_IMPLEMENTED;
             // dd($exception->getCode());
-            //dd($exception->errorInfo);
+            dd($exception->errorInfo);
 
             $code = ($exception->errorInfo != null)? $exception->errorInfo[1] : $exception->getCode();
 
