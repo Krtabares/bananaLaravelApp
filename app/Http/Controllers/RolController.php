@@ -21,7 +21,7 @@ class RolController extends Controller
     {        
         $db_manager = new DBManager();
 
-        try {   
+        try {
              
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 

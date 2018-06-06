@@ -15,49 +15,6 @@ Route::get('/', function () {
     return view('contenido.contenido');
 })->name('contenido');
 
-/*  Rutas de paises  */
-
-Route::get('/countries', 'CountryController@index')
-	->name('countries');
-
-Route::post('/countries/new', 'CountryController@store')
-	->name('countries.new');
-
-Route::put('/countries/update', 'CountryController@update')
-	->name('countries.update');
-
-Route::put('countries/archived', 'CountryController@archived')
-	->name('countries.archived');
-
-Route::put('countries/desarchived', 'CountryController@desarchived')
-	->name('countries.desarchived');
-
-Route::delete('/countries/destroy', 'CountryController@destroy')
-	->name('countries.delete');
-
-/*  Rutas de estados  */
-
-Route::get('states', 'StateController@index')
-	->name('states.index');
-
-Route::get('/states/list/countries', 'StateController@listCountries')
-	->name('states.list_countries');
-
-Route::post('/states/new', 'StateController@store')
-	->name('states.new');
-
-Route::put('/states/update', 'StateController@update')
-	->name('states.update');
-
-Route::put('states/archived', 'StateController@archived')
-	->name('states.archived');
-
-Route::put('states/desarchived', 'StateController@desarchived')
-	->name('states.desarchived');
-
-Route::delete('/states/destroy', 'StateController@destroy')
-	->name('states.delete');
-
 /*  Rutas de ciudades  */
 
 Route::get('cities', 'CityController@index')
