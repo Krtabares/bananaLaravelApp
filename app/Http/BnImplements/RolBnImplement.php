@@ -74,6 +74,7 @@ class RolBnImplement
                 $columns['read'] = $permit->read;
                 $columns['update'] = $permit->update;
                 $columns['delete'] = $permit->delete;
+                $columns['selected'] = $permit->selected;
 
                 $tables[$index]['columns'][] = $columns;
 
@@ -88,6 +89,7 @@ class RolBnImplement
                 $columns['read'] = $permit->read;
                 $columns['update'] = $permit->update;
                 $columns['delete'] = $permit->delete;
+                $columns['selected'] = $permit->selected;
 
                 $tables[$index - 1]['columns'][] = $columns;
 
