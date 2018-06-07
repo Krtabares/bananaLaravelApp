@@ -47,13 +47,16 @@ class UserBnImplement
                 
                 $tables[$index]['table_id'] = $permit->table_id;
                 $tables[$index]['table_name'] = $permit->table_name;
+                $tables[$index]['table_description'] = $permit->table_description;
 
                 $columns['column_id'] = $permit->column_id;
                 $columns['column_name'] = $permit->column_name;
+                $columns['column_description'] = $permit->column_description;
                 $columns['create'] = $permit->create;
                 $columns['read'] = $permit->read;
                 $columns['update'] = $permit->update;
                 $columns['delete'] = $permit->delete;
+                $columns['selected'] = $permit->selected;
 
                 $tables[$index]['columns'][] = $columns;
 
@@ -64,10 +67,12 @@ class UserBnImplement
 
                 $columns['column_id'] = $permit->column_id;
                 $columns['column_name'] = $permit->column_name;
+                $columns['column_description'] = $permit->column_description;
                 $columns['create'] = $permit->create;
                 $columns['read'] = $permit->read;
                 $columns['update'] = $permit->update;
                 $columns['delete'] = $permit->delete;
+                $columns['selected'] = $permit->selected;
 
                 $tables[$index - 1]['columns'][] = $columns;
 

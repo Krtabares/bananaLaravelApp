@@ -58,7 +58,7 @@ class RolController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(json_encode([$rol]), Constant::OK)->header('Content-Type', 'application/json');
+        return response(json_encode($rol), Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function indexFilterRol(Request $request)
