@@ -76,13 +76,17 @@ class StateController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            if ( $request->filled('country_id') && $request->filled('iso') && $request->filled('state_name') ) {
+            if ( !$request->filled('country_id') )
+                throw new \Exception("Country is required", Constant::BAD_REQUEST);
 
-                $this->state_implement
-                    ->insertState($conection, $request->country_id, $request->state_name, $request->iso);
+            if ( !$request->filled('iso') )
+                throw new \Exception("ISO is required", Constant::BAD_REQUEST);
 
-            } else 
-                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            if ( !$request->filled('state_name') )
+                throw new \Exception("State name is required", Constant::BAD_REQUEST);
+
+            $state_insert = $this->state_implement
+                ->insertState($conection, $request->country_id, $request->state_name, $request->iso);
             
         } catch (\Exception $e) {
             
@@ -93,7 +97,7 @@ class StateController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_INSERT, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['state_insert' => $state_insert], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function updateState(Request $request)
@@ -104,14 +108,20 @@ class StateController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            if ( $request->filled('state_id') && $request->filled('country_id') && $request->filled('iso')
-                && $request->filled('state_name') ) {
+            if ( !$request->filled('state_id') )
+                throw new \Exception("State is required", Constant::BAD_REQUEST);
 
-                $this->state_implement
-                    ->updateState($conection, $request->state_id, $request->country_id, $request->state_name, $request->iso);
+            if ( !$request->filled('country_id') )
+                throw new \Exception("Country is required", Constant::BAD_REQUEST);
 
-            } else 
-                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            if ( !$request->filled('iso') )
+                throw new \Exception("ISO is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('state_name') )
+                throw new \Exception("State name is required", Constant::BAD_REQUEST);
+
+            $state_update = $this->state_implement
+                ->updateState($conection, $request->state_id, $request->country_id, $request->state_name, $request->iso);
             
         } catch (\Exception $e) {
             
@@ -122,7 +132,7 @@ class StateController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_UPDATE, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['state_update' => $state_update], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function archivedState(Request $request)
@@ -133,12 +143,13 @@ class StateController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            if ( $request->filled('state_id') && $request->filled('archived') ) {
+            if ( !$request->filled('state_id') )
+                throw new \Exception("State is required", Constant::BAD_REQUEST);
 
-                $this->state_implement->archivedState($conection, $request->state_id, $request->archived);
+            if ( !$request->filled('archived') )
+                throw new \Exception("Archived is required", Constant::BAD_REQUEST);
 
-            } else 
-                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            $state_archived = $this->state_implement->archivedState($conection, $request->state_id, $request->archived);
             
         } catch (\Exception $e) {
             
@@ -149,6 +160,6 @@ class StateController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_ARCHIVED, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['state_archived' => $state_archived], Constant::OK)->header('Content-Type', 'application/json');
     }
 }
