@@ -142,8 +142,11 @@ class RolController extends Controller
         $db_manager = new DBManager();
 
         try {
+            if(!$request->filled('authorization')){
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
+            }
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+            $conection = $db_manager->getClientBDConecction($request->authorization);
             $conection->beginTransaction();
 
             if ( $request->filled('rol_id') && $request->filled('rol_name') && $request->filled('description')
