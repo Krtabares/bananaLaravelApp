@@ -52,4 +52,19 @@ class CityBnImplement
 				'city_id' => $city_id
 			]);
 	}
+
+	public function archivedCity($conection, $city_id, $archived)
+	{
+		$conection->select('CALL DL_ArchivedCity(:city_id, :archived)', [
+			'city_id' => $city_id,
+			'archived' => $archived
+		]);
+
+		return $conection->select('SELECT p.id country_id, p.country, s.state, c.* FROM states s
+			JOIN cities c ON s.id = c.state_id
+			JOIN countries p ON s.country_id = p.id
+			WHERE c.id = :city_id', [
+				'city_id' => $city_id
+			]);
+	}
 }

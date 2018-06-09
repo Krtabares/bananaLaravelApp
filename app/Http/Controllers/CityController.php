@@ -134,4 +134,33 @@ class CityController extends Controller
 
         return response(['city_udpate' => $city_udpate], Constant::OK)->header('Content-Type', 'application/json');
     }
+
+    public function archivedCity(Request $request)
+    {
+    	$db_manager = new DBManager();
+
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( !$request->filled('city_id') )
+                throw new \Exception("City is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('archived') )
+                throw new \Exception("Archived is required", Constant::BAD_REQUEST);
+
+            $city_archived = $this->city_implement
+                ->archivedCity($conection, $request->city_id, $request->archived);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(['city_archived' => $city_archived], Constant::OK)->header('Content-Type', 'application/json');
+    }
 }
