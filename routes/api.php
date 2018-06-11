@@ -56,6 +56,9 @@ Route::post('rols/update', 'RolController@updateRol')
 Route::put('rols/archived', 'RolController@archivedRol')
 	->name('rols.archived');
 
+Route::get('rols/getPermission', 'RolController@getPermission')
+	->name('rols.getPermission');
+
 /* Rutas de User */
 Route::get('user/{email}', 'UserController@getUserByEmail')
 	//->where('email', '[A-Za-z]+')

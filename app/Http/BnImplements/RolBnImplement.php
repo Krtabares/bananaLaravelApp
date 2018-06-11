@@ -15,7 +15,7 @@ class RolBnImplement
     public function selectRolById($conection, $id)
     {
         $rol = $conection->select('SELECT * FROM rols where id = :id_rol', ['id_rol'=>$id]);
-        $permissions_rols = $this->selectAllPermitsRol($conection, $id);
+        $permissions_rols = $this->selectPermitsRol($conection, $id,2);
         return ['rol'=>$rol,'permissions'=>$permissions_rols];
     }
 
@@ -52,9 +52,26 @@ class RolBnImplement
         return $array_object[0];
     }
 
-    public function selectAllPermitsRol($conection, $rol_id)
+    public function selectPermitsRol($conection, $rol_id, $type)
     {
-        $permits = $conection->select('CALL RD_SelectPermitsAssociatesAll(:rol_id);',
+        switch (intval($type)) {
+            case 0:
+                 $functionCall = 'RD_SelectPermitsNotAssociates';
+                break;
+            case 1:
+                 $functionCall = 'RD_SelectPermitsYesAssociates';
+                break;
+            case 2:
+                $functionCall = 'RD_SelectPermitsAssociatesAll';
+                break;
+            
+            default:
+                $functionCall = 'RD_SelectPermitsAssociatesAll';
+                break;
+        }
+        
+        
+        $permits = $conection->select('CALL '.$functionCall.'(:rol_id);',
             ['rol_id' => $rol_id]
         );
 

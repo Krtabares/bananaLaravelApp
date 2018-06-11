@@ -94,8 +94,11 @@ class RolController extends Controller
         $db_manager = new DBManager();
 
         try {
+            if(!$request->filled('authorization')){
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
+            }
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+            $conection = $db_manager->getClientBDConecction($request->authorization);
             $conection->beginTransaction();
 
             if ( $request->filled('rol_name') && $request->filled('description') && $request->filled('all_access_column') ) {
@@ -118,13 +121,13 @@ class RolController extends Controller
 
             }
 
-            $permits_rol = $this->rol_implement->selectAllPermitsRol($conection, $rol_insert->id);
+            $permits_rol = $this->rol_implement->selectPermitsRol($conection, $rol_insert->id,2);
 
             $conection->commit();
             
         } catch (\Exception $e) {
             
-            $conection->rollBack();
+            // $conection->rollBack();
             return ExceptionAnalizer::analizerHTTPResponse($e);
 
         } finally {
@@ -171,7 +174,7 @@ class RolController extends Controller
                 
             }
 
-            $permits_rol = $this->rol_implement->selectAllPermitsRol($conection, $rol_update->id);
+            $permits_rol = $this->rol_implement->selectPermitsRol($conection, $rol_update->id,2);
 
             $conection->commit();
             
@@ -213,6 +216,31 @@ class RolController extends Controller
         }
 
         return response(['rol_archived' => $rol_archived], Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+
+
+
+    public function getPermission(Request $request)
+    {        
+        $db_manager = new DBManager();
+
+        try {
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+          
+            $permissions = $this->rol_implement->selectPermitsRol($conection,$request->id,$request->typeGet);
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['permissions' => $permissions]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
 }
