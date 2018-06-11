@@ -3,162 +3,164 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Constant;
 use App\City;
-use Illuminate\Support\Facades\DB;
+use App\BananaUtils\DBManager;
+use App\BananaUtils\ExceptionAnalizer;
+use App\Http\BnImplements\CityBnImplement;
 
 class CityController extends Controller
 {
-    public function index(Request $request)
+    private $city_implement;
+
+    function __construct(CityBnImplement $city_implement)
     {
-        if ( ! $request->ajax() ) return redirect('/');
+        $this->city_implement = $city_implement;
+    }
 
-        $search = $request->search;
-        $criterion = $request->criterion;
+    public function indexCity(Request $request)
+    {
+        $db_manager = new DBManager();
 
-        if ($search == '') {
-            
-        	$cities = City::orderBy('city', 'ASC')
-                ->paginate(5);
+        try {
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            foreach ($cities as $key => $city) {
-                
-                $city->state->country;
+            $cities = $this->city_implement->selectCities($conection);
 
-            }
+        } catch (\Exception $e) {
 
-        } elseif ($criterion == 'state') {
+            return ExceptionAnalizer::analizerHTTPResponse($e);
 
-            $cities = City::whereHas('state', function ($query) use ($criterion, $search) {
+        } finally {
 
-                    $query->where($criterion, 'like', '%'.$search.'%');
-
-                })
-                ->orderBy('city', 'ASC')
-                ->paginate(5);
-
-            foreach ($cities as $key => $city) {
-                
-                $city->state->country;
-
-            }
-
-        } elseif ($criterion == 'country') {
-
-            $cities = City::whereHas('state', function ($query_0) use ($criterion, $search) {
-
-                    $query_0->whereHas('country', function($query_1) use ($criterion, $search) {
-
-                        $query_1->where($criterion, 'like', '%'.$search.'%');
-
-                    });
-
-                })
-                ->orderBy('city', 'ASC')
-                ->paginate(5);
-
-            foreach ($cities as $key => $city) {
-                
-                $city->state->country;
-
-            }
-
-        } else {
-
-            $cities = City::orderBy('city', 'ASC')
-                ->where($criterion, 'like', '%'.$search.'%')
-                ->paginate(5);
-
-            foreach ($cities as $key => $city) {
-                
-                $city->state->country;
-
-            }
-
+            $db_manager->terminateClientBDConecction();
         }
 
-    	return [
-            'pagination' => [
-                'total' => $cities->total(),
-                'current_page' => $cities->currentPage(),
-                'per_page' => $cities->perPage(),
-                'last_page' => $cities->lastPage(),
-                'from' => $cities->firstItem(),
-                'to' => $cities->lastItem()
-            ],
-            'cities' => $cities
-        ];
+        return response(json_encode(['cities' => $cities]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function listCountries(Request $request)
+    public function indexFilterCity(Request $request)
     {
-        if ( ! $request->ajax() ) return redirect('/');
+        $db_manager = new DBManager();
 
-        $countries = DB::table('countries')
-            ->select('id', 'country')
-            ->where('archived', 0)
-            ->orWhere('id', $request->country_id)
-            ->orderBy('country')
-            ->get();
+        try {   
+             
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-        return $countries;
+            if ( $request->filled('filter') ) {
+
+                $filter_cities = $this->city_implement->selectFilterCities($conection, $request->filter);
+
+            } else 
+                throw new \Exception("Filter is required", Constant::BAD_REQUEST);
+            
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['filter_cities' => $filter_cities]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function listStates(Request $request)
+    public function storeCity(Request $request)
     {
-        if ( ! $request->ajax() ) return redirect('/');
+        $db_manager = new DBManager();
 
-        $states = DB::table('states')
-            ->select('id', 'state')
-            ->where([
-                ['country_id', '=', $request->country_id],
-                ['archived', '=', 0]
-            ])
-            ->orWhere('id', $request->state_id)
-            ->orderBy('state')
-            ->get();
+        try {
 
-        return $states;
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( !$request->filled('state_id') )
+                throw new \Exception("State is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('capital') )
+                throw new \Exception("Capital is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('city_name') )
+                throw new \Exception("City name is required", Constant::BAD_REQUEST);
+
+            $city_insert = $this->city_implement
+                ->insertCity($conection, $request->state_id, $request->city_name, $request->capital);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(['city_insert' => $city_insert], Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function store(Request $request)
+    public function updateCity(Request $request)
     {
-        if ( ! $request->ajax() ) return redirect('/');
+        $db_manager = new DBManager();
 
-        $city = new City();
-        $city->state_id = $request->state_id;
-        $city->city = $request->city;
-        $city->capital = $request->capital;
-        $city->archived = '0';
-        $city->save();
+        try {
+
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+
+            if ( !$request->filled('city_id') )
+                throw new \Exception("City is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('state_id') )
+                throw new \Exception("State is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('capital') )
+                throw new \Exception("Capital is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('city_name') )
+                throw new \Exception("City name is required", Constant::BAD_REQUEST);
+
+            $city_udpate = $this->city_implement
+                ->updateCity($conection, $request->city_id, $request->state_id, $request->city_name, $request->capital);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(['city_udpate' => $city_udpate], Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function update(Request $request)
+    public function archivedCity(Request $request)
     {
-        //if ( ! $request->ajax() ) return redirect('/');
+    	$db_manager = new DBManager();
 
-        $city = City::findOrFail($request->id);
-        $city->state_id = $request->state_id;
-        $city->city = $request->city;
-        $city->capital = $request->capital;
-        $city->archived = '0';
-        $city->save();
-    }
+        try {
 
-    public function archived(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-        $city = City::findOrFail($request->id);
-        $city->archived = '1';
-        $city->save();
-    }
+            if ( !$request->filled('city_id') )
+                throw new \Exception("City is required", Constant::BAD_REQUEST);
 
-    public function desarchived(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+            if ( !$request->filled('archived') )
+                throw new \Exception("Archived is required", Constant::BAD_REQUEST);
 
-        $city = City::findOrFail($request->id);
-        $city->archived = '0';
-        $city->save();
+            $city_archived = $this->city_implement
+                ->archivedCity($conection, $request->city_id, $request->archived);
+            
+        } catch (\Exception $e) {
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(['city_archived' => $city_archived], Constant::OK)->header('Content-Type', 'application/json');
     }
 }

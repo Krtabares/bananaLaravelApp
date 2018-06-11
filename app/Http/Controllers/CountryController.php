@@ -76,13 +76,14 @@ class CountryController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            if ( $request->filled('iso') && $request->filled('country_name') ) {
+            if ( !$request->filled('iso') )
+                throw new \Exception("ISO is required", Constant::BAD_REQUEST);
 
-                $this->country_implement
-                    ->insertCountry($conection, $request->country_name, $request->iso);
+            if ( !$request->filled('country_name') )
+                throw new \Exception("Country name is required", Constant::BAD_REQUEST);
 
-            } else 
-                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            $country_insert = $this->country_implement
+                ->insertCountry($conection, $request->country_name, $request->iso);
             
         } catch (\Exception $e) {
             
@@ -93,7 +94,7 @@ class CountryController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_INSERT, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['country_insert' => $country_insert], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function updateCountry(Request $request)
@@ -104,13 +105,17 @@ class CountryController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            if ( $request->filled('country_id') && $request->filled('iso') && $request->filled('country_name') ) {
+            if ( !$request->filled('country_id') )
+                throw new \Exception("Country is required", Constant::BAD_REQUEST);
 
-                $this->country_implement
-                    ->updateCountry($conection, $request->country_id, $request->country_name, $request->iso);
+            if ( !$request->filled('iso') )
+                throw new \Exception("ISO is required", Constant::BAD_REQUEST);
 
-            } else 
-                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            if ( !$request->filled('country_name') )
+                throw new \Exception("Country name is required", Constant::BAD_REQUEST);
+
+            $country_update = $this->country_implement
+                ->updateCountry($conection, $request->country_id, $request->country_name, $request->iso);
             
         } catch (\Exception $e) {
             
@@ -121,7 +126,7 @@ class CountryController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_UPDATE, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['country_update' => $country_update], Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function archivedCountry(Request $request)
@@ -132,12 +137,13 @@ class CountryController extends Controller
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'));
 
-            if ( $request->filled('country_id') && $request->filled('archived') ) {
+            if ( !$request->filled('country_id') )
+                throw new \Exception("Country is required", Constant::BAD_REQUEST);
 
-                $this->country_implement->archivedCountry($conection, $request->country_id, $request->archived);
+            if ( !$request->filled('archived') )
+                throw new \Exception("Archived is required", Constant::BAD_REQUEST);
 
-            } else 
-                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            $country_archived = $this->country_implement->archivedCountry($conection, $request->country_id, $request->archived);
             
         } catch (\Exception $e) {
             
@@ -148,6 +154,6 @@ class CountryController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(Constant::MSG_ARCHIVED, Constant::OK)->header('Content-Type', 'application/json');
+        return response(['country_archived' => $country_archived], Constant::OK)->header('Content-Type', 'application/json');
     }
 }

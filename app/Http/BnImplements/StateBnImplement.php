@@ -18,8 +18,8 @@ class StateBnImplement
     public function selectFilterStates($conection, $search)
     {
         return $conection->select('CALL RD_SelectFilteredStates(:search)',
-        		['search' => $search]
-        	);
+        	['search' => $search]
+        );
     }
 
     public function insertState($conection, $country_id, $state_name, $iso)
@@ -29,6 +29,9 @@ class StateBnImplement
                 'country_id' => $country_id,
                 'iso' => $iso
             ]);
+
+        return $conection->select('SELECT c.country, s.* FROM countries c, states s
+            WHERE c.id = s.country_id ORDER BY id DESC LIMIT 1');
     }
 
     public function updateState($conection, $state_id, $country_id, $state_name, $iso)
@@ -39,6 +42,11 @@ class StateBnImplement
                 'state_name' => $state_name,
                 'iso' => $iso
             ]);
+
+        return $conection->select('SELECT c.country, s.* FROM countries c, states s
+            WHERE c.id = s.country_id AND s.id = :state_id', [
+                'state_id' => $state_id
+            ]);
     }
 
     public function archivedState($conection, $state_id, $archived)
@@ -47,5 +55,10 @@ class StateBnImplement
             'state_id' => $state_id,
             'archived' => $archived
         ]);
+
+        return $conection->select('SELECT c.country, s.* FROM countries c, states s
+            WHERE c.id = s.country_id AND s.id = :state_id', [
+                'state_id' => $state_id
+            ]);
 	}
 }

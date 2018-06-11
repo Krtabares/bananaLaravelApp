@@ -25,6 +25,8 @@ class CountryBnImplement
                 'country_name' => $country_name,
                 'iso' => $iso
             ]);
+
+        return $conection->select('SELECT * FROM countries ORDER BY id DESC LIMIT 1');
     }
 
     public function updateCountry($conection, $country_id, $country_name, $iso)
@@ -34,6 +36,10 @@ class CountryBnImplement
                 'country_name' => $country_name,
                 'iso' => $iso
             ]);
+
+        return $conection->select('SELECT * FROM countries WHERE id = :country_id',[
+            'country_id' => $country_id
+        ]);
     }
 
     public function archivedCountry($conection, $country_id, $archived)
@@ -41,6 +47,10 @@ class CountryBnImplement
         $conection->select('CALL DL_ArchivedCountry(:country_id, :archived)', [
             'country_id' => $country_id,
             'archived' => $archived
+        ]);
+
+        return $conection->select('SELECT * FROM countries WHERE id = :country_id',[
+            'country_id' => $country_id
         ]);
 	}
 }

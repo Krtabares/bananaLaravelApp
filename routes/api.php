@@ -122,3 +122,20 @@ Route::put('/states/update', 'StateController@updateState')
 
 Route::put('states/archived', 'StateController@archivedState')
 	->name('states.archived');
+
+/*  Rutas de estados  */
+
+Route::get('cities', 'cityController@indexCity')
+	->name('cities.index');
+
+Route::get('cities/filter', 'cityController@indexFilterCity')
+	->name('cities.filter');
+
+Route::post('/cities/create', 'cityController@storeCity')
+	->name('cities.create');
+
+Route::put('/cities/update', 'cityController@updateCity')
+	->name('cities.update');
+
+Route::put('cities/archived', 'cityController@archivedCity')
+	->name('cities.archived');
