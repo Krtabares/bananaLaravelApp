@@ -53,7 +53,7 @@ Route::post('rols/create', 'RolController@storeRol')
 Route::post('rols/update', 'RolController@updateRol')
 	->name('rols.update');
 
-Route::put('rols/archived', 'RolController@archivedRol')
+Route::post('rols/archived', 'RolController@archivedRol')
 	->name('rols.archived');
 
 Route::get('rols/getPermission', 'RolController@getPermission')

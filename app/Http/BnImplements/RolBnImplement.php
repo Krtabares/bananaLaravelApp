@@ -19,37 +19,61 @@ class RolBnImplement
         return ['rol'=>$rol,'permissions'=>$permissions_rols];
     }
 
-    public function insertRol($conection, $rol_name, $description, $all_access_column)
+    public function insertRol($conection, $rol_name, $description, $all_access_column, $all_access_organization, $permits_rol)
     {
-        $array_object = $conection->select('CALL CR_InsertRol(:rol_name, :description, :all_access_column)', [
+        $rol_insert = $conection->select('CALL CR_InsertRol(:rol_name, :description, :all_access_column, :all_access_organization)', [
             'rol_name' => $rol_name,
             'description' => $description,
-            'all_access_column' => $all_access_column
+            'all_access_column' => $all_access_column,
+            'all_access_organization' => $all_access_organization
         ]);
 
-        return $array_object[0];
+        if ( $permits_rol != NULL ) {
+
+            foreach ($permits_rol as $key => $permit_rol) {
+            
+                $this->insertPermitsRol($conection, $rol_insert[0]->id, $permit_rol['column_id'], $permit_rol['create'],
+                    $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
+
+            }
+
+        }
+
+        $permits_rol_insert = $this->selectPermitsRol($conection, $rol_insert[0]->id, 1);
+
+        return ['rol_insert' => $rol_insert[0], 'permits_rol_insert' => $permits_rol_insert];
     }
 
-    public function updateRol($conection, $rol_id, $rol_name, $description, $all_access_column)
+    public function updateRol($conection, $rol_id, $rol_name, $description, $all_access_column, $all_access_organization, $permits_rol)
     {
-        $array_object = $conection->select('CALL UP_UpdateRol(:rol_id, :rol_name, :description, :all_access_column)', [
+        $rol_update = $conection->select('CALL UP_UpdateRol(:rol_id, :rol_name, :description, :all_access_column, :all_access_organization)', [
             'rol_id' => $rol_id,
             'rol_name' => $rol_name,
             'description' => $description,
-            'all_access_column' => $all_access_column
+            'all_access_column' => $all_access_column,
+            'all_access_organization' => $all_access_organization
         ]);
 
-        return $array_object[0];
+        foreach ($permits_rol as $key => $permit_rol) {
+                    
+            $this->updatePermitsRol($conection, $rol_update[0]->id, $permit_rol['column_id'], $permit_rol['create'],
+                $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
+
+        }
+
+        $permits_rol_update = $this->selectPermitsRol($conection, $rol_update[0]->id, 1);
+
+        return ['rol_update' => $rol_update[0], 'permits_rol_update' => $permits_rol_update];
     }
 
     public function archivedRol($conection, $rol_id, $archived)
     {
-        $array_object = $conection->select('CALL DL_ArchivedRol(:rol_id, :archived)', [
+        $rol_archived = $conection->select('CALL DL_ArchivedRol(:rol_id, :archived)', [
             'rol_id' => $rol_id,
             'archived' => $archived
         ]);
 
-        return $array_object[0];
+        return ['rol_archived' => $rol_archived[0]];
     }
 
     public function selectPermitsRol($conection, $rol_id, $type)
@@ -77,44 +101,50 @@ class RolBnImplement
 
         $table_id = 0;
         $index = 0;
+        $tables = [];
 
-        foreach ($permits as $key => $permit) {
+        if ($permits != NULL) {
+            
+            foreach ($permits as $key => $permit) {
 
-            if (  $table_id != $permit->table_id ) {
-                
-                $tables[$index]['table_id'] = $permit->table_id;
-                $tables[$index]['table_name'] = $permit->table_name;
-                $tables[$index]['table_description'] = $permit->table_description;
+                if (  $table_id != $permit->table_id ) {
+                    
+                    $tables[$index]['table_id'] = $permit->table_id;
+                    $tables[$index]['table_name'] = $permit->table_name;
+                    $tables[$index]['table_description'] = $permit->table_description;
 
-                $columns['column_id'] = $permit->column_id;
-                $columns['column_name'] = $permit->column_name;
-                $columns['column_description'] = $permit->column_description;
-                $columns['create'] = $permit->create;
-                $columns['read'] = $permit->read;
-                $columns['update'] = $permit->update;
-                $columns['delete'] = $permit->delete;
-                $columns['selected'] = $permit->selected;
+                    $columns['column_id'] = $permit->column_id;
+                    $columns['column_name'] = $permit->column_name;
+                    $columns['column_description'] = $permit->column_description;
+                    $columns['create'] = $permit->create;
+                    $columns['read'] = $permit->read;
+                    $columns['update'] = $permit->update;
+                    $columns['delete'] = $permit->delete;
+                    $columns['selected'] = $permit->selected;
 
-                $tables[$index]['columns'][] = $columns;
+                    $tables[$index]['columns'][] = $columns;
 
-                $table_id = $permit->table_id;
-                $index++;
+                    $table_id = $permit->table_id;
+                    $index++;
 
-            } elseif ( $table_id == $permit->table_id ) {
+                } elseif ( $table_id == $permit->table_id ) {
 
-                $columns['column_id'] = $permit->column_id;
-                $columns['column_name'] = $permit->column_name;
-                $columns['column_description'] = $permit->column_description;
-                $columns['create'] = $permit->create;
-                $columns['read'] = $permit->read;
-                $columns['update'] = $permit->update;
-                $columns['delete'] = $permit->delete;
-                $columns['selected'] = $permit->selected;
+                    $columns['column_id'] = $permit->column_id;
+                    $columns['column_name'] = $permit->column_name;
+                    $columns['column_description'] = $permit->column_description;
+                    $columns['create'] = $permit->create;
+                    $columns['read'] = $permit->read;
+                    $columns['update'] = $permit->update;
+                    $columns['delete'] = $permit->delete;
+                    $columns['selected'] = $permit->selected;
 
-                $tables[$index - 1]['columns'][] = $columns;
+                    $tables[$index - 1]['columns'][] = $columns;
 
+                }
             }
+
         }
+
 
         return $tables;
     }

@@ -22,7 +22,7 @@ class UserBnImplement
         $user = $conection->select('SELECT * FROM users WHERE id = :user_id', [
             'user_id' => $user_id
         ]);
-        $permits = $this->selectAllPermitsUser($conection, $user_id);
+        $permits = $this->selectPermitsUser($conection, $user_id, 2);
 
         return ['user' => $user, 'permissions' => $permits];
     }
@@ -32,9 +32,25 @@ class UserBnImplement
         return $conection->select('CALL RD_SelectFilteredUsers(:search)', ['search' => $search]);
     }
 
-	public function selectAllPermitsUser($conection, $user_id)
+	public function selectPermitsUser($conection, $user_id, $type)
     {
-        $permits = $conection->select('CALL RD_SelectPermitsAssociatesUserAll(:user_id);',
+        switch (intval($type)) {
+            case 0:
+                 $functionCall = 'RD_SelectPermitsNotAssociatesUser';
+                break;
+            case 1:
+                 $functionCall = 'RD_SelectPermitsYesAssociatesUser';
+                break;
+            case 2:
+                $functionCall = 'RD_SelectPermitsAssociatesUserAll';
+                break;
+            
+            default:
+                $functionCall = 'RD_SelectPermitsAssociatesUserAll';
+                break;
+        }
+        
+        $permits = $conection->select('CALL '.$functionCall.'(:user_id);',
             ['user_id' => $user_id]
         );
 

@@ -94,87 +94,30 @@ class RolController extends Controller
         $db_manager = new DBManager();
 
         try {
-            if(!$request->filled('authorization')){
+            if(!$request->filled('authorization'))
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
-            }
 
             $conection = $db_manager->getClientBDConecction($request->authorization);
             $conection->beginTransaction();
 
-            if ( $request->filled('rol_name') && $request->filled('description') && $request->filled('all_access_column') ) {
+            if ( !$request->filled('rol_name') )
+                throw new \Exception("Rol name is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('description') )
+                throw new \Exception("Description is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('all_access_column') )
+                throw new \Exception("Indicate if you have access to all columns", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('all_access_organization') )
+                throw new \Exception("Indicate if you have access to all organization", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('permits_rol') )
+                throw new \Exception("Permits rol are required", Constant::BAD_REQUEST);
 
                 $rol_insert = $this->rol_implement
-                    ->insertRol($conection, $request->rol_name, $request->description, $request->all_access_column);
-
-            } else 
-                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
-
-            if ( $request->filled('permits_rol') ) {
-
-                foreach ($request->permits_rol as $key => $permit_rol) {
-                    
-                    $this->rol_implement
-                        ->insertPermitsRol($conection, $rol_insert->id, $permit_rol['column_id'], $permit_rol['create'],
-                        $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
-
-                }
-
-            }
-
-            $permits_rol = $this->rol_implement->selectPermitsRol($conection, $rol_insert->id,2);
-
-            $conection->commit();
-            
-        } catch (\Exception $e) {
-            
-            // $conection->rollBack();
-            return ExceptionAnalizer::analizerHTTPResponse($e);
-
-        } finally {
-
-            $db_manager->terminateClientBDConecction();
-        }
-
-        return response(['rol_insert' => $rol_insert, 'permits_rol' => $permits_rol], Constant::OK)
-            ->header('Content-Type', 'application/json');
-    }
-
-    public function updateRol(Request $request)
-    {
-
-        $db_manager = new DBManager();
-
-        try {
-            if(!$request->filled('authorization')){
-                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
-            }
-
-            $conection = $db_manager->getClientBDConecction($request->authorization);
-            $conection->beginTransaction();
-
-            if ( $request->filled('rol_id') && $request->filled('rol_name') && $request->filled('description')
-                    && $request->filled('all_access_column') ) {
-
-                $rol_update = $this->rol_implement
-                    ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description,
-                        $request->all_access_column);
-
-            } else 
-                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
-
-            if ( $request->filled('rol_id') && $request->filled('permits_rol') ) {
-
-                foreach ($request->permits_rol as $key => $permit_rol) {
-                    
-                    $this->rol_implement
-                        ->updatePermitsRol($conection, $request->rol_id, $permit_rol['column_id'], $permit_rol['create'],
-                        $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
-
-                }
-                
-            }
-
-            $permits_rol = $this->rol_implement->selectPermitsRol($conection, $rol_update->id,2);
+                    ->insertRol($conection, $request->rol_name, $request->description,
+                        $request->all_access_column, $request->all_access_organization, $request->permits_rol);
 
             $conection->commit();
             
@@ -188,7 +131,57 @@ class RolController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(['rol_update' => $rol_update, 'permits_rol' => $permits_rol], Constant::OK)->header('Content-Type', 'application/json');
+        return response($rol_insert, Constant::OK)
+            ->header('Content-Type', 'application/json');
+    }
+
+    public function updateRol(Request $request)
+    {
+
+        $db_manager = new DBManager();
+
+        try {
+            if(!$request->filled('authorization'))
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
+
+            $conection = $db_manager->getClientBDConecction($request->authorization);
+            $conection->beginTransaction();
+
+            if ( !$request->filled('rol_id') )
+                throw new \Exception("Rol is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('rol_name') )
+                throw new \Exception("Rol name is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('description') )
+                throw new \Exception("Description is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('all_access_column') )
+                throw new \Exception("Indicate if you have access to all columns", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('all_access_organization') )
+                throw new \Exception("Indicate if you have access to all organization", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('permits_rol') )
+                throw new \Exception("Permits rol are required", Constant::BAD_REQUEST);
+
+                $rol_update = $this->rol_implement
+                    ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description,
+                        $request->all_access_column, $request->all_access_organization, $request->permits_rol);
+
+            $conection->commit();
+            
+        } catch (\Exception $e) {
+            
+            $conection->rollBack();
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response($rol_update, Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function archivedRol(Request $request)
@@ -197,14 +190,19 @@ class RolController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+            if(!$request->filled('authorization'))
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
 
-            if ( $request->filled('rol_id') && $request->filled('archived') ) {
+            $conection = $db_manager->getClientBDConecction($request->authorization);
 
-                $rol_archived = $this->rol_implement->archivedRol($conection, $request->rol_id, $request->archived);
+            if ( !$request->filled('rol_id') )
+                throw new \Exception("Rol is required", Constant::BAD_REQUEST);
 
-            } else 
-                throw new \Exception("One or more parameters are required", Constant::BAD_REQUEST);
+            if ( !$request->filled('archived') )
+                throw new \Exception("Archived is required", Constant::BAD_REQUEST);
+
+            $rol_archived = $this->rol_implement->archivedRol($conection, $request->rol_id, $request->archived);
+
             
         } catch (\Exception $e) {
             
@@ -215,7 +213,7 @@ class RolController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(['rol_archived' => $rol_archived], Constant::OK)->header('Content-Type', 'application/json');
+        return response($rol_archived, Constant::OK)->header('Content-Type', 'application/json');
     }
 
 
