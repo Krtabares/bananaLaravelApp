@@ -39,8 +39,11 @@ class LoginController extends Controller
             if(!$request->filled('password')){
             	throw new \Exception("Password es un campo requerido", Constant::BAD_REQUEST);
             }
+            if(!$request->filled('app')){
+                throw new \Exception("App es un campo requerido", Constant::BAD_REQUEST);
+            }
 
-            $user = $this->login_implement->login($conection,$request->email,$request->password);
+            $user = $this->login_implement->login($conection,$request->email,$request->password,$request->app);
 
 
         } catch (\Exception $e) {
