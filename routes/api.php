@@ -89,6 +89,26 @@ Route::post('users/permits/create', 'UserController@storePermitsUser')
 Route::put('users/permits/update', 'UserController@updatePermitsUser')
 	->name('users.permits.update');
 
+/* Rutas de Terceros */
+
+Route::get('thirds', 'ThirdController@indexThird')
+	->name('thirds');
+
+Route::get('third/{id}', 'ThirdController@selectThirdById')
+	->name('third');
+
+Route::get('thirds/filter', 'ThirdController@indexFilterThird')
+	->name('thirds.filter');
+
+Route::post('thirds/create', 'ThirdController@storeThird')
+	->name('thirds.store');
+
+Route::post('thirds/update', 'ThirdController@updateThird')
+	->name('thirds.update');
+
+Route::post('thirds/archived', 'ThirdController@archivedThird')
+	->name('thirds.archived');
+
 /*  Rutas de paises  */
 
 Route::get('/countries', 'CountryController@indexCountry')
@@ -123,7 +143,7 @@ Route::put('/states/update', 'StateController@updateState')
 Route::put('states/archived', 'StateController@archivedState')
 	->name('states.archived');
 
-/*  Rutas de estados  */
+/*  Rutas de ciudades  */
 
 Route::get('cities', 'cityController@indexCity')
 	->name('cities.index');
