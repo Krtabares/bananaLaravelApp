@@ -23,7 +23,11 @@ class RolController extends Controller
 
         try {
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             $rols = $this->rol_implement->selectRols($conection);
 
@@ -45,7 +49,11 @@ class RolController extends Controller
 
         try {
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             $rol = $this->rol_implement->selectRolById($conection, $id);
 
@@ -67,7 +75,11 @@ class RolController extends Controller
 
         try {   
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( $request->filled('filter') ) {
 
@@ -225,7 +237,11 @@ class RolController extends Controller
 
         try {
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
           
             $permissions = $this->rol_implement->selectPermitsRol($conection,$request->id,$request->typeGet);
 

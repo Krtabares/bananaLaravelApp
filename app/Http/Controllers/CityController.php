@@ -24,7 +24,11 @@ class CityController extends Controller
 
         try {
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             $cities = $this->city_implement->selectCities($conection);
 
@@ -46,7 +50,11 @@ class CityController extends Controller
 
         try {   
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( $request->filled('filter') ) {
 
@@ -74,7 +82,11 @@ class CityController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('state_id') )
                 throw new \Exception("State is required", Constant::BAD_REQUEST);
@@ -106,7 +118,11 @@ class CityController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('city_id') )
                 throw new \Exception("City is required", Constant::BAD_REQUEST);
@@ -141,7 +157,11 @@ class CityController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('city_id') )
                 throw new \Exception("City is required", Constant::BAD_REQUEST);

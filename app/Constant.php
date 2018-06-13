@@ -4,6 +4,8 @@ namespace App;
 
 class Constant
 {
+    /* Development */
+    const TOKEN_LOGIN = 'bananaLogin';
 	/* Banana Messages */
 	const MSG_CLI_NOT_FOUND = 'Client database error not found';
 
@@ -46,4 +48,5 @@ class Constant
     const MSG_ACCESS_DENIED = 'Access denied';
     const MSG_UNKNOWN_DATABASE = 'Unknown database';
     const MSG_CONNECTION_ERROR = 'No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión';
+    const MSG_INVALID_PASS = 'Invalid Password';
 }

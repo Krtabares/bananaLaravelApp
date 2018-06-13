@@ -24,7 +24,11 @@ class StateController extends Controller
 
         try {
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             $states = $this->state_implement->selectStates($conection);
 
@@ -46,7 +50,11 @@ class StateController extends Controller
 
         try {   
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( $request->filled('filter') ) {
 
@@ -74,7 +82,11 @@ class StateController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('country_id') )
                 throw new \Exception("Country is required", Constant::BAD_REQUEST);
@@ -106,7 +118,11 @@ class StateController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('state_id') )
                 throw new \Exception("State is required", Constant::BAD_REQUEST);
@@ -141,7 +157,11 @@ class StateController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('state_id') )
                 throw new \Exception("State is required", Constant::BAD_REQUEST);

@@ -4,13 +4,15 @@ namespace App\BananaUtils;
 
 use App\constant;
 use App\BananaClient;
+use App\BananaUtils\SessionToken;
 use App\BananaUtils\ExceptionAnalizer;
+
 
 class DBManager{
 
     private $client_name_conecction_BD;
 
-    public  function getClientBDConecction ($DNS)
+    public  function getClientBDConecction ($DNS,$user,$token,$app)
     {
         try {
 
@@ -34,6 +36,10 @@ class DBManager{
                 \Config::set('database.connections.'.$this->client_name_conecction_BD, $configDb);
 
                 $conectionSQL = \DB::connection($this->client_name_conecction_BD);
+
+                if($token != Constant::TOKEN_LOGIN){
+                    SessionToken::validateToken($conectionSQL, $user, $token, $app);
+                }
 
             } else{
 

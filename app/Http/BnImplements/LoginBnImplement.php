@@ -29,13 +29,13 @@ class LoginBnImplement
 
         if ($user[0]->password != $pass) {
             
-            throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
+            throw new \Exception(Constant::MSG_INVALID_PASS, Constant::UNAUTHORIZED);
 
         }else{
 
             $token = SessionToken::generateToken($user[0]->email,$user[0]->id);
 
-            $this->insertToken($conection, $user[0]->id, $app, $token,true);
+            $this->insertToken($conection, $user[0]->id, $app, $token,FALSE);
 
             $user[0]->remember_token = $token;
 

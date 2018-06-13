@@ -34,7 +34,11 @@ class AccessController extends Controller
 
         try {   
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( $request->filled('table_id') ) {
 
@@ -61,7 +65,11 @@ class AccessController extends Controller
 
         try {   
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( $request->filled('user_id') ) {
 
@@ -88,7 +96,11 @@ class AccessController extends Controller
 
         try {   
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( $request->filled('rol_id') ) {
 
@@ -116,7 +128,11 @@ class AccessController extends Controller
 
         try {   
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( $request->filled('user_id') ) {
 
@@ -143,7 +159,11 @@ class AccessController extends Controller
 
         try {
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( $request->filled('user_id') ) {
 

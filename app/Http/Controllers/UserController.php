@@ -26,7 +26,11 @@ class UserController extends Controller
 
         try {
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             $users = $this->user_implement->selectUsers($conection);
 
@@ -48,7 +52,11 @@ class UserController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             $user = $this->user_implement->selectUserById($conection, $user_id);
 
@@ -69,7 +77,11 @@ class UserController extends Controller
 
         try {   
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( $request->filled('filter') ) {
 
@@ -97,7 +109,11 @@ class UserController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('rol_id') )
             	throw new \Exception("Rol is required", Constant::BAD_REQUEST);
@@ -133,7 +149,11 @@ class UserController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('user_id') )
             	throw new \Exception("User is required", Constant::BAD_REQUEST);
@@ -179,7 +199,11 @@ class UserController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('user_id') )
             	throw new \Exception("User is required", Constant::BAD_REQUEST);
@@ -207,7 +231,11 @@ class UserController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('user_id') )
             	throw new \Exception("User is required", Constant::BAD_REQUEST);
@@ -243,7 +271,11 @@ class UserController extends Controller
 
         try {
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('user_id') )
             	throw new \Exception("User is required", Constant::BAD_REQUEST);
@@ -280,7 +312,11 @@ class UserController extends Controller
 
         try {   
 
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if(!is_null($email) && strlen(trim($email)) > 1){
             	 $user = $this->user_implement->getUserByEmail($conection,$email);

@@ -31,7 +31,7 @@ class LoginController extends Controller
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
             }
 
-            $conection = $db_manager->getClientBDConecction($request->authorization);
+            $conection = $db_manager->getClientBDConecction($request->authorization,NULL,Constant::TOKEN_LOGIN,NULL);
 
             if(!$request->filled('email')){
             	throw new \Exception("Email es un campo requerido", Constant::BAD_REQUEST);
