@@ -24,7 +24,11 @@ class ThirdController extends Controller
 
         try {
              
-            $conection = $db_manager->getClientBDConecction($request->header('authorization'));
+            $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             $thirds = $this->third_implement->selectThirds($conection);
 
@@ -104,7 +108,7 @@ class ThirdController extends Controller
             if ( !$request->filled('tax_exempt') )
                 throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('pot_ax_exempt') )
+            if ( !$request->filled('po_tax_exempt') )
                 throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
 
             if ( !$request->filled('url') )
