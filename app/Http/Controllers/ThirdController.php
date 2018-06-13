@@ -49,7 +49,12 @@ class ThirdController extends Controller
         	if ( !$request->filled('authorization') )
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-            $conection = $db_manager->getClientBDConecction($request->authorization);
+           $conection = $db_manager->getClientBDConecction(
+                $request->authorization,
+                $request->user_id,
+                $request->token,
+                $request->app
+            );
 
             if ( !$request->filled('org_id') )
                 throw new \Exception("Organization is required", Constant::BAD_REQUEST);
@@ -164,7 +169,12 @@ class ThirdController extends Controller
         	if ( !$request->filled('authorization') )
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-            $conection = $db_manager->getClientBDConecction($request->authorization);
+           $conection = $db_manager->getClientBDConecction(
+                $request->authorization,
+                $request->user_id,
+                $request->token,
+                $request->app
+            );
 
             if ( !$request->filled('third_id') )
                 throw new \Exception("Third is required", Constant::BAD_REQUEST);

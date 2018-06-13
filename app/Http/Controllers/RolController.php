@@ -109,7 +109,13 @@ class RolController extends Controller
             if(!$request->filled('authorization'))
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
 
-            $conection = $db_manager->getClientBDConecction($request->authorization);
+            $conection = $db_manager->getClientBDConecction(
+                $request->authorization,
+                $request->user_id,
+                $request->token,
+                $request->app
+            );
+
             $conection->beginTransaction();
 
             if ( !$request->filled('rol_name') )
@@ -156,7 +162,12 @@ class RolController extends Controller
             if(!$request->filled('authorization'))
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
 
-            $conection = $db_manager->getClientBDConecction($request->authorization);
+           $conection = $db_manager->getClientBDConecction(
+                $request->authorization,
+                $request->user_id,
+                $request->token,
+                $request->app
+            );
             $conection->beginTransaction();
 
             if ( !$request->filled('rol_id') )
@@ -205,7 +216,12 @@ class RolController extends Controller
             if(!$request->filled('authorization'))
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
 
-            $conection = $db_manager->getClientBDConecction($request->authorization);
+           $conection = $db_manager->getClientBDConecction(
+                $request->authorization,
+                $request->user_id,
+                $request->token,
+                $request->app
+            );
 
             if ( !$request->filled('rol_id') )
                 throw new \Exception("Rol is required", Constant::BAD_REQUEST);
