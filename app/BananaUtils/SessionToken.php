@@ -33,14 +33,20 @@ class SessionToken{
             'app' => $app
         ]);
 
-        if ( empty($result) ||  $result[0]->token != $token || $result[0]->server_date > $result[0]->expires_at  ) {
+        if(empty($result)){
+             throw new \Exception("sin session token", Constant::UNAUTHORIZED);
+        }
+        if($result[0]->token != $token){
 
-            if(!empty($result)){
-                $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
-            }
+            $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
+            
+            throw new \Exception("tokens diferentes", Constant::UNAUTHORIZED);
+        }
+        if($result[0]->server_date > $result[0]->expires_at){
 
-            throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
-
+            $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
+            
+            throw new \Exception("tokens expiro", Constant::UNAUTHORIZED);
         }
         
 
