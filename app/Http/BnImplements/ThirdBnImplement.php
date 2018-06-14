@@ -12,6 +12,16 @@ class ThirdBnImplement
         	ORDER BY updated_at DESC, logo DESC');
     }
 
+    public function selectThirdById($conection, $third_id)
+    {
+    	$third = $conection->select('SELECT * FROM bpartners
+        	WHERE id = :third_id', [
+        	'third_id' => $third_id
+        ]);
+
+        return ['third' => $third];
+    }
+
     public function insertThird($conection, $org_id, $logo, $customer, $vendor,
     	$third_name, $third_name_2, $employee, $prospect, $sales_rep, $reference_no,
     	$sales_rep_id, $credit_status, $credit_limit, $tax_id, $tax_exempt,

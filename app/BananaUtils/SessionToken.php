@@ -45,7 +45,7 @@ class SessionToken{
             
             throw new \Exception("Usted. Se ha Logeado desde otro dispositivo esta sesion fue cerrada", Constant::UNAUTHORIZED);
         }
-        if($result[0]->server_date > $result[0]->expirate_date){
+        if( intval($result[0]->server_date)  > intval($result[0]->expirate_date)){
 
             $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
             

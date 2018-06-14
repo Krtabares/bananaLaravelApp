@@ -47,12 +47,38 @@ class ThirdController extends Controller
         return response(json_encode(['thirds' => $thirds]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
+    public function selectThirdById(Request $request, $id)
+    {        
+        $db_manager = new DBManager();
+
+        try {
+             
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
+
+            $third = $this->third_implement->selectThirdById($conection, $id);
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode($third), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
     public function listOrganizations(Request $request)
     {
         $db_manager = new DBManager();
 
         try {
-             
+            //return $request; 
             $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
                 $request->header('user_id'),
@@ -92,8 +118,8 @@ class ThirdController extends Controller
             if ( !$request->filled('org_id') )
                 throw new \Exception("Organization is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('logo') )
-                throw new \Exception("Logo is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('logo') )
+            //     throw new \Exception("Logo is required", Constant::BAD_REQUEST);
 
             if ( !$request->filled('customer') )
                 throw new \Exception("Customer is required", Constant::BAD_REQUEST);
