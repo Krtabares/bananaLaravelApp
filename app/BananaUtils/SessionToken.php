@@ -34,19 +34,19 @@ class SessionToken{
         ]);
 
         if(empty($result)){
-             throw new \Exception("sin session token", Constant::UNAUTHORIZED);
+             throw new \Exception("Sin sesion activa", Constant::UNAUTHORIZED);
         }
         if($result[0]->token != $token){
 
             $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
             
-            throw new \Exception("tokens diferentes", Constant::UNAUTHORIZED);
+            throw new \Exception("Usted. Se ha Logeado desde otro dispositivo esta sesion fue cerrada", Constant::UNAUTHORIZED);
         }
         if($result[0]->server_date > $result[0]->expires_at){
 
             $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
             
-            throw new \Exception("tokens expiro", Constant::UNAUTHORIZED);
+            throw new \Exception("Esta sesion a expirado", Constant::UNAUTHORIZED);
         }
         
 
