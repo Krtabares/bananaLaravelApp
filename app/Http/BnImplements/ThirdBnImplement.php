@@ -14,15 +14,15 @@ class ThirdBnImplement
 
     public function insertThird($conection, $org_id, $logo, $customer, $vendor,
     	$third_name, $third_name_2, $employee, $prospect, $sales_rep, $reference_no,
-    	$sales_rep_id, $credit_status, $credit_limit, $total_open_balance,
-    	$tax_id, $tax_exempt, $pot_tax_exempt, $url, $description, $summary,
+    	$sales_rep_id, $credit_status, $credit_limit, $tax_id, $tax_exempt,
+    	$pot_tax_exempt, $url, $description, $summary,
     	$price_list_id, $delivery_rule, $delivery_via_rule, $flat_discount,
     	$manufacturer, $po_price_list_id, $language_id, $greeting_id)
     {
 
     	$conection->select('CALL CR_InsertBpartners(:org_id, :logo, :customer, 
     		:vendor, :third_name, :third_name_2, :employee, :prospect, :sales_rep,
-    		:reference_no, :sales_rep_id, :credit_status, :credit_limit, :total_open_balance,
+    		:reference_no, :sales_rep_id, :credit_status, :credit_limit,
     		:tax_id, :tax_exempt, :pot_tax_exempt, :url, :description, :summary,
     		:price_list_id, :delivery_rule, :delivery_via_rule, :flat_discount,
     		:manufacturer, :po_price_list_id, :language_id, :greeting_id)', [
@@ -39,7 +39,6 @@ class ThirdBnImplement
 		    	'sales_rep_id' => $sales_rep_id,
 		    	'credit_status' => $credit_status,
 		    	'credit_limit' => $credit_limit,
-		    	'total_open_balance' => $total_open_balance,
 		    	'tax_id' => $tax_id,
 		    	'tax_exempt' => $tax_exempt,
 		    	'pot_tax_exempt' => $pot_tax_exempt,
