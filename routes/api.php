@@ -94,6 +94,9 @@ Route::put('users/permits/update', 'UserController@updatePermitsUser')
 Route::get('thirds', 'ThirdController@indexThird')
 	->name('thirds');
 
+Route::get('thirds/organization-list', 'ThirdController@listOrganizations')
+	->name('thirds.organization.list');
+
 Route::get('third/{id}', 'ThirdController@selectThirdById')
 	->name('third');
 
