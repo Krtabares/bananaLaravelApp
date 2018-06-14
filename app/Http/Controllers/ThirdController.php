@@ -127,10 +127,10 @@ class ThirdController extends Controller
             if ( !$request->filled('vendor') )
                 throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('third_name') )
+            if ( !$request->filled('name') )
                 throw new \Exception("Third name is required", Constant::BAD_REQUEST);
 
-            // if ( !$request->filled('third_name_2') )
+            // if ( !$request->filled('name_2') )
             //     throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
 
             if ( !$request->filled('employee') )
@@ -198,7 +198,7 @@ class ThirdController extends Controller
 
             $third_insert = $this->third_implement
                 ->insertThird($conection, $request->org_id, $request->logo, $request->customer, 
-		    		$request->vendor, $request->third_name, $request->third_name_2, $request->employee, $request->prospect, $request->sales_rep,
+		    		$request->vendor, $request->name, $request->name_2, $request->employee, $request->prospect, $request->sales_rep,
 		    		$request->reference_no, $request->sales_rep_id, $request->credit_status, $request->credit_limit,
 		    		$request->tax_id, $request->tax_exempt, $request->pot_ax_exempt, $request->url, $request->description, $request->summary,
 		    		$request->price_list_id, $request->delivery_rule, $request->delivery_via_rule, $request->flat_discount,
