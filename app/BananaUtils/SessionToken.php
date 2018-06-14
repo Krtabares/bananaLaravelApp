@@ -27,7 +27,10 @@ class SessionToken{
                 throw new \Exception("App es un campo requerido para autenticar", Constant::BAD_REQUEST);
         }
 
-        $result = $connection->select('SELECT * , NOW() server_date FROM oauth_access_tokens  
+        $result = $connection->select('SELECT * ,  
+            timestamp(expires_at) expirate_date 
+            timestamp(NOW()) server_date 
+            FROM oauth_access_tokens  
             WHERE user_id = :id  AND name = :app AND revoked = 0', [
             'id' => $user_id,
             'app' => $app
@@ -42,7 +45,7 @@ class SessionToken{
             
             throw new \Exception("Usted. Se ha Logeado desde otro dispositivo esta sesion fue cerrada", Constant::UNAUTHORIZED);
         }
-        if($result[0]->server_date > $result[0]->expires_at){
+        if($result[0]->server_date > $result[0]->expirate_date){
 
             $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
             
