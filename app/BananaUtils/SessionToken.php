@@ -28,8 +28,8 @@ class SessionToken{
         }
 
         $result = $connection->select('SELECT * ,  
-            timestamp(expires_at) expirate_date 
-            timestamp(NOW()) server_date 
+            unix_timestamp(expires_at) expirate_date, 
+            unix_timestamp(NOW()) server_date 
             FROM oauth_access_tokens  
             WHERE user_id = :id  AND name = :app AND revoked = 0', [
             'id' => $user_id,
