@@ -71,6 +71,38 @@ class ThirdController extends Controller
         return response(json_encode($third), Constant::OK)->header('Content-Type', 'application/json');
     }
 
+    public function indexFilterThird(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {   
+            
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
+
+            if ( $request->filled('filter') ) {
+
+                $filter_thirds = $this->third_implement->selectFilterThirds($conection, $request->filter);
+
+            } else 
+                throw new \Exception("Filter is required", Constant::BAD_REQUEST);
+            
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['filter_thirds' => $filter_thirds]), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
     public function comboSelect(Request $request)
     {
         $db_manager = new DBManager();

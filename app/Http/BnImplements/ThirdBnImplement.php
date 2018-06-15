@@ -12,6 +12,11 @@ class ThirdBnImplement
         	ORDER BY updated_at DESC, logo DESC');
     }
 
+    public function selectFilterThirds($conection, $search)
+    {
+        return $conection->select('CALL RD_SelectFilteredThirds(:search)', ['search' => $search]);
+    }
+
     public function comboSelect($conection)
     {
         $org_list = $conection->select('SELECT id, organization_name
