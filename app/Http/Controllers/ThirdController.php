@@ -115,16 +115,16 @@ class ThirdController extends Controller
                 $request->app
             );
 
-            if ( !$request->filled('org_id') )
+            if ( !$request->filled('organization_id') )
                 throw new \Exception("Organization is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('logo') )
             //     throw new \Exception("Logo is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('customer') )
+            if ( !$request->filled('is_customer') )
                 throw new \Exception("Customer is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('vendor') )
+            if ( !$request->filled('is_vendor') )
                 throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
 
             if ( !$request->filled('name') )
@@ -133,14 +133,14 @@ class ThirdController extends Controller
             // if ( !$request->filled('name_2') )
             //     throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('employee') )
+            if ( !$request->filled('is_employee') )
                 throw new \Exception("Employee is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('prospect') )
+            if ( !$request->filled('is_prospect') )
                 throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
 
-            // if ( !$request->filled('sales_rep') )
-            //     throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
+            if ( !$request->filled('is_sales_rep') )
+                throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('reference_no') )
             //     throw new \Exception("Reference no is required", Constant::BAD_REQUEST);
@@ -157,10 +157,10 @@ class ThirdController extends Controller
             // if ( !$request->filled('tax_id') )
             //     throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('tax_exempt') )
+            if ( !$request->filled('is_tax_exempt') )
                 throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('po_tax_exempt') )
+            if ( !$request->filled('is_po_tax_exempt') )
                 throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('url') )
@@ -169,7 +169,7 @@ class ThirdController extends Controller
             // if ( !$request->filled('description') )
             //     throw new \Exception("Description is required", Constant::BAD_REQUEST);
             
-            if ( !$request->filled('summary') )
+            if ( !$request->filled('is_summary') )
                 throw new \Exception("Summary is required", Constant::BAD_REQUEST);
             
             // if ( !$request->filled('price_list_id') )
@@ -184,7 +184,7 @@ class ThirdController extends Controller
             // if ( !$request->filled('flat_discount') )
             //     throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('manufacturer') )
+            if ( !$request->filled('is_manufacturer') )
                 throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
             
             // if ( !$request->filled('po_price_list_id') )
@@ -197,12 +197,12 @@ class ThirdController extends Controller
             //     throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
 
             $third_insert = $this->third_implement
-                ->insertThird($conection, $request->org_id, $request->logo, $request->customer, 
-		    		$request->vendor, $request->name, $request->name_2, $request->employee, $request->prospect, $request->sales_rep,
+                ->insertThird($conection, $request->organization_id, $request->logo, $request->is_customer, 
+		    		$request->is_vendor, $request->name, $request->name_2, $request->is_employee, $request->is_prospect, $request->is_sales_rep,
 		    		$request->reference_no, $request->sales_rep_id, $request->credit_status, $request->credit_limit,
-		    		$request->tax_id, $request->tax_exempt, $request->pot_ax_exempt, $request->url, $request->description, $request->summary,
+		    		$request->tax_id, $request->is_tax_exempt, $request->is_po_tax_exempt, $request->url, $request->description, $request->is_summary,
 		    		$request->price_list_id, $request->delivery_rule, $request->delivery_via_rule, $request->flat_discount,
-		    		$request->manufacturer, $request->po_price_list_id, $request->language_id, $request->greeting_id);
+		    		$request->is_manufacturer, $request->po_price_list_id, $request->language_id, $request->greeting_id);
             
         } catch (\Exception $e) {
             
