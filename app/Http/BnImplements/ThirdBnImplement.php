@@ -23,7 +23,7 @@ class ThirdBnImplement
     }
 
     public function insertThird($conection, $org_id, $logo, $customer, $vendor,
-    	$third_name, $third_name_2, $employee, $prospect, $sales_rep, $reference_no,
+    	$name, $name_2, $employee, $prospect, $sales_rep, $reference_no,
     	$sales_rep_id, $credit_status, $credit_limit, $tax_id, $tax_exempt,
     	$pot_tax_exempt, $url, $description, $summary,
     	$price_list_id, $delivery_rule, $delivery_via_rule, $flat_discount,
@@ -31,7 +31,7 @@ class ThirdBnImplement
     {
 
     	$conection->select('CALL CR_InsertBpartners(:org_id, :logo, :customer, 
-    		:vendor, :third_name, :third_name_2, :employee, :prospect, :sales_rep,
+    		:vendor, :name, :name_2, :employee, :prospect, :sales_rep,
     		:reference_no, :sales_rep_id, :credit_status, :credit_limit,
     		:tax_id, :tax_exempt, :pot_tax_exempt, :url, :description, :summary,
     		:price_list_id, :delivery_rule, :delivery_via_rule, :flat_discount,
@@ -40,8 +40,8 @@ class ThirdBnImplement
     			'logo' => $logo,
     			'customer' => $customer,
     			'vendor' => $vendor,
-		    	'third_name' => $third_name,
-		    	'third_name_2' => $third_name_2,
+		    	'name' => $name,
+		    	'name_2' => $name_2,
 		    	'employee' => $employee,
 		    	'prospect' => $prospect,
 		    	'sales_rep' => $sales_rep,
