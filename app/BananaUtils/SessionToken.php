@@ -28,8 +28,7 @@ class SessionToken{
         }
 
         $result = $connection->select('SELECT * ,  
-            unix_timestamp(expires_at) expirate_date, 
-            unix_timestamp(NOW()) server_date 
+            if (now() > expires_at, 1, 0) expired
             FROM oauth_access_tokens  
             WHERE user_id = :id  AND name = :app AND revoked = 0', [
             'id' => $user_id,
@@ -45,7 +44,7 @@ class SessionToken{
             
             throw new \Exception("Usted. Se ha Logeado desde otro dispositivo esta sesion fue cerrada", Constant::UNAUTHORIZED);
         }
-        if( intval($result[0]->server_date)  > intval($result[0]->expirate_date)){
+        if( $result[0]->expired ){
 
             $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
             
