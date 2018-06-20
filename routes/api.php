@@ -162,3 +162,8 @@ Route::put('/cities/update', 'cityController@updateCity')
 
 Route::put('cities/archived', 'cityController@archivedCity')
 	->name('cities.archived');
+
+/*  Rutas de Custom Columns  */
+
+Route::post('/CustomColumns/create', 'CustomColumnsController@createCustomColumns')
+	->name('CustomColumns.create');
