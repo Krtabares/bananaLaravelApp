@@ -46,7 +46,7 @@ class ThirdController extends Controller
     }
 
     public function selectThirdById(Request $request, $id)
-    {        
+    {
         $db_manager = new DBManager();
 
         try {
@@ -353,6 +353,9 @@ class ThirdController extends Controller
             if ( !$request->filled('third_location') )
                 throw new \Exception("Third Location is required", Constant::BAD_REQUEST);
 
+            if ( !$request->filled('branch_office_data') )
+                throw new \Exception("Branch Office data are required", Constant::BAD_REQUEST);
+
             $third_update = $this->third_implement
                 ->updateThird($conection, $request->third_id, $request->organization_id, $request->logo, $request->is_customer, 
                     $request->is_vendor, $request->name, $request->name_2, $request->is_employee, $request->is_prospect, $request->is_sales_rep,
@@ -360,7 +363,7 @@ class ThirdController extends Controller
                     $request->tax_id, $request->is_tax_exempt, $request->is_po_tax_exempt, $request->url, $request->description, $request->is_summary,
                     $request->price_list_id, $request->delivery_rule, $request->delivery_via_rule, $request->flat_discount,
                     $request->is_manufacturer, $request->po_price_list_id, $request->language_id, $request->greeting_id,
-                    $request->third_location);
+                    $request->third_location, $request->branch_office_data);
             
         } catch (\Exception $e) {
             
@@ -411,6 +414,48 @@ class ThirdController extends Controller
         return response(['third_archived' => $third_archived], Constant::OK)->header('Content-Type', 'application/json');
     }
 
+    public function deleteThird(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {
+
+            if ( !$request->filled('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+           $conection = $db_manager->getClientBDConecction(
+                $request->authorization,
+                $request->user_id,
+                $request->token,
+                $request->app
+            );
+
+           if ( !$request->filled('third_id') )
+                throw new \Exception("Third is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('location_id') )
+                throw new \Exception("Location is required", Constant::BAD_REQUEST);
+
+            $conection->beginTransaction();
+
+            $third_delete = $this->third_implement
+                ->deleteThird($conection, $request->third_id, $request->location_id);
+
+            $conection->commit();
+
+        } catch (\Exception $e) {
+            
+            $conection->rollBack();
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response($third_delete, Constant::OK)->header('Content-Type', 'application/json');
+    }
+
     public function storeLocationThird(Request $request)
     {
         $db_manager = new DBManager();
@@ -451,6 +496,6 @@ class ThirdController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response($third_location), Constant::OK)->header('Content-Type', 'application/json');
+        return response($third_location, Constant::OK)->header('Content-Type', 'application/json');
     }
 }

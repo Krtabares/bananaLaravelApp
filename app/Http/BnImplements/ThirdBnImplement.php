@@ -14,8 +14,6 @@ class ThirdBnImplement
         $this->location_implement = $location_implement;
     }
 
-
-
 	public function selectThirds($conection)
     {
         return $conection->select('SELECT * FROM bpartners
@@ -29,6 +27,8 @@ class ThirdBnImplement
 
     public function comboSelect($conection)
     {
+        $client = $conection->select('SELECT * FROM clients');
+
         $org_list = $conection->select('SELECT id, organization_name
 			FROM organizations
 			ORDER BY organization_name ASC');
@@ -38,6 +38,7 @@ class ThirdBnImplement
 			ORDER BY languagescol ASC');
 
         return [
+            'client' => $client[0],
         	'organizations' => $org_list, 
         	'languages' => $language_list
         ];
@@ -50,7 +51,23 @@ class ThirdBnImplement
         	'third_id' => $third_id
         ]);
 
-        return ['third' => $third];
+        $branch_office = $conection->select('SELECT * FROM bpartner_locations
+            WHERE bpartner_id = :third_id
+            ORDER BY id ASC
+            LIMIT 1', [
+            'third_id' => $third_id
+        ]);
+
+        $location = $conection->select('SELECT * FROM locations
+            WHERE id = :location_id', [
+            'location_id' => $branch_office[0]->location_id
+        ]);
+
+        return [
+            'third' => $third,
+            'branch_office' => $branch_office,
+            'location' => $location
+        ];
     }
 
     public function insertThird($conection, $org_id, $logo, $customer, $vendor,
@@ -124,7 +141,7 @@ class ThirdBnImplement
     	$sales_rep_id, $credit_status, $credit_limit, $tax_id, $tax_exempt,
     	$pot_tax_exempt, $url, $description, $summary,
     	$price_list_id, $delivery_rule, $delivery_via_rule, $flat_discount,
-    	$manufacturer, $po_price_list_id, $language_id, $greeting_id, $third_location)
+    	$manufacturer, $po_price_list_id, $language_id, $greeting_id, $third_location, $branch_office_data)
     {
 
     	$conection->select('CALL UP_UpdateBpartners(:third_id, :org_id, :logo, :customer, 
@@ -167,9 +184,26 @@ class ThirdBnImplement
     		'third_id' => $third_id
     	]);
 
-        
+        $location_update = $this->location_implement
+            ->updateLocation(
+                $conection, $third_location['location_id'], $third_location['address_1'], 
+                $third_location['address_2'], $third_location['address_3'],
+                $third_location['address_4'], $third_location['city_id'],
+                $third_location['city_name'], $third_location['postal'],
+                $third_location['postal_add'], $third_location['state_id'],
+                $third_location['state_name'], $third_location['country_id'],
+                $third_location['comments']
+            );
 
-    	//return $third_udpate[0];
+        $branch_office_update = $this->updateBranchOffice($conection, $branch_office_data['branch_office_id'], 
+            $branch_office_data['name'], $branch_office_data['is_ship_to'], $branch_office_data['is_bill_to'], $branch_office_data['is_pay_from'], $branch_office_data['is_remit_to'], $branch_office_data['phone'],
+            $branch_office_data['phone_2'], $branch_office_data['fax'], $branch_office_data['isdn']);
+
+    	return [
+            'third' => $third_udpate,
+            'location' => $location_update,
+            'branch_office' => $branch_office_update
+        ];
     }
 
     public function archivedThird($conection, $third_id, $archived)
@@ -185,11 +219,32 @@ class ThirdBnImplement
 			]);
 	}
 
+    public function deleteThird($conection, $third_id, $location_id)
+    {
+        $conection->select('CALL DL_DeleteBpartnerData(:third_id, :location_id)', [
+            'third_id' => $third_id,
+            'location_id' => $location_id
+        ]);
+
+        $third_delete = $conection->select('SELECT * FROM bpartners WHERE id = :third_id', [
+            'third_id' => $third_id
+        ]);
+
+        $location_delete = $conection->select('SELECT * FROM locations WHERE id = :location_id', [
+            'location_id' => $location_id
+        ]);
+
+        if ( $third_delete == null && $location_delete == null )
+            return 'successfully deleted';
+
+        return ['third' => $third_delete, 'location' => $location_delete];
+    }
+
     public function insertBranchOffice($conection, $third_id, $location_id, 
         $name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
         $phone_2, $fax, $isdn)
     {
-        $conection->select('CALL CR_InsertBranchOffice(:third_id, :location_id, 
+        $conection->select('CALL CR_InsertBpartnerLocation(:third_id, :location_id, 
             :name, :is_ship_to, :is_bill_to, :is_pay_from, :is_remit_to, :phone,
             :phone_2, :fax, :isdn)', [
             'third_id' => $third_id,
@@ -205,34 +260,34 @@ class ThirdBnImplement
             'isdn' => $isdn
         ]);
 
-        $branch_insert = $conection->select('SELECT * FROM bpartners_locations ORDER BY id DESC LIMIT 1');
+        $branch_insert = $conection->select('SELECT * FROM bpartner_locations ORDER BY id DESC LIMIT 1');
 
         return $branch_insert[0];
     }
 
-    // public function insertLocationThird(
-    //     /*parametros de location*/
-    //     $conection, $third_location,
-    //     /*parametros de bpartner_location*/ 
-    //     $name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
-    //     $phone_2, $fax, $isdn
-    // )
-    // {
-    //     $location_insert = $this->location_implement
-    //         ->insertLocation(
-    //             $conection, $third_location['address_1'], 
-    //             $third_location['address_2'], $third_location['address_3'],
-    //             $third_location['address_4'], $third_location['city_id'],
-    //             $third_location['city_name'], $third_location['postal'],
-    //             $third_location['postal_add'], $third_location['state_id'],
-    //             $third_location['state_name'], $third_location['country_id'],
-    //             $third_location['comments']
-    //         );
+    public function updateBranchOffice($conection, $branch_office_id, 
+        $name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
+        $phone_2, $fax, $isdn)
+    {
+        $conection->select('CALL UP_InsertBpartnerLocation(:branch_office_id, 
+            :name, :is_ship_to, :is_bill_to, :is_pay_from, :is_remit_to, :phone,
+            :phone_2, :fax, :isdn)', [
+            'branch_office_id' => $branch_office_id,
+            'name' => $name,
+            'is_ship_to' => $is_ship_to,
+            'is_bill_to' => $is_bill_to,
+            'is_pay_from' => $is_pay_from,
+            'is_remit_to' => $is_remit_to,
+            'phone' => $phone,
+            'phone_2' => $phone_2,
+            'fax' => $fax,
+            'isdn' => $isdn
+        ]);
 
-    //     $branch_insert = $this->insertBranchOffice($conection, $third_id, $location_insert->id, 
-    //         $name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
-    //         $phone_2, $fax, $isdn);
+        $branch_update = $conection->select('SELECT * FROM bpartner_locations WHERE id = :branch_office_id', [
+            'branch_office_id' => $branch_office_id
+        ]);
 
-    //     return ['branch_office' => $branch_insert];
-    // }
+        return $branch_update[0];
+    }
 }

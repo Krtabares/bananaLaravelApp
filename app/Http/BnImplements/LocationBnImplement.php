@@ -32,4 +32,33 @@ class LocationBnImplement
 
     	return $location_insert[0];
 	}
+
+	public function updateLocation($conection, $location_id, $address_1, $address_2, 
+			$address_3, $address_4, $city_id, $city_name, $postal, $postal_add,
+			$state_id, $state_name, $country_id, $comments)
+	{
+		$conection->select('CALL UP_UpdateLocation(:location_id, :address_1, :address_2, 
+			:address_3, :address_4, :city_id, :city_name, :postal, :postal_add,
+			:state_id, :state_name, :country_id, :comments)', [
+			'location_id' => $location_id,
+			'address_1' => $address_1,
+			'address_2' => $address_2,
+			'address_3' => $address_3,
+			'address_4' => $address_4,
+			'city_id' => $city_id,
+			'city_name' => $city_name,
+			'postal' => $postal,
+			'postal_add' => $postal_add,
+			'state_id' => $state_id,
+			'state_name' => $state_name,
+			'country_id' => $country_id,
+			'comments' => $comments
+		]);
+
+		$location_update = $conection->select('SELECT * FROM locations WHERE id = :location_id', [
+			'location_id' => $location_id
+		]);
+
+		return $location_insert[0];
+	}
 }
