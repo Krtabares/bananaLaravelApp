@@ -103,5 +103,61 @@ class CustomColumnsController extends Controller
 
         return response('', Constant::OK)->header('Content-Type', 'application/json');
     }
+
+    public function getCustomColumnsByTable(Request $request, $id)
+	{
+
+ 		$db_manager = new DBManager();
+
+        try {
+         
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
+
+         $columns = $this->CustomColums_implement->getCustomColumnsByTable($conection,$id);
+                
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['columns'=> $columns]), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function getCustomColumnsValuesByIdColumn(Request $request, $id, $context_id = null)
+	{
+
+ 		$db_manager = new DBManager();
+
+        try {
+         
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
+
+         $columns = $this->CustomColums_implement->getCustomColumnsValuesByIdColumn($conection,$id,$context_id);
+                
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['columns'=> $columns]), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+
 }
 

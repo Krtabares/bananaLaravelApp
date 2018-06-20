@@ -73,5 +73,28 @@ class CustomColumnsBnImplement
             'context_id' => $context_id
         ]);
     }
+
+
+    public function getCustomColumnsByTable($conection, $idTable)
+    {
+        $type = $conection->select("SELECT * from custom_column WHERE table_id = :idTable",['idTable'=>$idTable]);
+
+        return $type;
+    }
+
+    public function getCustomColumnsValuesByIdColumn($conection, $custom_column_id, $idContext)
+    {
+        $query = "SELECT * from custom_column_value WHERE custom_column_id = :custom_column_id";
+        $bind = ['custom_column_id'=>$custom_column_id];
+
+        if($idContext != null && intval($idContext) != -1){
+            $query = $query." AND context_id = :context_id ";
+            $bind['context_id'] = $idContext;
+        }
+
+        $type = $conection->select($query,$bind);
+
+        return $type;
+    }
 }
 
