@@ -23,7 +23,7 @@ class CustomColumnsController extends Controller
  		$db_manager = new DBManager();
 
         try {
-         
+
             if ( !$request->filled('authorization') )
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -34,14 +34,14 @@ class CustomColumnsController extends Controller
                 $request->app
             );
 
-            if ( !$request->filled('type') ) {
+            if ( !$request->filled('id_type') ) {
             	throw new \Exception("Type is required", Constant::BAD_REQUEST);
             }
             if ( !$request->filled('name') ) {
             	throw new \Exception("Name is required", Constant::BAD_REQUEST);
             }
 
-            $filter_countries = $this->CustomColums_implement->insertCustomColumns($conection, $request->type, $request->name );
+            $customColumn = $this->CustomColums_implement->insertCustomColumns($conection,$request->id_table, $request->id_type, $request->name );
                 
             
 
@@ -54,7 +54,54 @@ class CustomColumnsController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(json_encode(['filter_countries' => $filter_countries]), Constant::OK)->header('Content-Type', 'application/json');
+        return response('', Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function insertCustomColumnsValue(Request $request)
+	{
+
+ 		$db_manager = new DBManager();
+
+        try {
+         
+            if ( !$request->filled('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+            $conection = $db_manager->getClientBDConecction(
+                $request->authorization,
+                $request->user_id,
+                $request->token,
+                $request->app
+            );
+
+            if ( !$request->filled('custom_column_id') ) {
+            	throw new \Exception("ID Custom Column is required", Constant::BAD_REQUEST);
+            }
+
+            if ( !$request->filled('context_id') ) {
+            	throw new \Exception("ID Context is required", Constant::BAD_REQUEST);
+            }
+
+            if ( !$request->filled('value') ) {
+            	throw new \Exception("Value is required", Constant::BAD_REQUEST);
+            }
+
+            $this->CustomColums_implement->insertCustomColumnsValue(
+						            							$conection, 
+						            							$request->value, 
+						            							$request->custom_column_id,
+						            							$request->context_id );
+                
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response('', Constant::OK)->header('Content-Type', 'application/json');
     }
 }
 

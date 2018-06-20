@@ -167,3 +167,5 @@ Route::put('cities/archived', 'cityController@archivedCity')
 
 Route::post('/CustomColumns/create', 'CustomColumnsController@createCustomColumns')
 	->name('CustomColumns.create');
+Route::post('/CustomColumns/insertValue', 'CustomColumnsController@insertCustomColumnsValue')
+	->name('CustomColumns.insertValue');
