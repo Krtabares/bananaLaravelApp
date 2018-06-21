@@ -59,6 +59,6 @@ class LocationBnImplement
 			'location_id' => $location_id
 		]);
 
-		return $location_insert[0];
+		return $location_update[0];
 	}
 }

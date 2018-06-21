@@ -37,8 +37,14 @@ class ThirdBnImplement
 			FROM languages
 			ORDER BY languagescol ASC');
 
+        $sales_rep = $conection->select('SELECT id, name 
+            FROM bpartners 
+            WHERE is_sales_rep = 1
+            ORDER BY name ASC');
+
         return [
             'client' => $client[0],
+            'sales_representatives' => $sales_rep,
         	'organizations' => $org_list, 
         	'languages' => $language_list
         ];
@@ -64,9 +70,9 @@ class ThirdBnImplement
         ]);
 
         return [
-            'third' => $third,
-            'branch_office' => $branch_office,
-            'location' => $location
+            'third' => $third[0],
+            'branch_office' => $branch_office[0],
+            'location' => $location[0]
         ];
     }
 
@@ -75,7 +81,7 @@ class ThirdBnImplement
     	$sales_rep_id, $credit_status, $credit_limit, $tax_id, $tax_exempt,
     	$pot_tax_exempt, $url, $description, $summary,
     	$price_list_id, $delivery_rule, $delivery_via_rule, $flat_discount,
-    	$manufacturer, $po_price_list_id, $language_id, $greeting_id, $third_location)
+    	$manufacturer, $po_price_list_id, $language_id, $greeting_id, $third_location, $branch_office)
     {
 
     	$conection->select('CALL CR_InsertBpartners(:org_id, :logo, :customer, 
@@ -126,11 +132,11 @@ class ThirdBnImplement
                 $third_location['comments']
             );
 
-        $branch_office_insert = $this->insertBranchOffice($conection, $third_insert->id, $location_insert->id, 
-            'Principal Branch Office', 1, 1, 1, 1, '', '', '', '');
+        $branch_office_insert = $this->insertBranchOffice($conection, $third_insert[0]->id, $location_insert->id, 
+            'Principal Branch Office', 1, 1, 1, 1, $branch_office['phone'], $branch_office['phone_2'], '', '');
 
     	return [
-            'third' => $third_insert,
+            'third' => $third_insert[0],
             'location' => $location_insert,
             'branch_office' => $branch_office_insert
         ];
@@ -141,7 +147,7 @@ class ThirdBnImplement
     	$sales_rep_id, $credit_status, $credit_limit, $tax_id, $tax_exempt,
     	$pot_tax_exempt, $url, $description, $summary,
     	$price_list_id, $delivery_rule, $delivery_via_rule, $flat_discount,
-    	$manufacturer, $po_price_list_id, $language_id, $greeting_id, $third_location, $branch_office_data)
+    	$manufacturer, $po_price_list_id, $language_id, $greeting_id, $third_location, $branch_office)
     {
 
     	$conection->select('CALL UP_UpdateBpartners(:third_id, :org_id, :logo, :customer, 
@@ -186,7 +192,7 @@ class ThirdBnImplement
 
         $location_update = $this->location_implement
             ->updateLocation(
-                $conection, $third_location['location_id'], $third_location['address_1'], 
+                $conection, $third_location['id'], $third_location['address_1'], 
                 $third_location['address_2'], $third_location['address_3'],
                 $third_location['address_4'], $third_location['city_id'],
                 $third_location['city_name'], $third_location['postal'],
@@ -195,9 +201,9 @@ class ThirdBnImplement
                 $third_location['comments']
             );
 
-        $branch_office_update = $this->updateBranchOffice($conection, $branch_office_data['branch_office_id'], 
-            $branch_office_data['name'], $branch_office_data['is_ship_to'], $branch_office_data['is_bill_to'], $branch_office_data['is_pay_from'], $branch_office_data['is_remit_to'], $branch_office_data['phone'],
-            $branch_office_data['phone_2'], $branch_office_data['fax'], $branch_office_data['isdn']);
+        $branch_office_update = $this->updateBranchOffice($conection, $branch_office['id'], 
+            $branch_office['name'], $branch_office['is_ship_to'], $branch_office['is_bill_to'], $branch_office['is_pay_from'], $branch_office['is_remit_to'], $branch_office['phone'],
+            $branch_office['phone_2'], $branch_office['fax'], $branch_office['isdn']);
 
     	return [
             'third' => $third_udpate,
