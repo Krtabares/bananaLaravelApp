@@ -206,7 +206,7 @@ class ThirdBnImplement
             $branch_office['phone_2'], $branch_office['fax'], $branch_office['isdn']);
 
     	return [
-            'third' => $third_udpate,
+            'third' => $third_udpate[0],
             'location' => $location_update,
             'branch_office' => $branch_office_update
         ];

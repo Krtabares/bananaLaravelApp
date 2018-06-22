@@ -367,7 +367,7 @@ class ThirdController extends Controller
             $conection->beginTransaction();
 
             $third_update = $this->third_implement
-                ->updateThird($conection, $request->third_id, $request->organization_id, $request->logo, $request->is_customer, 
+                ->updateThird($conection, $request->id, $request->organization_id, $request->logo, $request->is_customer, 
                     $request->is_vendor, $request->name, $request->name_2, $request->is_employee, $request->is_prospect, $request->is_sales_rep,
                     $request->reference_no, $request->sales_rep_id, $request->credit_status, $request->credit_limit,
                     $request->tax_id, $request->is_tax_exempt, $request->is_po_tax_exempt, $request->url, $request->description, $request->is_summary,
