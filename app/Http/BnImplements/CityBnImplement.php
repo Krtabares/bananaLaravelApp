@@ -15,6 +15,15 @@ class CityBnImplement
 			ORDER BY p.country, s.state, c.city');
 	}
 
+	public function selectIdNameCities($conection, $state_id)
+    {
+        return $conection->select('SELECT id, city FROM cities
+            WHERE state_id = :state_id
+            ORDER BY city;', [
+            'state_id' => $state_id
+        ]);
+    }
+
 	public function selectFilterCities($conection, $search)
 	{
 		return $conection->select('CALL RD_SelectFilteredCities(:search)',[

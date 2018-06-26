@@ -151,11 +151,11 @@ class ThirdController extends Controller
             // if ( !$request->filled('logo') )
             //     throw new \Exception("Logo is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_customer') )
-                throw new \Exception("Customer is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_customer') )
+            //     throw new \Exception("Customer is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_vendor') )
-                throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_vendor') )
+            //     throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
 
             if ( !$request->filled('name') )
                 throw new \Exception("Third name is required", Constant::BAD_REQUEST);
@@ -166,11 +166,11 @@ class ThirdController extends Controller
             // if ( !$request->filled('is_employee') )
             //     throw new \Exception("Employee is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_prospect') )
-                throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_prospect') )
+            //     throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_sales_rep') )
-                throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_sales_rep') )
+            //     throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('reference_no') )
             //     throw new \Exception("Reference no is required", Constant::BAD_REQUEST);
@@ -187,11 +187,11 @@ class ThirdController extends Controller
             // if ( !$request->filled('tax_id') )
             //     throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_tax_exempt') )
-                throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_tax_exempt') )
+            //     throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_po_tax_exempt') )
-                throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_po_tax_exempt') )
+            //     throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('url') )
             //     throw new \Exception("Url is required", Constant::BAD_REQUEST);

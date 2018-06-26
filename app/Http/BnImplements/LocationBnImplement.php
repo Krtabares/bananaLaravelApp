@@ -4,9 +4,24 @@ namespace App\Http\BnImplements;
 
 use App\Constant;
 use Illuminate\Support\Facades\DB;
+use App\Http\BnImplements\CountryBnImplement;
+use App\Http\BnImplements\StateBnImplement;
+use App\Http\BnImplements\CityBnImplement;
 
 class LocationBnImplement
 {
+	function __construct(
+		CountryBnImplement $country_implement,
+		StateBnImplement $state_implement,
+		CityBnImplement $city_implement
+	)
+	{
+		$this->country_implement = $country_implement;
+		$this->state_implement = $state_implement;
+		$this->city_implement = $city_implement;
+	}
+
+
 	public function insertLocation($conection, $address_1, $address_2, 
 			$address_3, $address_4, $city_id, $city_name, $postal, $postal_add,
 			$state_id, $state_name, $country_id, $comments)
