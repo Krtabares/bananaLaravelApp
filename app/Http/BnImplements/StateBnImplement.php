@@ -15,6 +15,15 @@ class StateBnImplement
             ORDER BY c.country, s.state;');
     }
 
+    public function selectIdNameStates($conection, $country_id)
+    {
+        return $conection->select('SELECT id, state FROM states
+            WHERE country_id = :country_id
+            ORDER BY state;', [
+            'country_id' => $country_id
+        ]);
+    }
+
     public function selectFilterStates($conection, $search)
     {
         return $conection->select('CALL RD_SelectFilteredStates(:search)',

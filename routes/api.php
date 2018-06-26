@@ -112,6 +112,17 @@ Route::post('thirds/update', 'ThirdController@updateThird')
 Route::post('thirds/archived', 'ThirdController@archivedThird')
 	->name('thirds.archived');
 
+/* Rutas de location */
+
+Route::get('location/countries', 'LocationController@indexLocationCountry')
+	->name('locaton.countries');
+
+Route::get('location/states', 'LocationController@indexLocationState')
+	->name('locaton.states');
+
+Route::get('location/cities', 'LocationController@indexLocationCity')
+	->name('locaton.cities');
+
 /*  Rutas de paises  */
 
 Route::get('/countries', 'CountryController@indexCountry')

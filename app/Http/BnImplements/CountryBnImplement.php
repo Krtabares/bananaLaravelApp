@@ -12,6 +12,11 @@ class CountryBnImplement
         return $conection->select('SELECT * FROM countries ORDER BY country;');
     }
 
+    public function selectIdNameCountries($conection)
+    {
+        return $conection->select('SELECT id, country FROM countries ORDER BY country;');
+    }
+
     public function selectFilterCountries($conection, $search)
     {
         return $conection->select('CALL RD_SelectFilteredCountries(:search)',
