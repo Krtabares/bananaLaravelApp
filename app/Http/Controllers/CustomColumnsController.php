@@ -40,8 +40,112 @@ class CustomColumnsController extends Controller
             if ( !$request->filled('name') ) {
             	throw new \Exception("Name is required", Constant::BAD_REQUEST);
             }
+            if ( !$request->filled('table_id') ) {
+            	throw new \Exception("Table is required", Constant::BAD_REQUEST);
+            }
 
-            $customColumn = $this->CustomColums_implement->insertCustomColumns($conection,$request->id_table, $request->id_type, $request->name );
+            $customColumn = $this->CustomColums_implement->insertCustomColumns($conection,$request->table_id, $request->id_type, $request->name );
+
+
+            $columns = $this->CustomColums_implement->getCustomColumnsByTable($conection,$request->table_id);
+   
+            
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+         return response(json_encode(['columns' => $columns]), Constant::OK)->header('Content-Type', 'application/json');
+    }
+    public function deleteCustomColumns(Request $request)
+	{
+
+ 		$db_manager = new DBManager();
+
+        try {
+
+            if ( !$request->filled('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+            $conection = $db_manager->getClientBDConecction(
+                $request->authorization,
+                $request->user_id,
+                $request->token,
+                $request->app
+            );
+
+            if ( !$request->filled('id') ) {
+            	throw new \Exception("column is required", Constant::BAD_REQUEST);
+            }
+
+            $customColumn = $this->CustomColums_implement->deleteCustomColumns($conection,$request->id);
+
+            if ( $request->filled('table_id') ) {
+            	$columns = $this->CustomColums_implement->getCustomColumnsByTable($conection,$request->table_id);
+            }else{
+            	$Columns = [];
+            }
+
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode(['columns' => $columns]), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+   	public function updateCustomColumns(Request $request)
+	{
+
+ 		$db_manager = new DBManager();
+
+        try {
+
+            if ( !$request->filled('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+            $conection = $db_manager->getClientBDConecction(
+                $request->authorization,
+                $request->user_id,
+                $request->token,
+                $request->app
+            );
+
+            if ( !$request->filled('id_type') ) {
+            	throw new \Exception("Type is required", Constant::BAD_REQUEST);
+            }
+            if ( !$request->filled('name') ) {
+            	throw new \Exception("Name is required", Constant::BAD_REQUEST);
+            }
+            if ( !$request->filled('table_id') ) {
+            	throw new \Exception("Table is required", Constant::BAD_REQUEST);
+            }
+            if ( !$request->filled('id') ) {
+            	throw new \Exception("column is required", Constant::BAD_REQUEST);
+            }
+
+            $customColumn = $this
+            ->CustomColums_implement
+            ->updateCustomColumns(
+            	$conection,
+            	$request->table_id,
+            	$request->id_type,
+            	$request->name,
+            	$request->id );
+
+
+         	$columns = $this->CustomColums_implement->getCustomColumnsByTable($conection,$request->table_id);
+
                 
             
 
@@ -54,7 +158,7 @@ class CustomColumnsController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response('', Constant::OK)->header('Content-Type', 'application/json');
+        return response(json_encode(['columns' => $columns]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
     public function insertCustomColumnsValue(Request $request)
@@ -156,6 +260,42 @@ class CustomColumnsController extends Controller
         }
 
         return response(json_encode(['columns'=> $columns]), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function getElementsView(Request $request, $id = null)
+	{
+
+ 		$db_manager = new DBManager();
+
+        try {
+         
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
+
+         $elements = $this->CustomColums_implement->getElementsView($conection);
+
+         if($id != null){
+         	$columns = $this->CustomColums_implement->getCustomColumnsByTable($conection,$id);
+         }else
+         	$columns = null;
+         
+                
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(json_encode([
+        	'elements'=> $elements,
+        	'columns' => $columns
+    	]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
 

@@ -71,12 +71,12 @@ class AccessController extends Controller
                 $request->header('token'),
                 $request->header('app'));
 
-            if ( $request->filled('user_id') ) {
+            // if ( $request->filled('user_id') ) {
 
-                $tables = $this->access_implement->selectTableAccessUser($conection, $request->user_id);
+                $tables = $this->access_implement->selectTableAccessUser($conection, $request->header('user_id'));
 
-            } else 
-                throw new \Exception("User id is required", Constant::BAD_REQUEST);
+            // } else 
+            //     throw new \Exception("User id is required", Constant::BAD_REQUEST);
 
         } catch (\Exception $e) {
 

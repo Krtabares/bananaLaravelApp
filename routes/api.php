@@ -165,11 +165,20 @@ Route::put('cities/archived', 'cityController@archivedCity')
 
 /*  Rutas de Custom Columns  */
 
+Route::get('CustomColumns/getElementsView/{id?}', 'CustomColumnsController@getElementsView')
+	->name('CustomColumns.getElementsView');
+
 Route::post('/CustomColumns/create', 'CustomColumnsController@createCustomColumns')
 	->name('CustomColumns.create');
 
+Route::post('/CustomColumns/UpdateColumn', 'CustomColumnsController@updateCustomColumns')
+	->name('CustomColumns.UpdateColumn');
+
 Route::post('/CustomColumns/insertValue', 'CustomColumnsController@insertCustomColumnsValue')
 	->name('CustomColumns.insertValue');
+
+Route::post('/CustomColumns/deleteColumn', 'CustomColumnsController@deleteCustomColumns')
+	->name('CustomColumns.deleteColumn');
 
 Route::get('CustomColumns/getByTable/{id}', 'CustomColumnsController@getCustomColumnsByTable')
 	->name('CustomColumns.getByTable');

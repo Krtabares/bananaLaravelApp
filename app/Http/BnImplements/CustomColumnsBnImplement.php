@@ -17,6 +17,42 @@ class CustomColumnsBnImplement
     }
 
 
+    public function updateCustomColumns($conection,$idTable, $idtype, $name, $idColumn)
+    {
+
+        $check = $conection->select('SELECT id FROM custom_column WHERE name = :name and id <> :idColumn',
+            [
+                'name'=>$name,
+                'idColumn'=>$idColumn
+        ]);
+
+        if(!empty($check)){ 
+            throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
+        }
+
+        $conection->select('UPDATE custom_column SET table_id = :id_table, type_id = :type, name= :name WHERE id = :idColumn ', [
+            'id_table' => $idTable,
+            'type' => $idtype,
+            'name' => $name,
+            'idColumn'=>$idColumn,
+        ]);
+    }
+
+    public function deleteCustomColumns($conection, $idColumn)
+    {
+
+        $check = $conection->select('SELECT id FROM custom_column WHERE  id = :idColumn',['idColumn'=>$idColumn]);
+
+        if(empty($check)){ 
+            throw new \Exception(Constant::MSG_NOT_FOUND, Constant::NOT_FOUND );
+        }
+
+        $conection->select('DELETE FROM custom_column WHERE  id = :idColumn',['idColumn'=>$idColumn]);
+
+
+    }
+
+
     public function insertCustomColumns($conection,$idTable, $idtype, $name)
     {
 
@@ -77,7 +113,7 @@ class CustomColumnsBnImplement
 
     public function getCustomColumnsByTable($conection, $idTable)
     {
-        $type = $conection->select("SELECT * from custom_column WHERE table_id = :idTable",['idTable'=>$idTable]);
+        $type = $conection->select("SELECT t1.*, t2.name name_type from custom_column t1 inner join column_type t2 on t1.type_id = t2.id  WHERE table_id = :idTable",['idTable'=>$idTable]);
 
         return $type;
     }
@@ -95,6 +131,11 @@ class CustomColumnsBnImplement
         $type = $conection->select($query,$bind);
 
         return $type;
+    }
+
+    public function getElementsView($conection)
+    {
+       return $conection->select('SELECT * FROM column_type');
     }
 }
 

@@ -39,8 +39,6 @@ class SessionToken{
              throw new \Exception("Sin sesion activa", Constant::UNAUTHORIZED);
         }
         if($result[0]->token != $token){
-
-            // $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
             
             throw new \Exception("Usted. Se ha Logeado desde otro dispositivo esta sesion fue cerrada", Constant::UNAUTHORIZED);
         }
@@ -49,6 +47,9 @@ class SessionToken{
             $connection->select('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
             
             throw new \Exception("Esta sesion a expirado", Constant::UNAUTHORIZED);
+        }else{
+
+            $connection->select('UPDATE oauth_access_tokens  SET expires_at = DATE_ADD(now(), INTERVAL 60 MINUTE) WHERE user_id = :id ',['id' => $user_id]);
         }
         
 
