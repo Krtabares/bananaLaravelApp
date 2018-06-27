@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Constant;
-use App\Third;
 use App\BananaUtils\DBManager;
 use App\BananaUtils\ExceptionAnalizer;
 use App\Http\BnImplements\ThirdBnImplement;
+use App\Http\BnImplements\ContactBnImplement;
 
 class ThirdController extends Controller
 {
@@ -469,7 +469,7 @@ class ThirdController extends Controller
         return response($third_delete, Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function storeLocationThird(Request $request)
+    public function insertContactThird(Request $request)
     {
         $db_manager = new DBManager();
 
@@ -485,23 +485,23 @@ class ThirdController extends Controller
                 $request->app
             );
 
-            if ( !$request->filled('third_id') )
-                throw new \Exception("Third is required", Constant::BAD_REQUEST);
+           if ( !$request->filled('id') )
+                throw new \Exception('Third is required', Constant::BAD_REQUEST);
 
-            if ( !$request->filled('archived') )
-                throw new \Exception("Archived is required", Constant::BAD_REQUEST);
+            if ( !$request->filled('third_contact') )
+                throw new \Exception('Contact is required', Constant::BAD_REQUEST);
 
-            $third_location = $this->third_implement
-                ->insertLocationThird(
-                    $conection, $third_id, $address_1, $address_2, $address_3,
-                    $address_4, $city_id, $city_name, $postal, $postal_add,
-                    $state_id, $state_name, $country_id, $comments,
-                    $name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
-                    $phone_2, $fax, $isdn
+            $conection->beginTransaction();
+
+            $contact_insert = $this->third_implement->insertContactThird($conection, $request->id,
+                $request->third_contact
             );
-            
+
+            $conection->commit();
+
         } catch (\Exception $e) {
-            
+
+            $conection->rollBack();
             return ExceptionAnalizer::analizerHTTPResponse($e);
 
         } finally {
@@ -509,6 +509,6 @@ class ThirdController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response($third_location, Constant::OK)->header('Content-Type', 'application/json');
+        return response(json_encode($contact_insert), Constant::OK)->header('Content-Type', 'application/json');
     }
 }

@@ -4,14 +4,20 @@ namespace App\Http\BnImplements;
 use App\Constant;
 use Illuminate\Support\Facades\DB;
 use App\Http\BnImplements\LocationBnImplement;
+use App\Http\BnImplements\ContactBnImplement;
 
 class ThirdBnImplement
 {
     private $location_implement;
+    private $contact_implement;
 
-    function __construct(LocationBnImplement $location_implement)
+    function __construct(
+        LocationBnImplement $location_implement,
+        ContactBnImplement $contact_implement
+    )
     {
         $this->location_implement = $location_implement;
+        $this->contact_implement = $contact_implement;
     }
 
 	public function selectThirds($conection)
@@ -295,5 +301,29 @@ class ThirdBnImplement
         ]);
 
         return $branch_update[0];
+    }
+
+    public function insertContactThird($conection, $third_id, $third_contact)
+    {
+        $contact_insert = $this->contact_implement->insertContact($conection,
+            $third_contact['name'],
+            $third_contact['description'],
+            $third_contact['comments'],
+            $third_contact['email'],
+            $third_contact['phone'],
+            $third_contact['phone_2'],
+            $third_contact['fax'],
+            $third_contact['title'],
+            $third_contact['birthday'],
+            $third_contact['last_contact'],
+            $third_contact['last_result']
+        );
+
+        $conection->select('CALL CR_InsertBpartnerContact(:third_id, :contact_id)',[
+            'third_id' => $third_id,
+            'contact_id' => $contact_insert->id
+        ]);
+
+        return ['contact_third' => $contact_insert];
     }
 }
