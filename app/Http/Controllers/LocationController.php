@@ -59,7 +59,7 @@ class LocationController extends Controller
             );
 
             if ( !$request->filled('country_id') )
-                throw new \Exception("Country is required", Constant::BAD_REQUEST);
+                $request->country_id = '';/*throw new \Exception("Country is required", Constant::BAD_REQUEST);*/
 
             $states = $this->location_implement
             	->state_implement->selectIdNameStates($conection, $request->country_id);
@@ -90,7 +90,7 @@ class LocationController extends Controller
             );
 
             if ( !$request->filled('state_id') )
-                throw new \Exception("State is required", Constant::BAD_REQUEST);
+                $request->state_id = '';/*throw new \Exception("State is required", Constant::BAD_REQUEST);*/
 
             $cities = $this->location_implement
             	->city_implement->selectIdNameCities($conection, $request->state_id);

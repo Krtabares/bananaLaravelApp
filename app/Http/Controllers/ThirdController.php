@@ -51,7 +51,7 @@ class ThirdController extends Controller
 
         try {
              
-             $conection = $db_manager->getClientBDConecction(
+            $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
                 $request->header('user_id'),
                 $request->header('token'),
@@ -75,7 +75,7 @@ class ThirdController extends Controller
     {
         $db_manager = new DBManager();
 
-        try {   
+        try {
             
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
@@ -108,7 +108,7 @@ class ThirdController extends Controller
         $db_manager = new DBManager();
 
         try {
-            //return $request; 
+
             $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
                 $request->header('user_id'),
@@ -148,6 +148,15 @@ class ThirdController extends Controller
             if ( !$request->filled('organization_id') )
                 throw new \Exception("Organization is required", Constant::BAD_REQUEST);
 
+            if ( !$request->filled('name') )
+                throw new \Exception("Third name is required", Constant::BAD_REQUEST);
+            
+            if ( !$request->filled('third_location') )
+                throw new \Exception("Third Location is required", Constant::BAD_REQUEST);
+
+            if ( $request->third_location['address_1'] == NULL )
+                throw new \Exception("Indicate at least one address", Constant::BAD_REQUEST);
+
             // if ( !$request->filled('logo') )
             //     throw new \Exception("Logo is required", Constant::BAD_REQUEST);
 
@@ -156,9 +165,6 @@ class ThirdController extends Controller
 
             // if ( !$request->filled('is_vendor') )
             //     throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
-
-            if ( !$request->filled('name') )
-                throw new \Exception("Third name is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('name_2') )
             //     throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
@@ -226,8 +232,6 @@ class ThirdController extends Controller
             // if ( !$request->filled('greeting_id') )
             //     throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('third_location') )
-                throw new \Exception("Third Location is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('branch_office') )
             //     throw new \Exception("Branch office is required", Constant::BAD_REQUEST);
@@ -235,13 +239,37 @@ class ThirdController extends Controller
             $conection->beginTransaction();
 
             $third_insert = $this->third_implement
-                ->insertThird($conection, $request->organization_id, $request->logo, $request->is_customer, 
-		    		$request->is_vendor, $request->name, $request->name_2, $request->is_employee, $request->is_prospect, $request->is_sales_rep,
-		    		$request->reference_no, $request->sales_rep_id, $request->credit_status, $request->credit_limit,
-		    		$request->tax_id, $request->is_tax_exempt, $request->is_po_tax_exempt, $request->url, $request->description, $request->is_summary,
-		    		$request->price_list_id, $request->delivery_rule, $request->delivery_via_rule, $request->flat_discount,
-		    		$request->is_manufacturer, $request->po_price_list_id, $request->language_id, $request->greeting_id,
-                    $request->third_location, $request->branch_office);
+                ->insertThird($conection,
+                    $request->organization_id,
+                    $request->logo,
+                    $request->is_customer,
+		    		$request->is_vendor,
+                    $request->name,
+                    $request->name_2,
+                    $request->is_employee,
+                    $request->is_prospect,
+                    $request->is_sales_rep,
+		    		$request->reference_no,
+                    $request->sales_rep_id,
+                    $request->credit_status,
+                    $request->credit_limit,
+		    		$request->tax_id,
+                    $request->is_tax_exempt,
+                    $request->is_po_tax_exempt,
+                    $request->url,
+                    $request->description,
+                    $request->is_summary,
+		    		$request->price_list_id,
+                    $request->delivery_rule,
+                    $request->delivery_via_rule,
+                    $request->flat_discount,
+		    		$request->is_manufacturer,
+                    $request->po_price_list_id,
+                    $request->language_id,
+                    $request->greeting_id,
+                    $request->third_location,
+                    $request->branch_office
+                );
 
             $conection->commit();
             
@@ -280,29 +308,35 @@ class ThirdController extends Controller
             if ( !$request->filled('organization_id') )
                 throw new \Exception("Organization is required", Constant::BAD_REQUEST);
 
+            if ( !$request->filled('name') )
+                throw new \Exception("Third name is required", Constant::BAD_REQUEST);
+
+            if ( !$request->filled('third_location') )
+                throw new \Exception("Third Location is required", Constant::BAD_REQUEST);
+            
+            if ( $request->third_location['address_1'] == NULL )
+                throw new \Exception("Indicate at least one address", Constant::BAD_REQUEST);
+
             // if ( !$request->filled('logo') )
             //     throw new \Exception("Logo is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_customer') )
-                throw new \Exception("Customer is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_customer') )
+            //     throw new \Exception("Customer is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_vendor') )
-                throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
-
-            if ( !$request->filled('name') )
-                throw new \Exception("Third name is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_vendor') )
+            //     throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('name_2') )
             //     throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_employee') )
-                throw new \Exception("Employee is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_employee') )
+            //     throw new \Exception("Employee is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_prospect') )
-                throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_prospect') )
+            //     throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_sales_rep') )
-                throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_sales_rep') )
+            //     throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('reference_no') )
             //     throw new \Exception("Reference no is required", Constant::BAD_REQUEST);
@@ -319,11 +353,11 @@ class ThirdController extends Controller
             // if ( !$request->filled('tax_id') )
             //     throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_tax_exempt') )
-                throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_tax_exempt') )
+            //     throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_po_tax_exempt') )
-                throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_po_tax_exempt') )
+            //     throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('url') )
             //     throw new \Exception("Url is required", Constant::BAD_REQUEST);
@@ -331,8 +365,8 @@ class ThirdController extends Controller
             // if ( !$request->filled('description') )
             //     throw new \Exception("Description is required", Constant::BAD_REQUEST);
             
-            if ( !$request->filled('is_summary') )
-                throw new \Exception("Summary is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_summary') )
+            //     throw new \Exception("Summary is required", Constant::BAD_REQUEST);
             
             // if ( !$request->filled('price_list_id') )
             //     throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
@@ -346,8 +380,8 @@ class ThirdController extends Controller
             // if ( !$request->filled('flat_discount') )
             //     throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('is_manufacturer') )
-                throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
+            // if ( !$request->filled('is_manufacturer') )
+            //     throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
             
             // if ( !$request->filled('po_price_list_id') )
             //     throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
@@ -358,22 +392,44 @@ class ThirdController extends Controller
             // if ( !$request->filled('greeting_id') )
             //     throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('third_location') )
-                throw new \Exception("Third Location is required", Constant::BAD_REQUEST);
-
             // if ( !$request->filled('branch_office_data') )
             //     throw new \Exception("Branch Office data are required", Constant::BAD_REQUEST);
 
             $conection->beginTransaction();
 
             $third_update = $this->third_implement
-                ->updateThird($conection, $request->id, $request->organization_id, $request->logo, $request->is_customer, 
-                    $request->is_vendor, $request->name, $request->name_2, $request->is_employee, $request->is_prospect, $request->is_sales_rep,
-                    $request->reference_no, $request->sales_rep_id, $request->credit_status, $request->credit_limit,
-                    $request->tax_id, $request->is_tax_exempt, $request->is_po_tax_exempt, $request->url, $request->description, $request->is_summary,
-                    $request->price_list_id, $request->delivery_rule, $request->delivery_via_rule, $request->flat_discount,
-                    $request->is_manufacturer, $request->po_price_list_id, $request->language_id, $request->greeting_id,
-                    $request->third_location, $request->branch_office);
+                ->updateThird($conection,
+                    $request->id,
+                    $request->organization_id,
+                    $request->logo,
+                    $request->is_customer,
+                    $request->is_vendor,
+                    $request->name,
+                    $request->name_2,
+                    $request->is_employee,
+                    $request->is_prospect,
+                    $request->is_sales_rep,
+                    $request->reference_no,
+                    $request->sales_rep_id,
+                    $request->credit_status,
+                    $request->credit_limit,
+                    $request->tax_id,
+                    $request->is_tax_exempt,
+                    $request->is_po_tax_exempt,
+                    $request->url,
+                    $request->description,
+                    $request->is_summary,
+                    $request->price_list_id,
+                    $request->delivery_rule,
+                    $request->delivery_via_rule,
+                    $request->flat_discount,
+                    $request->is_manufacturer,
+                    $request->po_price_list_id,
+                    $request->language_id,
+                    $request->greeting_id,
+                    $request->third_location,
+                    $request->branch_office
+                );
 
             $conection->commit();
             
@@ -469,7 +525,36 @@ class ThirdController extends Controller
         return response($third_delete, Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function insertContactThird(Request $request)
+    public function selectThirdContacts(Request $request)
+    {
+        $db_manager = new DBManager();
+
+        try {
+             
+            $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
+
+            if ( !$request->filled('third_id') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+            $third_contacts = $this->third_implement->selectThirdContacts($conection, $request->third_id);
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+        }
+
+        return response(['third_contacts' => $third_contacts], Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function insertThirdContact(Request $request)
     {
         $db_manager = new DBManager();
 
@@ -493,7 +578,7 @@ class ThirdController extends Controller
 
             $conection->beginTransaction();
 
-            $contact_insert = $this->third_implement->insertContactThird($conection, $request->id,
+            $third_contact_insert = $this->third_implement->insertThirdContact($conection, $request->id,
                 $request->third_contact
             );
 
@@ -509,6 +594,6 @@ class ThirdController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(json_encode($contact_insert), Constant::OK)->header('Content-Type', 'application/json');
+        return response($third_contact_insert, Constant::OK)->header('Content-Type', 'application/json');
     }
 }

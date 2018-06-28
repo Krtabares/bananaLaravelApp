@@ -303,7 +303,18 @@ class ThirdBnImplement
         return $branch_update[0];
     }
 
-    public function insertContactThird($conection, $third_id, $third_contact)
+    public function selectThirdContacts($conection, $third_id)
+    {
+        return $conection->select('SELECT c.* FROM contacts c
+            JOIN bpartner_contact b_c ON b_c.contact_id = c.id
+            JOIN bpartners b ON b.id = b_c.bpartner_id
+            WHERE b.id = :third_id
+            ORDER BY c.name ASC;', [
+            'third_id' => $third_id
+        ]);
+    }
+
+    public function insertThirdContact($conection, $third_id, $third_contact)
     {
         $contact_insert = $this->contact_implement->insertContact($conection,
             $third_contact['name'],
@@ -324,6 +335,26 @@ class ThirdBnImplement
             'contact_id' => $contact_insert->id
         ]);
 
-        return ['contact_third' => $contact_insert];
+        return ['third_contact_insert' => $contact_insert];
+    }
+
+    public function updateThirdContact($conection, $third_id, $third_contact)
+    {
+        $contact_update = $this->contact_implement->updateContact($conection,
+            $third_contact['contact_id'],
+            $third_contact['name'],
+            $third_contact['description'],
+            $third_contact['comments'],
+            $third_contact['email'],
+            $third_contact['phone'],
+            $third_contact['phone_2'],
+            $third_contact['fax'],
+            $third_contact['title'],
+            $third_contact['birthday'],
+            $third_contact['last_contact'],
+            $third_contact['last_result']
+        );
+
+        return ['contact_third' => $contact_update];
     }
 }

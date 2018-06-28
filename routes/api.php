@@ -112,6 +112,8 @@ Route::post('thirds/update', 'ThirdController@updateThird')
 Route::post('thirds/archived', 'ThirdController@archivedThird')
 	->name('thirds.archived');
 
+/* Rutas de Contact */
+
 /* Rutas de location */
 
 Route::get('location/countries', 'LocationController@indexLocationCountry')
