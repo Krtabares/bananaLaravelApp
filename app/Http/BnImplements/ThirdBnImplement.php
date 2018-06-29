@@ -90,6 +90,14 @@ class ThirdBnImplement
     	$manufacturer, $po_price_list_id, $language_id, $greeting_id, $third_location, $branch_office)
     {
 
+        $check = $conection->select('SELECT id FROM bpartners WHERE name = :name LIMIT 1 ;',[
+            'name'=>$name
+        ]);
+
+        if(!empty($check)){ 
+            throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
+        }
+
     	$conection->select('CALL CR_InsertBpartners(:org_id, :logo, :customer, 
     		:vendor, :name, :name_2, :employee, :prospect, :sales_rep,
     		:reference_no, :sales_rep_id, :credit_status, :credit_limit,
@@ -155,6 +163,13 @@ class ThirdBnImplement
     	$price_list_id, $delivery_rule, $delivery_via_rule, $flat_discount,
     	$manufacturer, $po_price_list_id, $language_id, $greeting_id, $third_location, $branch_office)
     {
+        $check = $conection->select('SELECT id FROM bpartners WHERE name = :name LIMIT 1 ;',[
+            'name'=>$name
+        ]);
+
+        if(!empty($check)){ 
+            throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
+        }
 
     	$conection->select('CALL UP_UpdateBpartners(:third_id, :org_id, :logo, :customer, 
     		:vendor, :name, :name_2, :employee, :prospect, :sales_rep,
@@ -256,6 +271,14 @@ class ThirdBnImplement
         $name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
         $phone_2, $fax, $isdn)
     {
+        $check = $conection->select('SELECT id FROM bpartner_locations WHERE name = :name LIMIT 1 ;',[
+            'name'=>$name
+        ]);
+
+        if(!empty($check)){ 
+            throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
+        }
+
         $conection->select('CALL CR_InsertBpartnerLocation(:third_id, :location_id, 
             :name, :is_ship_to, :is_bill_to, :is_pay_from, :is_remit_to, :phone,
             :phone_2, :fax, :isdn)', [
@@ -281,6 +304,14 @@ class ThirdBnImplement
         $name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
         $phone_2, $fax, $isdn)
     {
+        $check = $conection->select('SELECT id FROM bpartner_locations WHERE name = :name LIMIT 1 ;',[
+            'name'=>$name
+        ]);
+
+        if(!empty($check)){ 
+            throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
+        }
+
         $conection->select('CALL UP_InsertBpartnerLocation(:branch_office_id, 
             :name, :is_ship_to, :is_bill_to, :is_pay_from, :is_remit_to, :phone,
             :phone_2, :fax, :isdn)', [
