@@ -85,14 +85,16 @@ class ContactBnImplement
 		$last_result
 	)
 	{
-        $check = $conection->select('SELECT id FROM contacts WHERE name = :name LIMIT 1 ;',[
-            'name'=>$name
+        $check = $conection->select('SELECT id FROM contacts
+        	WHERE name = :name AND id <> :contact_id LIMIT 1 ;',[
+            'name' => $name,
+            'contact_id' => $contact_id
         ]);
 
         if(!empty($check)){ 
             throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
         }
-        
+
 		$conection->select('CALL UP_UpdateContact(
 				:contact_id,
 				:name,

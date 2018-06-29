@@ -147,7 +147,7 @@ class ThirdBnImplement
             );
 
         $branch_office_insert = $this->insertBranchOffice($conection, $third_insert[0]->id, $location_insert->id, 
-            'Principal Branch Office', 1, 1, 1, 1, $branch_office['phone'], $branch_office['phone_2'], '', '');
+            'Principal Office', 1, 1, 1, 1, $branch_office['phone'], $branch_office['phone_2'], '', '');
 
     	return [
             'third' => $third_insert[0],
@@ -163,13 +163,18 @@ class ThirdBnImplement
     	$price_list_id, $delivery_rule, $delivery_via_rule, $flat_discount,
     	$manufacturer, $po_price_list_id, $language_id, $greeting_id, $third_location, $branch_office)
     {
-        $check = $conection->select('SELECT id FROM bpartners WHERE name = :name LIMIT 1 ;',[
-            'name'=>$name
-        ]);
+        /*
+            $check = $conection->select('SELECT id FROM bpartners 
+                    WHERE name = :name
+                    AND id <> :third_id LIMIT 1 ;',[
+                'name' => $name,
+                'third_id' => $third_id
+            ]);
 
-        if(!empty($check)){ 
-            throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
-        }
+            if(!empty($check)){ 
+                throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
+            }
+        */
 
     	$conection->select('CALL UP_UpdateBpartners(:third_id, :org_id, :logo, :customer, 
     		:vendor, :name, :name_2, :employee, :prospect, :sales_rep,
@@ -304,12 +309,15 @@ class ThirdBnImplement
         $name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
         $phone_2, $fax, $isdn)
     {
-        $check = $conection->select('SELECT id FROM bpartner_locations WHERE name = :name LIMIT 1 ;',[
-            'name'=>$name
+        $check = $conection->select('SELECT id FROM bpartner_locations
+            WHERE name = :name
+            AND id <> :branch_office_id LIMIT 1 ;',[
+            'name' => $name,
+            'branch_office_id' => $branch_office_id
         ]);
 
         if(!empty($check)){ 
-            throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
+            throw new \Exception('Constant::MSG_DUPLICATE', Constant::DUPLICATE );
         }
 
         $conection->select('CALL UP_InsertBpartnerLocation(:branch_office_id, 
