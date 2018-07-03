@@ -12,11 +12,15 @@ use App\Http\BnImplements\ContactBnImplement;
 class ThirdController extends Controller
 {
     private $third_implement;
-    private $organization_implement;
+    private $contact_implement;
 
-    function __construct(ThirdBnImplement $third_implement)
+    function __construct(
+        ThirdBnImplement $third_implement,
+        ContactBnImplement $contact_implement
+    )
     {
         $this->third_implement = $third_implement;
+        $this->contact_implement = $contact_implement;
     }
 
     public function indexThird(Request $request)
@@ -148,6 +152,9 @@ class ThirdController extends Controller
             if ( !$request->filled('organization_id') )
                 throw new \Exception("Organization is required", Constant::BAD_REQUEST);
 
+            if ( !$request->filled('reference_no') )
+                throw new \Exception("Reference number is required", Constant::BAD_REQUEST);
+
             if ( !$request->filled('name') )
                 throw new \Exception("Third name is required", Constant::BAD_REQUEST);
             
@@ -177,9 +184,6 @@ class ThirdController extends Controller
 
             // if ( !$request->filled('is_sales_rep') )
             //     throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
-
-            // if ( !$request->filled('reference_no') )
-            //     throw new \Exception("Reference no is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('sales_rep_id') )
             //     throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
@@ -308,6 +312,9 @@ class ThirdController extends Controller
             if ( !$request->filled('organization_id') )
                 throw new \Exception("Organization is required", Constant::BAD_REQUEST);
 
+            if ( !$request->filled('reference_no') )
+                throw new \Exception("Reference number is required", Constant::BAD_REQUEST);
+
             if ( !$request->filled('name') )
                 throw new \Exception("Third name is required", Constant::BAD_REQUEST);
 
@@ -337,9 +344,6 @@ class ThirdController extends Controller
 
             // if ( !$request->filled('is_sales_rep') )
             //     throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
-
-            // if ( !$request->filled('reference_no') )
-            //     throw new \Exception("Reference no is required", Constant::BAD_REQUEST);
 
             // if ( !$request->filled('sales_rep_id') )
             //     throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
