@@ -8,11 +8,12 @@ class ContactBnImplement
 {
 	public function selectContactById($conection, $contact_id)
 	{
-		return $conection->select('SELECT * FROM contacts
-			WHERE id = :contact_id
-			ORDER BY name ASC;', [
+		$contact = $conection->select('SELECT * FROM contacts
+			WHERE id = :contact_id;', [
 			'contact_id' => $contact_id
 		]);
+
+		return $contact[0];
 	}
 
 	public function insertContact($conection,
@@ -29,13 +30,13 @@ class ContactBnImplement
 		$last_result
 	)
 	{
-        $check = $conection->select('SELECT id FROM contacts WHERE name = :name LIMIT 1 ;',[
-            'name'=>$name
-        ]);
+		/*$check = $conection->select('SELECT id FROM contacts WHERE name = :name LIMIT 1 ;',[
+			'name'=>$name
+		]);
 
-        if(!empty($check)){ 
-            throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
-        }
+		if(!empty($check)){ 
+			throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
+		}*/
 
 		$conection->select('CALL CR_InsertContact(
 				:name,
@@ -67,7 +68,7 @@ class ContactBnImplement
 
 		$contact_insert = $conection->select('SELECT * FROM contact ORDER BY id DESC LIMIT 1');
 
-    	return $contact_insert[0];
+		return $contact_insert[0];
 	}
 
 	public function updateContact($conection,
@@ -85,15 +86,15 @@ class ContactBnImplement
 		$last_result
 	)
 	{
-        $check = $conection->select('SELECT id FROM contacts
-        	WHERE name = :name AND id <> :contact_id LIMIT 1 ;',[
-            'name' => $name,
-            'contact_id' => $contact_id
-        ]);
+		/*$check = $conection->select('SELECT id FROM contacts
+			WHERE name = :name AND id <> :contact_id LIMIT 1 ;',[
+			'name' => $name,
+			'contact_id' => $contact_id
+		]);
 
-        if(!empty($check)){ 
-            throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
-        }
+		if(!empty($check)){ 
+			throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
+		}*/
 
 		$conection->select('CALL UP_UpdateContact(
 				:contact_id,
@@ -125,11 +126,14 @@ class ContactBnImplement
 			]
 		);
 
-		$contact_update = $conection->select('SELECT * FROM contact WHERE id = :contact_id', [
+		$contact_update = $conection->select('
+			SELECT * 
+			FROM contact 
+			WHERE id = :contact_id', [
 			'contact_id' => $contact_id
 		]);
 
-    	return $contact_update[0];
+		return $contact_update[0];
 	}
 
 }
