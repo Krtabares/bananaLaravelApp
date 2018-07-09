@@ -169,81 +169,83 @@ class ThirdController extends Controller
 			if ( $request->third_location['address_1'] == NULL )
 				throw new \Exception("Indicate at least one address", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('logo') )
-			//     throw new \Exception("Logo is required", Constant::BAD_REQUEST);
+			/*
+				if ( !$request->filled('logo') )
+				    throw new \Exception("Logo is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_customer') )
-			//     throw new \Exception("Customer is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_customer') )
+				    throw new \Exception("Customer is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_vendor') )
-			//     throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_vendor') )
+				    throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('name_2') )
-			//     throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('name_2') )
+				    throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_employee') )
-			//     throw new \Exception("Employee is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_employee') )
+				    throw new \Exception("Employee is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_prospect') )
-			//     throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_prospect') )
+				    throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_sales_rep') )
-			//     throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_sales_rep') )
+				    throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('sales_rep_id') )
-			//     throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('sales_rep_id') )
+				    throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('credit_status') )
-			//     throw new \Exception("Credit status is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('credit_status') )
+				    throw new \Exception("Credit status is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('credit_limit') )
-			//     throw new \Exception("Credit limit is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('credit_limit') )
+				    throw new \Exception("Credit limit is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('tax_id') )
-			//     throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('tax_id') )
+				    throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_tax_exempt') )
-			//     throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_tax_exempt') )
+				    throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_po_tax_exempt') )
-			//     throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_po_tax_exempt') )
+				    throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('url') )
-			//     throw new \Exception("Url is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('description') )
-			//     throw new \Exception("Description is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('is_summary') )
-			//     throw new \Exception("Summary is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('price_list_id') )
-			//     throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('delivery_rule') )
-			//     throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('url') )
+				    throw new \Exception("Url is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('description') )
+				    throw new \Exception("Description is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('is_summary') )
+				    throw new \Exception("Summary is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('price_list_id') )
+				    throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('delivery_rule') )
+				    throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('delivery_via_rule') )
-			//     throw new \Exception("Delivery via rule is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('delivery_via_rule') )
+				    throw new \Exception("Delivery via rule is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('flat_discount') )
-			//     throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('flat_discount') )
+				    throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_manufacturer') )
-			//     throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('po_price_list_id') )
-			//     throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_manufacturer') )
+				    throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('po_price_list_id') )
+				    throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('language_id') )
-			//     throw new \Exception("Language id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('language_id') )
+				    throw new \Exception("Language id is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('greeting_id') )
-			//     throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('greeting_id') )
+				    throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
 
 
-			// if ( !$request->filled('branch_office') )
-			//     throw new \Exception("Branch office is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('branch_office') )
+				    throw new \Exception("Branch office is required", Constant::BAD_REQUEST);
+			*/
 
 			$conection->beginTransaction();
 
@@ -330,80 +332,82 @@ class ThirdController extends Controller
 			if ( $request->third_location['address_1'] == NULL )
 				throw new \Exception("Indicate at least one address", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('logo') )
-			//     throw new \Exception("Logo is required", Constant::BAD_REQUEST);
+			/*
+				if ( !$request->filled('logo') )
+			    throw new \Exception("Logo is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_customer') )
-			//     throw new \Exception("Customer is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_customer') )
+				    throw new \Exception("Customer is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_vendor') )
-			//     throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_vendor') )
+				    throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('name_2') )
-			//     throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('name_2') )
+				    throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_employee') )
-			//     throw new \Exception("Employee is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_employee') )
+				    throw new \Exception("Employee is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_prospect') )
-			//     throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_prospect') )
+				    throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_sales_rep') )
-			//     throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_sales_rep') )
+				    throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('sales_rep_id') )
-			//     throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('sales_rep_id') )
+				    throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('credit_status') )
-			//     throw new \Exception("Credit status is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('credit_status') )
+				    throw new \Exception("Credit status is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('credit_limit') )
-			//     throw new \Exception("Credit limit is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('credit_limit') )
+				    throw new \Exception("Credit limit is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('tax_id') )
-			//     throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('tax_id') )
+				    throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_tax_exempt') )
-			//     throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_tax_exempt') )
+				    throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_po_tax_exempt') )
-			//     throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_po_tax_exempt') )
+				    throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('url') )
-			//     throw new \Exception("Url is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('description') )
-			//     throw new \Exception("Description is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('is_summary') )
-			//     throw new \Exception("Summary is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('price_list_id') )
-			//     throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('delivery_rule') )
-			//     throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('url') )
+				    throw new \Exception("Url is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('description') )
+				    throw new \Exception("Description is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('is_summary') )
+				    throw new \Exception("Summary is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('price_list_id') )
+				    throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('delivery_rule') )
+				    throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('delivery_via_rule') )
-			//     throw new \Exception("Delivery via rule is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('delivery_via_rule') )
+				    throw new \Exception("Delivery via rule is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('flat_discount') )
-			//     throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('flat_discount') )
+				    throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('is_manufacturer') )
-			//     throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
-			
-			// if ( !$request->filled('po_price_list_id') )
-			//     throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('is_manufacturer') )
+				    throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
+				
+				if ( !$request->filled('po_price_list_id') )
+				    throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('language_id') )
-			//     throw new \Exception("Language id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('language_id') )
+				    throw new \Exception("Language id is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('greeting_id') )
-			//     throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
+				if ( !$request->filled('greeting_id') )
+				    throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
 
-			// if ( !$request->filled('branch_office_data') )
-			//     throw new \Exception("Branch Office data are required", Constant::BAD_REQUEST);
+				if ( !$request->filled('branch_office_data') )
+				    throw new \Exception("Branch Office data are required", Constant::BAD_REQUEST);
+			*/
 
 			$conection->beginTransaction();
 

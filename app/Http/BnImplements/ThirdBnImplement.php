@@ -89,7 +89,7 @@ class ThirdBnImplement
 		$customer,
 		$vendor,
 		$name,
-		$name_2
+		$name_2,
 		$employee,
 		$prospect,
 		$sales_rep,
