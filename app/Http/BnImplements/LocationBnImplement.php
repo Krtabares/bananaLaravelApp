@@ -10,6 +10,10 @@ use App\Http\BnImplements\CityBnImplement;
 
 class LocationBnImplement
 {
+	public $country_implement;
+	public $state_implement;
+	public $city_implement;
+
 	function __construct(
 		CountryBnImplement $country_implement,
 		StateBnImplement $state_implement,
@@ -70,7 +74,10 @@ class LocationBnImplement
 			'comments' => $comments
 		]);
 
-		$location_update = $conection->select('SELECT * FROM locations WHERE id = :location_id', [
+		$location_update = $conection->select('
+			SELECT * 
+			FROM locations 
+			WHERE id = :location_id', [
 			'location_id' => $location_id
 		]);
 

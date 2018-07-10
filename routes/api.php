@@ -113,6 +113,8 @@ Route::post('thirds/archived', 'ThirdController@archivedThird')
 	->name('thirds.archived');
 
 /* Rutas de Contact */
+Route::get('contact/{id}', 'ContactController@selectContactById')
+	->name('contact');
 
 /* Rutas de location */
 
