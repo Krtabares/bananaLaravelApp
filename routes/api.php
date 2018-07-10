@@ -112,6 +112,9 @@ Route::post('thirds/update', 'ThirdController@updateThird')
 Route::post('thirds/archived', 'ThirdController@archivedThird')
 	->name('thirds.archived');
 
+Route::post('thirds/contact/create', 'ThirdController@insertThirdContact')
+	->name('thirds.contact.store');
+
 /* Rutas de Contact */
 Route::get('contact/{id}', 'ContactController@selectContactById')
 	->name('contact');

@@ -587,7 +587,7 @@ class ThirdController extends Controller
 				$request->app
 			);
 
-		   if ( !$request->filled('id') )
+		   if ( !$request->filled('third_id') )
 				throw new \Exception('Third is required', Constant::BAD_REQUEST);
 
 			if ( !$request->filled('third_contact') )
