@@ -111,9 +111,15 @@ class CustomColumnsBnImplement
     }
 
 
-    public function getCustomColumnsByTable($conection, $idTable)
+    public function getCustomColumnsByTable($conection, $idTable, $idContext=null)
     {
-        $type = $conection->select("SELECT t1.*, t2.name name_type from custom_column t1 inner join column_type t2 on t1.type_id = t2.id  WHERE table_id = :idTable",['idTable'=>$idTable]);
+        $type = $conection->select("
+          SELECT t1.*, t1.name 'key', t1.name label, t2.name name_type, t3.position as 'order', t4.input_name control_type, t4.id control_type_id, t5.table_name  FROM custom_column t1 
+          INNER JOIN column_type t2 ON t1.type_id = t2.id 
+          INNER JOIN field_configurations t3 ON  t1.id = t3.custom_column_id
+          INNER JOIN input_types t4 ON t3.input_type_id = t4.id
+          INNER JOIN tables t5 ON t1.table_id = t5.id
+          WHERE table_id = :idTable ORDER BY t3.position ",['idTable'=>$idTable]);
 
         return $type;
     }
