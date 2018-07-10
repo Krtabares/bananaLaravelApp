@@ -15,6 +15,26 @@ class AccessBnImplement
         );
     }
 
+    public function SelectColumnAccessUser($conection, $user_id,$table_id)
+    {
+
+        $result = $conection->select('CALL RD_SelectColumnAccessUser(:user_id,:table_id)',
+            [
+                'user_id' => $user_id,
+                'table_id'=> $table_id
+            ]
+        );
+
+        foreach ($result as $key => $column) {
+            if( $column->REFERENCED_TABLE_NAME != null){
+                $options = $conection->select("SELECT id 'key', description value FROM ".$column->REFERENCED_TABLE_NAME);
+                $column->REFERENCED_TABLE_NAME = $options;
+            }
+        }
+
+        return $result;
+    }
+
     public function selectTotalAccess($conection, $user_id)
     {
     	$permits = $conection->select('CALL RD_SelectTotalAccess(:user_id)', 
