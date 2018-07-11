@@ -75,10 +75,13 @@ class ThirdBnImplement
 			'location_id' => $branch_office[0]->location_id
 		]);
 
+		$third_contacts = $this->selectThirdContacts($conection, $third_id);
+
 		return [
 			'third' => $third[0],
 			'branch_office' => $branch_office[0],
-			'location' => $location[0]
+			'location' => $location[0],
+			'third_contacts' => $third_contacts
 		];
 	}
 
@@ -490,20 +493,35 @@ class ThirdBnImplement
 		]);
 	}
 
-	public function insertThirdContact($conection, $third_id, $third_contact)
+	public function insertThirdContact(
+		$conection,
+		$third_id,
+		$name,
+		$description,
+		$comments,
+		$email,
+		$phone,
+		$phone_2,
+		$fax,
+		$title,
+		$birthday,
+		$last_contact,
+		$last_result
+	)
 	{
-		$contact_insert = $this->contact_implement->insertContact($conection,
-			$third_contact['name'],
-			$third_contact['description'],
-			$third_contact['comments'],
-			$third_contact['email'],
-			$third_contact['phone'],
-			$third_contact['phone_2'],
-			$third_contact['fax'],
-			$third_contact['title'],
-			$third_contact['birthday'],
-			$third_contact['last_contact'],
-			$third_contact['last_result']
+		$contact_insert = $this->contact_implement->insertContact(
+			$conection,
+			$name,
+			$description,
+			$comments,
+			$email,
+			$phone,
+			$phone_2,
+			$fax,
+			$title,
+			$birthday,
+			$last_contact,
+			$last_result
 		);
 
 		$conection->select('CALL CR_InsertBpartnerContact(:third_id, :contact_id)',[
@@ -514,21 +532,36 @@ class ThirdBnImplement
 		return ['third_contact_insert' => $contact_insert];
 	}
 
-	public function updateThirdContact($conection, $third_contact)
+	public function updateThirdContact(
+		$conection,
+		$id,
+		$name,
+		$description,
+		$comments,
+		$email,
+		$phone,
+		$phone_2,
+		$fax,
+		$title,
+		$birthday,
+		$last_contact,
+		$last_result
+	)
 	{
-		$contact_update = $this->contact_implement->updateContact($conection,
-			$third_contact['id'],
-			$third_contact['name'],
-			$third_contact['description'],
-			$third_contact['comments'],
-			$third_contact['email'],
-			$third_contact['phone'],
-			$third_contact['phone_2'],
-			$third_contact['fax'],
-			$third_contact['title'],
-			$third_contact['birthday'],
-			$third_contact['last_contact'],
-			$third_contact['last_result']
+		$contact_update = $this->contact_implement->updateContact(
+			$conection,
+			$id,
+			$name,
+			$description,
+			$comments,
+			$email,
+			$phone,
+			$phone_2,
+			$fax,
+			$title,
+			$birthday,
+			$last_contact,
+			$last_result
 		);
 
 		return ['contact_third' => $contact_update];
