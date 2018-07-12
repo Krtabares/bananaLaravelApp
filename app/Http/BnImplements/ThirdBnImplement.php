@@ -488,7 +488,7 @@ class ThirdBnImplement
 			JOIN bpartner_contact b_c ON b_c.contact_id = c.id
 			JOIN bpartners b ON b.id = b_c.bpartner_id
 			WHERE b.id = :third_id
-			ORDER BY c.name ASC;', [
+			ORDER BY c.title ASC;', [
 			'third_id' => $third_id
 		]);
 	}
@@ -529,7 +529,7 @@ class ThirdBnImplement
 			'contact_id' => $contact_insert->id
 		]);
 
-		return ['third_contact_insert' => $contact_insert];
+		return ['contact' => $contact_insert];
 	}
 
 	public function updateThirdContact(

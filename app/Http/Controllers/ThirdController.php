@@ -541,36 +541,6 @@ class ThirdController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
-	public function selectThirdContacts(Request $request)
-	{
-		$db_manager = new DBManager();
-
-		try {
-			 
-			$conection = $db_manager->getClientBDConecction(
-				$request->header('authorization'),
-				$request->header('user_id'),
-				$request->header('token'),
-				$request->header('app'));
-
-			if ( !$request->filled('third_id') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
-
-			$third_contacts = $this->third_implement->selectThirdContacts($conection, $request->third_id);
-
-		} catch (\Exception $e) {
-
-			return ExceptionAnalizer::analizerHTTPResponse($e);
-
-		} finally {
-
-			$db_manager->terminateClientBDConecction();
-		}
-
-		return response(['third_contacts' => $third_contacts], Constant::OK)
-			->header('Content-Type', 'application/json');
-	}
-
 	public function insertThirdContact(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -587,7 +557,7 @@ class ThirdController extends Controller
 				$request->app
 			);
 
-		   if ( !$request->filled('third_id') )
+		   if ( !$request->filled('id') )
 				throw new \Exception('Third is required', Constant::BAD_REQUEST);
 
 			if ( !$request->filled('name') )
@@ -598,7 +568,7 @@ class ThirdController extends Controller
 			$third_contact_insert = $this->third_implement
 				->insertThirdContact(
 					$conection,
-					$request->third_id,
+					$request->id,
 					$request->name,
 					$request->description,
 					$request->comments,
