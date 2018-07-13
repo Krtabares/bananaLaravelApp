@@ -541,36 +541,6 @@ class ThirdController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
-	public function selectThirdContacts(Request $request)
-	{
-		$db_manager = new DBManager();
-
-		try {
-			 
-			$conection = $db_manager->getClientBDConecction(
-				$request->header('authorization'),
-				$request->header('user_id'),
-				$request->header('token'),
-				$request->header('app'));
-
-			if ( !$request->filled('third_id') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
-
-			$third_contacts = $this->third_implement->selectThirdContacts($conection, $request->third_id);
-
-		} catch (\Exception $e) {
-
-			return ExceptionAnalizer::analizerHTTPResponse($e);
-
-		} finally {
-
-			$db_manager->terminateClientBDConecction();
-		}
-
-		return response(['third_contacts' => $third_contacts], Constant::OK)
-			->header('Content-Type', 'application/json');
-	}
-
 	public function insertThirdContact(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -590,14 +560,26 @@ class ThirdController extends Controller
 		   if ( !$request->filled('id') )
 				throw new \Exception('Third is required', Constant::BAD_REQUEST);
 
-			if ( !$request->filled('third_contact') )
-				throw new \Exception('Contact is required', Constant::BAD_REQUEST);
+			if ( !$request->filled('name') )
+				throw new \Exception('Contact name is required', Constant::BAD_REQUEST);
 
 			$conection->beginTransaction();
 
 			$third_contact_insert = $this->third_implement
 				->insertThirdContact(
-					$conection, $request->id, $request->third_contact
+					$conection,
+					$request->id,
+					$request->name,
+					$request->description,
+					$request->comments,
+					$request->email,
+					$request->phone,
+					$request->phone_2,
+					$request->fax,
+					$request->title,
+					$request->birthday,
+					$request->last_contact,
+					$request->last_result
 				);
 
 			$conection->commit();
@@ -632,13 +614,30 @@ class ThirdController extends Controller
 				$request->app
 			);
 
-			if ( !$request->filled('third_contact') )
+			if ( !$request->filled('id') )
 				throw new \Exception('Contact is required', Constant::BAD_REQUEST);
+
+			if ( !$request->filled('name') )
+				throw new \Exception('Contact name is required', Constant::BAD_REQUEST);
 
 			$conection->beginTransaction();
 
 			$third_contact_update = $this->third_implement
-				->updateThirdContact($conection, $request->third_contact);
+				->updateThirdContact(
+					$conection,
+					$request->id,
+					$request->name,
+					$request->description,
+					$request->comments,
+					$request->email,
+					$request->phone,
+					$request->phone_2,
+					$request->fax,
+					$request->title,
+					$request->birthday,
+					$request->last_contact,
+					$request->last_result
+				);
 
 			$conection->commit();
 

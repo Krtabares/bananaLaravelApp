@@ -38,7 +38,7 @@ class ContactBnImplement
 			throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
 		}*/
 
-		$conection->select('CALL CR_InsertContact(
+		$conection->select('CALL CR_InsertContacts(
 				:name,
 				:description,
 				:comments,
@@ -66,7 +66,7 @@ class ContactBnImplement
 			]
 		);
 
-		$contact_insert = $conection->select('SELECT * FROM contact ORDER BY id DESC LIMIT 1');
+		$contact_insert = $conection->select('SELECT * FROM contacts ORDER BY id DESC LIMIT 1');
 
 		return $contact_insert[0];
 	}
