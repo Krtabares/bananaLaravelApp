@@ -10,7 +10,7 @@ use App\Http\BnImplements\CustomColumnsBnImplement;
 
 class CustomColumnsController extends Controller
 {
-    private $CustomColums_implement;
+    private $CustomColums_implement; 
 
     function __construct(CustomColumnsBnImplement $CustomColums_implement)
     {

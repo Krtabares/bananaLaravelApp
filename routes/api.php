@@ -198,5 +198,13 @@ Route::post('/CustomColumns/deleteColumn', 'CustomColumnsController@deleteCustom
 Route::get('CustomColumns/getByTable/{id}', 'CustomColumnsController@getCustomColumnsByTable')
 	->name('CustomColumns.getByTable');
 
-Route::get('CustomColumns/getValuesBycolumnsAndContext/{id}/{context_id?}', 'CustomColumnsController@getCustomColumnsValuesByIdColumn')
+Route::get('CustomColumns/getValuesBycolumnsAndContext/{id}', 'CustomColumnsController@getCustomColumnsValuesByIdColumn')
 	->name('CustomColumns.getValuesBycolumnsAndContext');
+
+/*  Rutas de field config  */
+
+Route::get('fieldConfig/getfieldList/{id}', 'FieldConfigController@getfieldList')
+	->name('fieldConfig.getfieldList');
+
+Route::post('fieldConfig/UpdateConfiguration', 'FieldConfigController@UpdateConfiguration')
+	->name('fieldConfig.UpdateConfiguration');
