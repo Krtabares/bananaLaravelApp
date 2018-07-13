@@ -119,8 +119,12 @@ Route::post('thirds/contact/create', 'ThirdController@insertThirdContact')
 	->name('thirds.contact.store');
 
 /* Rutas de Contact */
+
 Route::get('contact/{id}', 'ContactController@selectContactById')
 	->name('contact');
+
+Route::post('contacts/update', 'ContactController@updateContact')
+	->name('contacts.update');	
 
 /* Rutas de location */
 

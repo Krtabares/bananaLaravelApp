@@ -128,7 +128,7 @@ class ContactBnImplement
 
 		$contact_update = $conection->select('
 			SELECT * 
-			FROM contact 
+			FROM contacts
 			WHERE id = :contact_id', [
 			'contact_id' => $contact_id
 		]);

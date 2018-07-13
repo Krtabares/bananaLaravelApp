@@ -531,39 +531,4 @@ class ThirdBnImplement
 
 		return ['contact' => $contact_insert];
 	}
-
-	public function updateThirdContact(
-		$conection,
-		$id,
-		$name,
-		$description,
-		$comments,
-		$email,
-		$phone,
-		$phone_2,
-		$fax,
-		$title,
-		$birthday,
-		$last_contact,
-		$last_result
-	)
-	{
-		$contact_update = $this->contact_implement->updateContact(
-			$conection,
-			$id,
-			$name,
-			$description,
-			$comments,
-			$email,
-			$phone,
-			$phone_2,
-			$fax,
-			$title,
-			$birthday,
-			$last_contact,
-			$last_result
-		);
-
-		return ['contact_third' => $contact_update];
-	}
 }

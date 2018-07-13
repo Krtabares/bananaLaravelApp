@@ -42,4 +42,61 @@ class ContactController extends Controller
 		return response(['contact' => $contact], Constant::OK)
 			->header('Content-Type', 'application/json');
     }
+
+    public function updateContact(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+		   $conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('id') )
+				throw new \Exception('Contact is required', Constant::BAD_REQUEST);
+
+			if ( !$request->filled('name') )
+				throw new \Exception('Contact name is required', Constant::BAD_REQUEST);
+
+			$conection->beginTransaction();
+
+			$contact_update = $this->contact_implement
+				->updateContact(
+					$conection,
+					$request->id,
+					$request->name,
+					$request->description,
+					$request->comments,
+					$request->email,
+					$request->phone,
+					$request->phone_2,
+					$request->fax,
+					$request->title,
+					$request->birthday,
+					$request->last_contact,
+					$request->last_result
+				);
+
+			$conection->commit();
+
+		} catch (\Exception $e) {
+
+			$conection->rollBack();
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['contact_update' => $contact_update], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
 }
