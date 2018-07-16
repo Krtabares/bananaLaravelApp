@@ -124,7 +124,10 @@ Route::get('contact/{id}', 'ContactController@selectContactById')
 	->name('contact');
 
 Route::post('contacts/update', 'ContactController@updateContact')
-	->name('contacts.update');	
+	->name('contacts.update');
+
+Route::post('contacts/archived', 'ContactController@archivedContact')
+	->name('contacts.archived');
 
 /* Rutas de location */
 

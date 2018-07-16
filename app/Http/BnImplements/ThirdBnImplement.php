@@ -531,4 +531,11 @@ class ThirdBnImplement
 
 		return ['contact' => $contact_insert];
 	}
+
+	public function deleteThirdContact ($conection, $contact_id, $third_id) {
+		/*
+			eliminar relacion entre tercero y contacto
+			eliminar contacto
+		*/
+	}
 }

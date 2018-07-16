@@ -99,4 +99,43 @@ class ContactController extends Controller
 		return response(['contact_update' => $contact_update], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
+
+	public function archivedContact(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+		   $conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('contact_id') )
+				throw new \Exception("Contact is required", Constant::BAD_REQUEST);
+
+			if ( !$request->filled('archived') )
+				throw new \Exception("Archived is required", Constant::BAD_REQUEST);
+
+			$contact_archived = $this->contact_implement
+				->archivedContact($conection, $request->contact_id, $request->archived);
+			
+		} catch (\Exception $e) {
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['contact_archived' => $contact_archived], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
 }

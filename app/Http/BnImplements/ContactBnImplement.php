@@ -136,4 +136,18 @@ class ContactBnImplement
 		return $contact_update[0];
 	}
 
+	public function archivedContact($conection, $contact_id, $archived)
+	{
+		$conection->select('CALL DL_ArchivedContact(
+			:contact_id, :archived
+		);',
+			[
+				'contact_id' => $contact_id,
+				'archived' => $archived
+			]
+		);
+
+		//return $contact_archived[0];
+	}
+
 }

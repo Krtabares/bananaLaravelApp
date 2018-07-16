@@ -597,4 +597,47 @@ class ThirdController extends Controller
 		return response($third_contact_insert, Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
+
+	public function deleteThirdContact(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+		   $conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('contact_id') )
+				throw new \Exception("Contact is required", Constant::BAD_REQUEST);
+
+			if ( !$request->filled('third_id') )
+				throw new \Exception("Third is required", Constant::BAD_REQUEST);
+
+			$conection->beginTransaction();
+
+			$third_contact_removed = $this->third_implement
+				->deleteThirdContact($conection, $request->contact_id, $request->third_id);
+
+			$conection->commit();
+			
+		} catch (\Exception $e) {
+			
+			$conection->rollBack();
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['third_contact_removed' => $third_contact_removed], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
 }
