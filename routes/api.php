@@ -118,10 +118,16 @@ Route::get('thirds/contacts', 'ThirdController@selectThirdContacts')
 Route::post('thirds/contact/create', 'ThirdController@insertThirdContact')
 	->name('thirds.contact.store');
 
+Route::post('thirds/contact/delete', 'ThirdController@DeleteThirdContact')
+	->name('thirds.contact.delete');
+
 /* Rutas de Contact */
 
 Route::get('contact/{id}', 'ContactController@selectContactById')
 	->name('contact');
+
+Route::get('contacts/search', 'ContactController@searchContact')
+	->name('contacts.search');
 
 Route::post('contacts/update', 'ContactController@updateContact')
 	->name('contacts.update');

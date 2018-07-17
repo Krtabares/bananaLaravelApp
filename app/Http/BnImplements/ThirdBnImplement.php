@@ -362,7 +362,7 @@ class ThirdBnImplement
 			]);
 	}
 
-	public function deleteThird($conection, $third_id, $location_id)
+	/*public function deleteThird($conection, $third_id, $location_id)
 	{
 		$conection->select('CALL DL_DeleteBpartnerData(:third_id, :location_id)', [
 			'third_id' => $third_id,
@@ -381,7 +381,7 @@ class ThirdBnImplement
 			return 'successfully deleted';
 
 		return ['third' => $third_delete, 'location' => $location_delete];
-	}
+	}*/
 
 	public function insertBranchOffice($conection, $third_id, $location_id, 
 		$name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
@@ -537,5 +537,9 @@ class ThirdBnImplement
 			eliminar relacion entre tercero y contacto
 			eliminar contacto
 		*/
+		$conection->select('CALL DL_BpartnerContactRelation(:third_id, :contact_id)',[
+			'third_id' => $third_id,
+			'contact_id' => $contact_id
+		]);
 	}
 }

@@ -17,19 +17,22 @@ class ContactController extends Controller
 		$this->contact_implement = $contact_implement;
 	}
 
-    public function selectContactById(Request $request)
-    {
-    	$db_manager = new DBManager();
+	public function searchContact(Request $request)
+	{
+		$db_manager = new DBManager();
 
 		try {
 
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('contact_id'),
+				$request->header('user_id'),
 				$request->header('token'),
 				$request->header('app'));
 
-			$contact = $this->contact_implement->selectContactById($conection, $contact_id);
+			if ( !$request->filled('search') )
+				throw new \Exception('Search is required', Constant::BAD_REQUEST);
+
+			$search_contacts = $this->contact_implement->searchContact($conection, $request->search);
 
 		} catch (\Exception $e) {
 			
@@ -39,11 +42,11 @@ class ContactController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response(['contact' => $contact], Constant::OK)
+		return response(['search_contacts' => $search_contacts], Constant::OK)
 			->header('Content-Type', 'application/json');
-    }
+	}
 
-    public function updateContact(Request $request)
+	public function updateContact(Request $request)
 	{
 		$db_manager = new DBManager();
 
@@ -52,7 +55,7 @@ class ContactController extends Controller
 			if ( !$request->filled('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-		   $conection = $db_manager->getClientBDConecction(
+			$conection = $db_manager->getClientBDConecction(
 				$request->authorization,
 				$request->user_id,
 				$request->token,
