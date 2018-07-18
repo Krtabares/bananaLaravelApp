@@ -50,4 +50,17 @@ class UnitBnImplement
 
 		return $contact[0];
 	}
+
+	public function deleteUnit($conection, $id)
+	{
+		$conection->select('CALL DL_DeleteUnit(:id)', [
+			'id' => $id
+		]);
+
+		$delete = $conection->select('SELECT * FROM units WHERE id = :id', [
+			'id' => $id
+		]);
+
+		return $result = ($delete == null) ? 1 : 0 ;
+	}
 }

@@ -1,0 +1,2 @@
+INSERT INTO permissions_rols (column_id, rol_id, `create`, `read`, `update`, `delete`, created_at, updated_at)
+		SELECT id, 47, 1, 1, 1, 1, NOW(), NOW() FROM `columns`;

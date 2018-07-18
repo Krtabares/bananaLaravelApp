@@ -3,96 +3,208 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
-use Illuminate\Support\Facades\DB;
+use App\Constant;
+use App\BananaUtils\DBManager;
+use App\BananaUtils\ExceptionAnalizer;
+use App\Http\BnImplements\CategoryBnImplement;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+	private $category_implement;
 
-    	$search = $request->search;
-        $criterion = $request->criterion;
 
-        if ($search == '') {
-        	$categories = DB::table('categories as c')
-                ->select('c.id', 'c.parent_id', 'p.tag as parent_tag', 'c.tag', 'c.color', 'c.archived')
-                ->leftJoin('categories as p', 'c.parent_id', '=', 'p.id')
-                ->orderBy('parent_tag', 'ASC', 'c.tag', 'ASC')
-                ->paginate(5);
-        } else {
-        	$categories = DB::table('categories as c')
-                ->select('c.id', 'c.parent_id', 'p.tag as parent_tag', 'c.tag', 'c.color', 'c.archived')
-                ->leftJoin('categories as p', 'c.parent_id', '=', 'p.id')
-        		->where('c.'.$criterion, 'like', '%'.$search.'%')
-                ->orderBy('parent_tag', 'ASC', 'c.tag', 'ASC')
-                ->paginate(5);
-        }
+	function __construct(CategoryBnImplement $category_implement)
+	{
+		$this->category_implement = $category_implement;
+	}
 
-    	return [
-            'pagination' => [
-                'total' => $categories->total(),
-                'current_page' => $categories->currentPage(),
-                'per_page' => $categories->perPage(),
-                'last_page' => $categories->lastPage(),
-                'from' => $categories->firstItem(),
-                'to' => $categories->lastItem()
-            ],
-            'categories' => $categories
-        ];
-    }
+	public function indexCategory(Request $request)
+	{
+		$db_manager = new DBManager();
 
-    public function listParents(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+		try {
+			 
+			 $conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
-    	$categories = Category::select('id', 'tag')
-            ->orderBy('tag', 'ASC')
-            ->get();
+			$categories = $this->category_implement->selectCategories($conection);
 
-    	return $categories;
-    }
+		} catch (\Exception $e) {
 
-    public function store(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+			return ExceptionAnalizer::analizerHTTPResponse($e);
 
-        $category = new category();
-        $category->tag = $request->tag;
-        $category->color = $request->color;
-        $category->parent_id = $request->parent_id;
-        $category->archived = '0';
-        $category->save();
-    }
+		} finally {
 
-    public function update(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+			$db_manager->terminateClientBDConecction();
+		}
 
-        $category = Category::findOrFail($request->id);
-        $category->tag = $request->tag;
-        $category->color = $request->color;
-        $category->parent_id = $request->parent_id;
-        $category->archived = '0';
-        $category->save();
-    }
+		return response(['categories' => $categories], Constant::OK)->header('Content-Type', 'application/json');
+	}
 
-    public function desarchived(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+	public function createCategory(Request $request)
+	{
+		$db_manager = new DBManager();
 
-        $category = Category::findOrFail($request->id);
-        $category->archived = '0';
-        $category->save();
-    }
+		try {
 
-    public function archived(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-        $category = Category::findOrFail($request->id);
-        $category->archived = '1';
-        $category->save();
-    }
+			$conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('tag') )
+				throw new \Exception('Tag is required', Constant::BAD_REQUEST);
+
+			$category_create = $this->category_implement
+				->createCategory(
+					$conection,
+					$request->tag,
+					$request->color,
+					$request->parent_id
+				);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['category_create' => $category_create], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
+	public function updateCategory(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('id') )
+				throw new \Exception('Category is required', Constant::BAD_REQUEST);
+
+			if ( !$request->filled('tag') )
+				throw new \Exception('Tag is required', Constant::BAD_REQUEST);
+
+			$category_update = $this->category_implement
+				->updateCategory(
+					$conection,
+					$request->id,
+					$request->tag,
+					$request->color,
+					$request->parent_id
+				);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['category_update' => $category_update], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
+	public function archivedCategory(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('id') )
+				throw new \Exception('Category is required', Constant::BAD_REQUEST);
+
+			if ( !$request->filled('archived') )
+				throw new \Exception('Archived is required', Constant::BAD_REQUEST);
+
+			$category_archived = $this->category_implement
+				->archivedCategory(
+					$conection,
+					$request->id,
+					$request->archived
+				);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['category_archived' => $category_archived], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
+	public function deleteCategory(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('id') )
+				throw new \Exception('Category is required', Constant::BAD_REQUEST);
+
+			$category_delete = $this->category_implement
+				->deleteCategory(
+					$conection,
+					$request->id
+				);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['category_delete' => $category_delete], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
 }

@@ -173,4 +173,42 @@ class UnitController extends Controller
 		return response(['unit_archived' => $unit_archived], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
+
+	public function deleteUnit(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('id') )
+				throw new \Exception('Unit is required', Constant::BAD_REQUEST);
+
+			$unit_delete = $this->unit_implement
+				->deleteUnit(
+					$conection,
+					$request->id
+				);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['unit_delete' => $unit_delete], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
 }
