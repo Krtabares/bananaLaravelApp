@@ -138,13 +138,27 @@ Route::post('contacts/archived', 'ContactController@archivedContact')
 /* Rutas de location */
 
 Route::get('location/countries', 'LocationController@indexLocationCountry')
-	->name('locaton.countries');
+	->name('location.countries');
 
 Route::get('location/states', 'LocationController@indexLocationState')
-	->name('locaton.states');
+	->name('location.states');
 
 Route::get('location/cities', 'LocationController@indexLocationCity')
-	->name('locaton.cities');
+	->name('location.cities');
+
+/* Rutas de unidades */
+
+Route::get('metering-units/', 'UnitController@indexUnit')
+	->name('metering-units');
+
+Route::post('metering-units/create', 'UnitController@createUnit')
+	->name('metering-units.create');
+
+Route::post('metering-units/update', 'UnitController@updateUnit')
+	->name('metering-units.update');
+
+Route::post('metering-units/archived', 'UnitController@archivedUnit')
+	->name('metering-units.archived');
 
 /*  Rutas de paises  */
 
