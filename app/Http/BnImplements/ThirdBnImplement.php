@@ -5,19 +5,23 @@ use App\Constant;
 use Illuminate\Support\Facades\DB;
 use App\Http\BnImplements\LocationBnImplement;
 use App\Http\BnImplements\ContactBnImplement;
+use App\Http\BnImplements\CustomColumnsBnImplement;
 
 class ThirdBnImplement
 {
 	private $location_implement;
 	private $contact_implement;
+	private $CustomColums_implement; 
 
 	function __construct(
 		LocationBnImplement $location_implement,
-		ContactBnImplement $contact_implement
+		ContactBnImplement $contact_implement,
+		CustomColumnsBnImplement $CustomColums_implement
 	)
 	{
 		$this->location_implement = $location_implement;
 		$this->contact_implement = $contact_implement;
+		$this->CustomColums_implement = $CustomColums_implement;
 	}
 
 	public function selectThirds($conection)
@@ -127,7 +131,7 @@ class ThirdBnImplement
 			throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
 		}*/
 
-		$conection->select('CALL CR_InsertBpartners(
+		$lid = $conection->select('CALL CR_InsertBpartners(
 				:org_id,
 				:logo,
 				:customer,
@@ -185,8 +189,9 @@ class ThirdBnImplement
 					'greeting_id' => $greeting_id
 				]
 			);
+		// dd($lid);
 
-		$third_insert = $conection->select('SELECT * FROM bpartners ORDER BY id DESC LIMIT 1');
+		// $third_insert = $conection->select('SELECT * FROM bpartners ORDER BY id DESC LIMIT 1');
 
 		$location_insert = $this->location_implement
 			->insertLocation(
@@ -200,13 +205,13 @@ class ThirdBnImplement
 			);
 
 		$branch_office_insert = $this->insertBranchOffice(
-			$conection, $third_insert[0]->id, $location_insert->id,
+			$conection, $lid[0]->LID, $location_insert->id,
 			'Principal Office', 1, 1, 1, 1, $branch_office['phone'],
 			$branch_office['phone_2'], '', ''
 		);
 
 		return [
-			'third' => $third_insert[0],
+			'third' => $lid[0]->LID,
 			'location' => $location_insert,
 			'branch_office' => $branch_office_insert
 		];
@@ -566,4 +571,6 @@ class ThirdBnImplement
 
 		return ['contact_third' => $contact_update];
 	}
+
+
 }

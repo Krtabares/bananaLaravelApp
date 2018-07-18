@@ -143,5 +143,18 @@ class CustomColumnsBnImplement
     {
        return $conection->select('SELECT * FROM column_type');
     }
+
+    public function customValues($conection, $values, $contextid)
+    {
+      if(!is_null($values) && is_array($values) && !empty($values)){
+
+        foreach ($values as $key => $value) {
+          $this->insertCustomColumnsValue($conection, $value, $values['id'], $contextid);
+        }
+       
+
+      }
+
+    }
 }
 
