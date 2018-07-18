@@ -3,72 +3,174 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Unit;
+use App\Constant;
+use App\BananaUtils\DBManager;
+use App\BananaUtils\ExceptionAnalizer;
+use App\Http\BnImplements\UnitBnImplement;
 
 class UnitController extends Controller
 {
-    public function index(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+	private $unit_implement;
 
-        $search = $request->search;
-        $criterion = $request->criterion;
 
-        if ($search == '')
-            $units = Unit::orderBy('tag')->paginate(5);
-        else
-            $units = Unit::where($criterion, 'like', '%'.$search.'%')->orderBy('tag')->paginate(5);
+	function __construct(UnitBnImplement $unit_implement)
+	{
+		$this->unit_implement = $unit_implement;
+	}
 
-        return [
-            'pagination' => [
-                'total' => $units->total(),
-                'current_page' => $units->currentPage(),
-                'per_page' => $units->perPage(),
-                'last_page' => $units->lastPage(),
-                'from' => $units->firstItem(),
-                'to' => $units->lastItem()
-            ],
-            'units' => $units
-        ];
-    }
+	public function indexUnit(Request $request)
+	{
+		$db_manager = new DBManager();
 
-    public function store(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+		try {
+			 
+			 $conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
-        $unit = new Unit();
-        $unit->tag = $request->tag;
-        $unit->quantity = $request->quantity;
-        $unit->archived = '0';
-        $unit->save();
-    }
+			$units = $this->unit_implement->selectUnits($conection);
 
-    public function update(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+		} catch (\Exception $e) {
 
-        $unit = Unit::findOrFail($request->id);
-        $unit->tag = $request->tag;
-        $unit->quantity = $request->quantity;
-        $unit->archived = '0';
-        $unit->save();
-    }
+			return ExceptionAnalizer::analizerHTTPResponse($e);
 
-    public function archived(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+		} finally {
 
-        $unit = Unit::findOrFail($request->id);
-        $unit->archived = '1';
-        $unit->save();
-    }
+			$db_manager->terminateClientBDConecction();
+		}
 
-    public function desarchived(Request $request)
-    {
-        if ( ! $request->ajax() ) return redirect('/');
+		return response(['units' => $units], Constant::OK)->header('Content-Type', 'application/json');
+	}
 
-        $unit = Unit::findOrFail($request->id);
-        $unit->archived = '0';
-        $unit->save();
-    }
+	public function createUnit(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('tag') )
+				throw new \Exception('Tag is required', Constant::BAD_REQUEST);
+
+			if ( !$request->filled('quantity') )
+				throw new \Exception('Quantity is required', Constant::BAD_REQUEST);
+
+			$unit_create = $this->unit_implement
+				->createUnit(
+					$conection,
+					$request->tag,
+					$request->quantity
+				);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['unit_create' => $unit_create], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
+	public function updateUnit(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('id') )
+				throw new \Exception('Unit is required', Constant::BAD_REQUEST);
+
+			if ( !$request->filled('tag') )
+				throw new \Exception('Tag is required', Constant::BAD_REQUEST);
+
+			if ( !$request->filled('quantity') )
+				throw new \Exception('Quantity is required', Constant::BAD_REQUEST);
+
+			$unit_update = $this->unit_implement
+				->updateUnit(
+					$conection,
+					$request->id,
+					$request->tag,
+					$request->quantity
+				);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['unit_update' => $unit_update], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
+	public function archivedUnit(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('id') )
+				throw new \Exception('Unit is required', Constant::BAD_REQUEST);
+
+			if ( !$request->filled('archived') )
+				throw new \Exception('Archived is required', Constant::BAD_REQUEST);
+
+			$unit_archived = $this->unit_implement
+				->archivedUnit(
+					$conection,
+					$request->id,
+					$request->archived
+				);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['unit_archived' => $unit_archived], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
 }

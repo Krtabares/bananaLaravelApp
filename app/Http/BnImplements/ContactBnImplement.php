@@ -6,16 +6,6 @@ use Illuminate\Support\Facades\DB;
 
 class ContactBnImplement
 {
-	public function selectContactById($conection, $contact_id)
-	{
-		$contact = $conection->select('SELECT * FROM contacts
-			WHERE id = :contact_id;', [
-			'contact_id' => $contact_id
-		]);
-
-		return $contact[0];
-	}
-
 	public function insertContact($conection,
 		$name,
 		$description,
@@ -69,6 +59,19 @@ class ContactBnImplement
 		$contact_insert = $conection->select('SELECT * FROM contacts ORDER BY id DESC LIMIT 1');
 
 		return $contact_insert[0];
+	}
+
+	public function searchContact($conection, $search)
+	{
+		return $conection->select('
+			SELECT * FROM contacts WHERE
+			`name` LIKE :name ||
+			`title` LIKE :title
+		',
+		[
+			'name' => '%'.$search.'%',
+			'title' => '%'.$search.'%'
+		]);
 	}
 
 	public function updateContact($conection,
@@ -128,12 +131,26 @@ class ContactBnImplement
 
 		$contact_update = $conection->select('
 			SELECT * 
-			FROM contact 
+			FROM contacts
 			WHERE id = :contact_id', [
 			'contact_id' => $contact_id
 		]);
 
 		return $contact_update[0];
+	}
+
+	public function archivedContact($conection, $contact_id, $archived)
+	{
+		$conection->select('CALL DL_ArchivedContact(
+			:contact_id, :archived
+		);',
+			[
+				'contact_id' => $contact_id,
+				'archived' => $archived
+			]
+		);
+
+		//return $contact_archived[0];
 	}
 
 }

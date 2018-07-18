@@ -598,7 +598,7 @@ class ThirdController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
-	public function updateThirdContact(Request $request)
+	public function deleteThirdContact(Request $request)
 	{
 		$db_manager = new DBManager();
 
@@ -614,35 +614,21 @@ class ThirdController extends Controller
 				$request->app
 			);
 
-			if ( !$request->filled('id') )
-				throw new \Exception('Contact is required', Constant::BAD_REQUEST);
+			if ( !$request->filled('contact_id') )
+				throw new \Exception("Contact is required", Constant::BAD_REQUEST);
 
-			if ( !$request->filled('name') )
-				throw new \Exception('Contact name is required', Constant::BAD_REQUEST);
+			if ( !$request->filled('third_id') )
+				throw new \Exception("Third is required", Constant::BAD_REQUEST);
 
 			$conection->beginTransaction();
 
-			$third_contact_update = $this->third_implement
-				->updateThirdContact(
-					$conection,
-					$request->id,
-					$request->name,
-					$request->description,
-					$request->comments,
-					$request->email,
-					$request->phone,
-					$request->phone_2,
-					$request->fax,
-					$request->title,
-					$request->birthday,
-					$request->last_contact,
-					$request->last_result
-				);
+			$third_contact_removed = $this->third_implement
+				->deleteThirdContact($conection, $request->contact_id, $request->third_id);
 
 			$conection->commit();
-
+			
 		} catch (\Exception $e) {
-
+			
 			$conection->rollBack();
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
@@ -651,7 +637,7 @@ class ThirdController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response($third_contact_update, Constant::OK)
+		return response(['third_contact_removed' => $third_contact_removed], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 }

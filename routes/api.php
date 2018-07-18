@@ -118,20 +118,47 @@ Route::get('thirds/contacts', 'ThirdController@selectThirdContacts')
 Route::post('thirds/contact/create', 'ThirdController@insertThirdContact')
 	->name('thirds.contact.store');
 
+Route::post('thirds/contact/delete', 'ThirdController@DeleteThirdContact')
+	->name('thirds.contact.delete');
+
 /* Rutas de Contact */
+
 Route::get('contact/{id}', 'ContactController@selectContactById')
 	->name('contact');
+
+Route::get('contacts/search', 'ContactController@searchContact')
+	->name('contacts.search');
+
+Route::post('contacts/update', 'ContactController@updateContact')
+	->name('contacts.update');
+
+Route::post('contacts/archived', 'ContactController@archivedContact')
+	->name('contacts.archived');
 
 /* Rutas de location */
 
 Route::get('location/countries', 'LocationController@indexLocationCountry')
-	->name('locaton.countries');
+	->name('location.countries');
 
 Route::get('location/states', 'LocationController@indexLocationState')
-	->name('locaton.states');
+	->name('location.states');
 
 Route::get('location/cities', 'LocationController@indexLocationCity')
-	->name('locaton.cities');
+	->name('location.cities');
+
+/* Rutas de unidades */
+
+Route::get('metering-units/', 'UnitController@indexUnit')
+	->name('metering-units');
+
+Route::post('metering-units/create', 'UnitController@createUnit')
+	->name('metering-units.create');
+
+Route::post('metering-units/update', 'UnitController@updateUnit')
+	->name('metering-units.update');
+
+Route::post('metering-units/archived', 'UnitController@archivedUnit')
+	->name('metering-units.archived');
 
 /*  Rutas de paises  */
 
