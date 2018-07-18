@@ -160,6 +160,26 @@ Route::post('metering-units/update', 'UnitController@updateUnit')
 Route::post('metering-units/archived', 'UnitController@archivedUnit')
 	->name('metering-units.archived');
 
+Route::post('metering-units/delete', 'UnitController@deleteUnit')
+	->name('metering-units.delete');
+
+/* Rutas de categorias */
+
+Route::get('categories/', 'CategoryController@indexCategory')
+	->name('categories');
+
+Route::post('categories/create', 'CategoryController@createCategory')
+	->name('categories.create');
+
+Route::post('categories/update', 'CategoryController@updateCategory')
+	->name('categories.update');
+
+Route::post('categories/archived', 'CategoryController@archivedCategory')
+	->name('categories.archived');
+
+Route::post('categories/delete', 'CategoryController@deleteCategory')
+	->name('categories.delete');
+
 /*  Rutas de paises  */
 
 Route::get('/countries', 'CountryController@indexCountry')

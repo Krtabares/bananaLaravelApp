@@ -1,0 +1,9 @@
+USE information_schema;
+SET @table_name := 'contacts';
+INSERT INTO `banana`.`tables` (`table_name`, `description`, `created_at`, `updated_at`)
+    VALUES (@table_name, UPPER( REPLACE( @table_name , '_', ' ') ), NOW(), NOW() );
+    SET @table_id := (SELECT id FROM `banana`.`tables` ORDER BY id DESC LIMIT 1);
+    INSERT INTO `banana`.`columns` (`table_id`, `column_name`, `description`, `created_at`, `updated_at` )
+		SELECT @table_id, COLUMN_NAME, UPPER( REPLACE( COLUMN_NAME , '_', ' ') ), NOW(), NOW()
+        FROM COLUMNS WHERE TABLE_NAME = @table_name;
+USE banana;

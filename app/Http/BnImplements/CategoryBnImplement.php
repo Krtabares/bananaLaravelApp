@@ -1,30 +1,32 @@
 <?php
-
 namespace App\Http\BnImplements;
 
 use App\Constant;
 use Illuminate\Support\Facades\DB;
 
-class UnitBnImplement
+class CategoryBnImplement
 {
-	public function selectUnits($conection)
+	public function selectCategories($conection)
 	{
-		return $conection->select('SELECT * FROM units ORDER BY tag');
+		return $conection->select('SELECT * FROM categories ORDER BY tag');
 	}
 
-	public function createUnit($conection, $tag, $quantity)
+	public function createCategory($conection, $tag, $color, $category_id)
 	{
-		$unit_id = $conection->select('CALL CR_InsertUnits(:tag, :quantity)',[
+		$category_id = $conection->select('CALL CR_InsertCategory(:tag, :color, :parent_id)',[
 			'tag' => $tag,
-			'quantity' => $quantity
+			'color' => $color,
+			'parent_'
 		]);
 
-		return $unit_id[0]->LID;
+		return $category_id[0]->LID;
 	}
+
+	/*
 
 	public function updateUnit($conection, $id, $tag, $quantity)
 	{
-		$conection->select('CALL UP_UpdateUnits(:id, :tag, :quantity)', [
+		$conection->select('CALL UP_UpdateCategory(:id, :tag, :quantity)', [
 			'id' => $id,
 			'tag' => $tag,
 			'quantity' => $quantity
@@ -39,7 +41,7 @@ class UnitBnImplement
 
 	public function archivedUnit($conection, $id, $archived)
 	{
-		$conection->select('CALL DL_ArchivedUnits(:id, :archived)', [
+		$conection->select('CALL DL_ArchivedCategory(:id, :archived)', [
 			'id' => $id,
 			'archived' => $archived
 		]);
@@ -62,5 +64,5 @@ class UnitBnImplement
 		]);
 
 		return $result = ($delete == null) ? 1 : 0 ;
-	}
+	}*/
 }
