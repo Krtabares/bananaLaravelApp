@@ -196,8 +196,7 @@ class UnitController extends Controller
 			$unit_delete = $this->unit_implement
 				->deleteUnit(
 					$conection,
-					$request->id,
-					$request->archived
+					$request->id
 				);
 
 		} catch (\Exception $e) {

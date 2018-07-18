@@ -11,58 +11,57 @@ class CategoryBnImplement
 		return $conection->select('SELECT * FROM categories ORDER BY tag');
 	}
 
-	public function createCategory($conection, $tag, $color, $category_id)
+	public function createCategory($conection, $tag, $color, $parent_id)
 	{
-		$category_id = $conection->select('CALL CR_InsertCategory(:tag, :color, :parent_id)',[
+		$category = $conection->select('CALL CR_InsertCategory(:tag, :color, :parent_id)',[
 			'tag' => $tag,
 			'color' => $color,
-			'parent_'
+			'parent_id' => $parent_id
 		]);
 
-		return $category_id[0]->LID;
+		return $category[0]->LID;
 	}
 
-	/*
-
-	public function updateUnit($conection, $id, $tag, $quantity)
+	public function updateCategory($conection, $id, $tag, $color, $parent_id)
 	{
-		$conection->select('CALL UP_UpdateCategory(:id, :tag, :quantity)', [
+		$conection->select('CALL UP_UpdateCategory(:id, :tag, :color, :parent_id)', [
 			'id' => $id,
 			'tag' => $tag,
-			'quantity' => $quantity
+			'color' => $color,
+			'parent_id' => $parent_id
 		]);
 
-		$contact = $conection->select('SELECT * FROM units WHERE id = :id', [
+		$category = $conection->select('SELECT * FROM categories WHERE id = :id', [
 			'id' => $id
 		]);
 
-		return $contact[0];
+		return $category[0];
 	}
 
-	public function archivedUnit($conection, $id, $archived)
+	public function archivedCategory($conection, $id, $archived)
 	{
 		$conection->select('CALL DL_ArchivedCategory(:id, :archived)', [
 			'id' => $id,
 			'archived' => $archived
 		]);
 
-		$contact = $conection->select('SELECT * FROM units WHERE id = :id', [
+		$category = $conection->select('SELECT * FROM categories WHERE id = :id', [
 			'id' => $id
 		]);
 
-		return $contact[0];
+		return $category[0];
 	}
 
-	public function deleteUnit($conection, $id)
+	public function deleteCategory($conection, $id)
 	{
-		$conection->select('CALL DL_DeleteUnit(:id)', [
+		$conection->select('CALL DL_DeleteCategory(:id)', [
 			'id' => $id
 		]);
 
-		$delete = $conection->select('SELECT * FROM units WHERE id = :id', [
+		$delete = $conection->select('SELECT * FROM categories WHERE id = :id', [
 			'id' => $id
 		]);
 
 		return $result = ($delete == null) ? 1 : 0 ;
-	}*/
+	}
 }
