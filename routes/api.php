@@ -306,3 +306,11 @@ Route::get('fieldConfig/getfieldList/{id}', 'FieldConfigController@getfieldList'
 
 Route::post('fieldConfig/UpdateConfiguration', 'FieldConfigController@UpdateConfiguration')
 	->name('fieldConfig.UpdateConfiguration');
+
+/*  Rutas de products  */
+
+Route::get('products/getProductList', 'ProductController@getProductList')
+	->name('products.getProductList');
+
+Route::post('products/create', 'ProductController@storeProduct')
+	->name('products.create');

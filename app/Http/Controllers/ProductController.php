@@ -20,7 +20,7 @@ class ProductController extends Controller
 		$this->product_implement = $product_implement;
 	}
 
-    public function indexThird(Request $request)
+    public function getProductList(Request $request)
 	{
 		$db_manager = new DBManager();
 
@@ -44,6 +44,67 @@ class ProductController extends Controller
 		}
 
 		return response(json_encode(['products' => $products]), Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
+	public function storeProduct(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->filled('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+		   $conection = $db_manager->getClientBDConecction(
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app
+			);
+
+			if ( !$request->filled('product') )
+				throw new \Exception("product is empty", Constant::BAD_REQUEST);
+			else{
+				$product = $request->product;
+				if($product->condition_id == null){
+					throw new \Exception("condition is required", Constant::BAD_REQUEST);
+				}
+				if($product->unit_id == null){
+					throw new \Exception("Unit of mesauretment is required", Constant::BAD_REQUEST);
+				}
+			}
+
+
+			// if ( !$request->filled('reference_no') )
+			// 	throw new \Exception("Reference number is required", Constant::BAD_REQUEST);
+
+			// if ( !$request->filled('name') )
+			// 	throw new \Exception("Third name is required", Constant::BAD_REQUEST);
+			
+			// if ( !$request->filled('third_location') )
+			// 	throw new \Exception("Third Location is required", Constant::BAD_REQUEST);
+
+			// if ( $request->third_location['address_1'] == NULL )
+			// 	throw new \Exception("Indicate at least one address", Constant::BAD_REQUEST);
+
+			$conection->beginTransaction();
+
+			$product_insert = $this->third_implement->insertThird($conection,$product);
+
+			$conection->commit();
+			
+		} catch (\Exception $e) {
+			
+			$conection->rollBack();
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response($product_insert, Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 
