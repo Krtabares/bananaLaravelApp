@@ -172,7 +172,19 @@ class UserBnImplement
 		if (count($result)==0) {
 			throw new \Exception('User : ' . $email.' '.Constant::MSG_NOT_FOUND, Constant::NOT_FOUND);
 		}
+		$result[0]['contacts'] = this->selectContacsbyUser($conection, $result[0]->contact_id);
 		return $result;
 	}
+
+	public function selectContacsbyUser($conection,$id)
+    {
+        return $conection->select('SELECT * FROM contacts WHERE id = $id');
+    }
+
+
+	public function selectRolsforSelect($conection)
+    {
+        return $conection->select('SELECT id, name FROM rols ORDER BY rol_name, id;');
+    }
 
 }
