@@ -194,6 +194,20 @@ Route::post('conditions/update', 'ConditionController@updateCondition')
 Route::post('conditions/delete', 'ConditionController@deleteCondition')
 	->name('conditions.delete');
 
+/* Rutas de tesoreria */
+
+Route::get('warehouses/', 'WarehouseController@indexWarehouse')
+	->name('warehouses');
+
+Route::post('warehouses/create', 'WarehouseController@createWarehouse')
+	->name('warehouses.create');
+
+Route::post('warehouses/update', 'WarehouseController@updateWarehouse')
+	->name('warehouses.update');
+
+Route::post('warehouses/delete', 'WarehouseController@deleteWarehouse')
+	->name('warehouses.delete');
+
 /* Rutas de fabricantes */
 
 Route::get('manufacturers/', 'ManufacturerController@indexManufacturer')
