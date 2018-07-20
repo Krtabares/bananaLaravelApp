@@ -8,13 +8,13 @@ class CategoryBnImplement
 {
 	public function selectCategories($conection)
 	{
-		return $conection->select('SELECT * FROM categories ORDER BY tag');
+		return $conection->select('SELECT * FROM categories ORDER BY updated_at DESC');
 	}
 
-	public function createCategory($conection, $tag, $color, $parent_id)
+	public function createCategory($conection, $name, $color, $parent_id)
 	{
-		$category = $conection->select('CALL CR_InsertCategory(:tag, :color, :parent_id)',[
-			'tag' => $tag,
+		$category = $conection->select('CALL CR_InsertCategory(:name, :color, :parent_id)',[
+			'name' => $name,
 			'color' => $color,
 			'parent_id' => $parent_id
 		]);
@@ -22,11 +22,11 @@ class CategoryBnImplement
 		return $category[0]->LID;
 	}
 
-	public function updateCategory($conection, $id, $tag, $color, $parent_id)
+	public function updateCategory($conection, $id, $name, $color, $parent_id)
 	{
-		$conection->select('CALL UP_UpdateCategory(:id, :tag, :color, :parent_id)', [
+		$conection->select('CALL UP_UpdateCategory(:id, :name, :color, :parent_id)', [
 			'id' => $id,
-			'tag' => $tag,
+			'name' => $name,
 			'color' => $color,
 			'parent_id' => $parent_id
 		]);

@@ -6,19 +6,19 @@ use Illuminate\Http\Request;
 use App\Constant;
 use App\BananaUtils\DBManager;
 use App\BananaUtils\ExceptionAnalizer;
-use App\Http\BnImplements\CategoryBnImplement;
+use App\Http\BnImplements\ManufacturerBnImplement;
 
-class CategoryController extends Controller
+class ManufacturerController extends Controller
 {
-	private $category_implement;
+	private $manufacturer_implement;
 
 
-	function __construct(CategoryBnImplement $category_implement)
+	function __construct(ManufacturerBnImplement $manufacturer_implement)
 	{
-		$this->category_implement = $category_implement;
+		$this->manufacturer_implement = $manufacturer_implement;
 	}
 
-	public function indexCategory(Request $request)
+	public function indexManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
 
@@ -30,7 +30,7 @@ class CategoryController extends Controller
 				$request->header('token'),
 				$request->header('app'));
 
-			$categories = $this->category_implement->selectCategories($conection);
+			$manufacturers = $this->manufacturer_implement->selectManufacturers($conection);
 
 		} catch (\Exception $e) {
 
@@ -41,10 +41,10 @@ class CategoryController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response(['categories' => $categories], Constant::OK)->header('Content-Type', 'application/json');
+		return response(['manufacturers' => $manufacturers], Constant::OK)->header('Content-Type', 'application/json');
 	}
 
-	public function createCategory(Request $request)
+	public function createManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
 
@@ -63,12 +63,10 @@ class CategoryController extends Controller
 			if ( !$request->filled('name') )
 				throw new \Exception('Name is required', Constant::BAD_REQUEST);
 
-			$category_create = $this->category_implement
-				->createCategory(
+			$manufacturer_create = $this->manufacturer_implement
+				->createManufacturer(
 					$conection,
-					$request->name,
-					$request->color,
-					$request->parent_id
+					$request->name
 				);
 
 		} catch (\Exception $e) {
@@ -80,11 +78,11 @@ class CategoryController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response(['category_create' => $category_create], Constant::OK)
+		return response(['manufacturer_create' => $manufacturer_create], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 
-	public function updateCategory(Request $request)
+	public function updateManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
 
@@ -101,18 +99,16 @@ class CategoryController extends Controller
 			);
 
 			if ( !$request->filled('id') )
-				throw new \Exception('Category is required', Constant::BAD_REQUEST);
+				throw new \Exception('Manufacturer is required', Constant::BAD_REQUEST);
 
 			if ( !$request->filled('name') )
 				throw new \Exception('Name is required', Constant::BAD_REQUEST);
 
-			$category_update = $this->category_implement
-				->updateCategory(
+			$manufacturer_update = $this->manufacturer_implement
+				->updateManufacturer(
 					$conection,
 					$request->id,
-					$request->name,
-					$request->color,
-					$request->parent_id
+					$request->name
 				);
 
 		} catch (\Exception $e) {
@@ -124,11 +120,11 @@ class CategoryController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response(['category_update' => $category_update], Constant::OK)
+		return response(['manufacturer_update' => $manufacturer_update], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 
-	public function archivedCategory(Request $request)
+	public function archivedManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
 
@@ -145,13 +141,13 @@ class CategoryController extends Controller
 			);
 
 			if ( !$request->filled('id') )
-				throw new \Exception('Category is required', Constant::BAD_REQUEST);
+				throw new \Exception('Manufacturer is required', Constant::BAD_REQUEST);
 
 			if ( !$request->filled('archived') )
 				throw new \Exception('Archived is required', Constant::BAD_REQUEST);
 
-			$category_archived = $this->category_implement
-				->archivedCategory(
+			$manufacturer_archived = $this->manufacturer_implement
+				->archivedManufacturer(
 					$conection,
 					$request->id,
 					$request->archived
@@ -166,11 +162,11 @@ class CategoryController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response(['category_archived' => $category_archived], Constant::OK)
+		return response(['manufacturer_archived' => $manufacturer_archived], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 
-	public function deleteCategory(Request $request)
+	public function deleteManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
 
@@ -187,10 +183,10 @@ class CategoryController extends Controller
 			);
 
 			if ( !$request->filled('id') )
-				throw new \Exception('Category is required', Constant::BAD_REQUEST);
+				throw new \Exception('Manufacturer is required', Constant::BAD_REQUEST);
 
-			$category_delete = $this->category_implement
-				->deleteCategory(
+			$manufacturer_delete = $this->manufacturer_implement
+				->deleteManufacturer(
 					$conection,
 					$request->id
 				);
@@ -204,7 +200,7 @@ class CategoryController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response(['category_delete' => $category_delete], Constant::OK)
+		return response(['manufacturer_delete' => $manufacturer_delete], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 }

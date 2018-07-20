@@ -180,6 +180,51 @@ Route::post('categories/archived', 'CategoryController@archivedCategory')
 Route::post('categories/delete', 'CategoryController@deleteCategory')
 	->name('categories.delete');
 
+/* Rutas de condiciones */
+
+Route::get('conditions/', 'ConditionController@indexCondition')
+	->name('conditions');
+
+Route::post('conditions/create', 'ConditionController@createCondition')
+	->name('conditions.create');
+
+Route::post('conditions/update', 'ConditionController@updateCondition')
+	->name('conditions.update');
+
+Route::post('conditions/delete', 'ConditionController@deleteCondition')
+	->name('conditions.delete');
+
+/* Rutas de fabricantes */
+
+Route::get('manufacturers/', 'ManufacturerController@indexManufacturer')
+	->name('manufacturers');
+
+Route::post('manufacturers/create', 'ManufacturerController@createManufacturer')
+	->name('manufacturers.create');
+
+Route::post('manufacturers/update', 'ManufacturerController@updateManufacturer')
+	->name('manufacturers.update');
+
+Route::post('manufacturers/archived', 'ManufacturerController@archivedManufacturer')
+	->name('manufacturers.archived');
+
+Route::post('manufacturers/delete', 'ManufacturerController@deleteManufacturer')
+	->name('manufacturers.delete');
+
+/* Rutas de lista de precios */
+
+Route::get('price-lists/', 'PriceListController@indexPriceList')
+	->name('price-lists');
+
+Route::post('price-lists/create', 'PriceListController@createPriceList')
+	->name('price-lists.create');
+
+Route::post('price-lists/update', 'PriceListController@updatePriceList')
+	->name('price-lists.update');
+
+Route::post('price-lists/delete', 'PriceListController@deletePriceList')
+	->name('price-lists.delete');
+
 /*  Rutas de paises  */
 
 Route::get('/countries', 'CountryController@indexCountry')
