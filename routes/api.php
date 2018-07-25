@@ -89,6 +89,29 @@ Route::post('users/permits/create', 'UserController@storePermitsUser')
 Route::put('users/permits/update', 'UserController@updatePermitsUser')
 	->name('users.permits.update');
 
+/* Rutas de organizaciones */
+
+Route::get('organizations', 'OrganizationController@indexOrganization')
+	->name('organizations');
+
+Route::get('organization/{id}', 'OrganizationController@selectOrganizationById')
+	->name('organization');
+
+Route::get('organizations/filter', 'OrganizationController@indexFilterOrganization')
+	->name('organizations.filter');
+
+Route::post('organizations/create', 'OrganizationController@storeOrganization')
+	->name('organizations.store');
+
+Route::post('organizations/update', 'OrganizationController@updateOrganization')
+	->name('organizations.update');
+
+Route::post('organizations/archived', 'OrganizationController@archivedOrganization')
+	->name('organizations.archived');
+
+Route::post('organizations/delete', 'OrganizationController@deleteOrganization')
+	->name('organizations.delete');
+	
 /* Rutas de Terceros */
 
 Route::get('thirds', 'ThirdController@indexThird')
