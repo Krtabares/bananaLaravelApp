@@ -9,7 +9,7 @@ use App\BananaUtils\DBManager;
 use App\BananaUtils\ExceptionAnalizer;
 use App\Http\BnImplements\OrganizationBnImplement;
 
-class ThirdController extends Controller
+class OrganizationController extends Controller
 {
 
 }
