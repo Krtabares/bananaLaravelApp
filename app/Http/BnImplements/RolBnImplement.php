@@ -9,7 +9,7 @@ class RolBnImplement
 {
     public function selectRols($conection)
     {
-        return $conection->select('SELECT * FROM rols ORDER BY rol_name, id;');
+        return $conection->select('SELECT * FROM rols ORDER BY name, id;');
     }
 
     public function selectRolById($conection, $id)
@@ -31,7 +31,7 @@ class RolBnImplement
         if ( $permits_rol != NULL ) {
 
             foreach ($permits_rol as $key => $permit_rol) {
-            
+
                 $this->insertPermitsRol($conection, $rol_insert[0]->id, $permit_rol['column_id'], $permit_rol['create'],
                     $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
 
@@ -55,7 +55,7 @@ class RolBnImplement
         ]);
 
         foreach ($permits_rol as $key => $permit_rol) {
-                    
+
             $this->updatePermitsRol($conection, $rol_update[0]->id, $permit_rol['column_id'], $permit_rol['create'],
                 $permit_rol['read'], $permit_rol['update'], $permit_rol['delete']);
 
@@ -88,13 +88,13 @@ class RolBnImplement
             case 2:
                 $functionCall = 'RD_SelectPermitsAssociatesAll';
                 break;
-            
+
             default:
                 $functionCall = 'RD_SelectPermitsAssociatesAll';
                 break;
         }
-        
-        
+
+
         $permits = $conection->select('CALL '.$functionCall.'(:rol_id);',
             ['rol_id' => $rol_id]
         );
@@ -104,11 +104,11 @@ class RolBnImplement
         $tables = [];
 
         if ($permits != NULL) {
-            
+
             foreach ($permits as $key => $permit) {
 
                 if (  $table_id != $permit->table_id ) {
-                    
+
                     $tables[$index]['table_id'] = $permit->table_id;
                     $tables[$index]['table_name'] = $permit->table_name;
                     $tables[$index]['table_description'] = $permit->table_description;

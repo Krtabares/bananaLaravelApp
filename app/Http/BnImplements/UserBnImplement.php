@@ -9,7 +9,7 @@ class UserBnImplement
 {
 	public function selectUsers($conection)
 	{
-		return $conection->select('SELECT users.id, users.rol_id, rols.rol_name, users.user_name,
+		return $conection->select('SELECT users.id, users.rol_id, rols.name rol_name, users.name user_name,
 				users.email, users.all_access_organization, users.all_access_column,
 				users.archived, users.created_at, users.updated_at
 			FROM users, rols
@@ -44,12 +44,12 @@ class UserBnImplement
 			case 2:
 				$functionCall = 'RD_SelectPermitsAssociatesUserAll';
 				break;
-			
+
 			default:
 				$functionCall = 'RD_SelectPermitsAssociatesUserAll';
 				break;
 		}
-		
+
 		$permits = $conection->select('CALL '.$functionCall.'(:user_id);',
 			['user_id' => $user_id]
 		);
@@ -60,7 +60,7 @@ class UserBnImplement
 		foreach ($permits as $key => $permit) {
 
 			if (  $table_id != $permit->table_id ) {
-				
+
 				$tables[$index]['table_id'] = $permit->table_id;
 				$tables[$index]['table_name'] = $permit->table_name;
 				$tables[$index]['table_description'] = $permit->table_description;
@@ -171,14 +171,18 @@ class UserBnImplement
 		$result = $conection->select('CALL RD_LoginUser(:email_user)',['email_user' => $email]);
 		if (count($result)==0) {
 			throw new \Exception('User : ' . $email.' '.Constant::MSG_NOT_FOUND, Constant::NOT_FOUND);
-		}
-		$result[0]['contacts'] = this->selectContacsbyUser($conection, $result[0]->contact_id);
+        }else{
+            $contact_id = $result[0]->contact_id;
+        }
+
+            $result[0]->contact_id = $this->selectContacsbyUser($conection,$contact_id)[0];
+
 		return $result;
 	}
 
 	public function selectContacsbyUser($conection,$id)
     {
-        return $conection->select('SELECT * FROM contacts WHERE id = $id');
+        return $conection->select('SELECT * FROM contacts WHERE id = :id',['id'=>$id]);
     }
 
 
