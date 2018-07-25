@@ -28,7 +28,7 @@ class ThirdController extends Controller
 		$db_manager = new DBManager();
 
 		try {
-			 
+
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -55,7 +55,7 @@ class ThirdController extends Controller
 		$db_manager = new DBManager();
 
 		try {
-			 
+
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -81,7 +81,7 @@ class ThirdController extends Controller
 		$db_manager = new DBManager();
 
 		try {
-			
+
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -94,9 +94,9 @@ class ThirdController extends Controller
 					$conection, $request->filter
 				);
 
-			} else 
+			} else
 				throw new \Exception("Filter is required", Constant::BAD_REQUEST);
-			
+
 
 		} catch (\Exception $e) {
 
@@ -162,7 +162,7 @@ class ThirdController extends Controller
 
 			if ( !$request->filled('name') )
 				throw new \Exception("Third name is required", Constant::BAD_REQUEST);
-			
+
 			if ( !$request->filled('third_location') )
 				throw new \Exception("Third Location is required", Constant::BAD_REQUEST);
 
@@ -211,16 +211,16 @@ class ThirdController extends Controller
 
 				if ( !$request->filled('url') )
 				    throw new \Exception("Url is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('description') )
 				    throw new \Exception("Description is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('is_summary') )
 				    throw new \Exception("Summary is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('price_list_id') )
 				    throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('delivery_rule') )
 				    throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
 
@@ -232,7 +232,7 @@ class ThirdController extends Controller
 
 				if ( !$request->filled('is_manufacturer') )
 				    throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('po_price_list_id') )
 				    throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
 
@@ -283,9 +283,9 @@ class ThirdController extends Controller
 				);
 
 			$conection->commit();
-			
+
 		} catch (\Exception $e) {
-			
+
 			$conection->rollBack();
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
@@ -328,7 +328,7 @@ class ThirdController extends Controller
 
 			if ( !$request->filled('third_location') )
 				throw new \Exception("Third Location is required", Constant::BAD_REQUEST);
-			
+
 			if ( $request->third_location['address_1'] == NULL )
 				throw new \Exception("Indicate at least one address", Constant::BAD_REQUEST);
 
@@ -374,16 +374,16 @@ class ThirdController extends Controller
 
 				if ( !$request->filled('url') )
 				    throw new \Exception("Url is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('description') )
 				    throw new \Exception("Description is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('is_summary') )
 				    throw new \Exception("Summary is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('price_list_id') )
 				    throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('delivery_rule') )
 				    throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
 
@@ -395,7 +395,7 @@ class ThirdController extends Controller
 
 				if ( !$request->filled('is_manufacturer') )
 				    throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
-				
+
 				if ( !$request->filled('po_price_list_id') )
 				    throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
 
@@ -446,9 +446,9 @@ class ThirdController extends Controller
 				);
 
 			$conection->commit();
-			
+
 		} catch (\Exception $e) {
-			
+
 			$conection->rollBack();
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
@@ -484,9 +484,9 @@ class ThirdController extends Controller
 
 			$third_archived = $this->third_implement
 				->archivedThird($conection, $request->third_id, $request->archived);
-			
+
 		} catch (\Exception $e) {
-			
+
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
@@ -528,7 +528,7 @@ class ThirdController extends Controller
 			$conection->commit();
 
 		} catch (\Exception $e) {
-			
+
 			$conection->rollBack();
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
@@ -626,9 +626,9 @@ class ThirdController extends Controller
 				->deleteThirdContact($conection, $request->contact_id, $request->third_id);
 
 			$conection->commit();
-			
+
 		} catch (\Exception $e) {
-			
+
 			$conection->rollBack();
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
