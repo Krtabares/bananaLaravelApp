@@ -7,6 +7,7 @@ use App\User;
 use App\Constant;
 use App\BananaUtils\DBManager;
 use App\BananaUtils\ExceptionAnalizer;
+use App\BananaUtils\FilesUtils;
 use App\Http\BnImplements\LoginBnImplement;
 
 
@@ -24,15 +25,16 @@ class LoginController extends Controller
 	{
 
         $db_manager = new DBManager();
+        $storageManager = new FilesUtils();
+        try {
 
-        try { 
-            
             if(!$request->filled('authorization')){
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
             }
 
             $conection = $db_manager->getClientBDConecction($request->authorization,NULL,Constant::TOKEN_LOGIN,NULL);
-
+            $storageUrl = $storageManager->setStorageSimple($request->authorization);
+            // dd($storageUrl);
             if(!$request->filled('email')){
             	throw new \Exception("Email es un campo requerido", Constant::BAD_REQUEST);
             }
@@ -55,7 +57,7 @@ class LoginController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-        return response(json_encode($user), Constant::OK)->header('Content-Type', 'application/json');
+         return response(json_encode(['user'=>$user, 'storage'=>$storageUrl, 'storageName'=>$storageManager->client_name_storageURL]), Constant::OK)->header('Content-Type', 'application/json');
     }
-	
+
 }

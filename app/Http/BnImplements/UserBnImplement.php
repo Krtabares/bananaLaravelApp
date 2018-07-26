@@ -168,21 +168,25 @@ class UserBnImplement
 
 	public function getUserByEmail($conection,$email)
 	{
-		// $result = $conection->select('CALL RD_LoginUser(:email_user)',['email_user' => $email]);
-		// if (count($result)==0) {
-		// 	throw new \Exception('User : ' . $email.' '.Constant::MSG_NOT_FOUND, Constant::NOT_FOUND);
-        // }else{
-        //     $contact_id = $result[0]->contact_id;
-        // }
+		$result = $conection->select('CALL RD_LoginUser(:email_user)',['email_user' => $email]);
+		if (count($result)==0) {
+			throw new \Exception('User : ' . $email.' '.Constant::MSG_NOT_FOUND, Constant::NOT_FOUND);
+        }else{
+            $contact_id = $result[0]->contact_id;
+        }
 
-        //     $result[0]->contact_id = $this->selectContacsbyUser($conection,$contact_id);
+            $result[0]->contact_id = $this->selectContacsbyUser($conection,$contact_id)[0];
 
-		// return $result;
+		return $result;
 	}
 
 	public function selectContacsbyUser($conection,$id)
     {
-        return $conection->select('SELECT * FROM contacts WHERE id = :id',['id'=>$id]);
+       $result = $conection->select('SELECT * FROM contacts WHERE id = :id',['id'=>$id]);
+       if(empty($result)){
+        $result = [0=>[]];
+       }
+        return $result ;
     }
 
 

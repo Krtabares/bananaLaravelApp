@@ -8,6 +8,7 @@ use App\BananaClient;
 class FilesUtils{
 
     public $client_storageURL;
+    public $client_name_storageURL;
 
     public  function setStorageSimple ($DNS)
     {
@@ -26,6 +27,7 @@ class FilesUtils{
                 );
 
                 $this->client_storageURL = $DBinfo->client_storageURL;
+                $this->client_name_storageURL = $DBinfo->client_name_storageURL;
 
                 \Config::set('filesystems.disks.'.$DBinfo->client_name_storageURL, $configStorage);
 
