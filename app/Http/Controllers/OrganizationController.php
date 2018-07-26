@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Constant;
-use App\Organization;
 use App\BananaUtils\DBManager;
 use App\BananaUtils\ExceptionAnalizer;
 use App\Http\BnImplements\OrganizationBnImplement;
@@ -64,14 +63,14 @@ class OrganizationController extends Controller
 			if ( !$request->filled('name') )
 				throw new \Exception('Name is required', Constant::BAD_REQUEST);
 			
-			if ( !$request->filled('reference_nro') )
+			if ( !$request->filled('reference_no') )
 				throw new \Exception('Reference number is required', Constant::BAD_REQUEST);
 
 			$organization_create = $this->organization_implement
 				->createOrganization(
 					$conection,
 					$request->name,
-					$request->reference_nro,
+					$request->reference_no,
 					$request->description
 				);
 
@@ -110,7 +109,7 @@ class OrganizationController extends Controller
 			if ( !$request->filled('name') )
 				throw new \Exception('Name is required', Constant::BAD_REQUEST);
 			
-			if ( !$request->filled('reference_nro') )
+			if ( !$request->filled('reference_no') )
 				throw new \Exception('Reference number is required', Constant::BAD_REQUEST);
 
 			$organization_update = $this->organization_implement
@@ -118,7 +117,7 @@ class OrganizationController extends Controller
 					$conection,
 					$request->id,
 					$request->name,
-					$request->reference_nro,
+					$request->reference_no,
 					$request->description
 				);
 
