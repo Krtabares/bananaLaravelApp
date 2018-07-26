@@ -26,7 +26,7 @@ class LoginController extends Controller
         $db_manager = new DBManager();
 
         try { 
-            // dd($request);
+            
             if(!$request->filled('authorization')){
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
             }
