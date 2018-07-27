@@ -28,12 +28,12 @@ class LoginController extends Controller
         $storageManager = new FilesUtils();
         try {
 
-            if(!$request->filled('authorization')){
+            if( $request->header('authorization') == null ){
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
             }
 
-            $conection = $db_manager->getClientBDConecction($request->authorization,NULL,Constant::TOKEN_LOGIN,NULL);
-            $storageUrl = $storageManager->setStorageSimple($request->authorization);
+            $conection = $db_manager->getClientBDConecction($request->header('authorization'),NULL,Constant::TOKEN_LOGIN,NULL);
+            $storageUrl = $storageManager->setStorageSimple($request->header('authorization'));
             // dd($storageUrl);
             if(!$request->filled('email')){
             	throw new \Exception("Email es un campo requerido", Constant::BAD_REQUEST);
@@ -41,11 +41,8 @@ class LoginController extends Controller
             if(!$request->filled('password')){
             	throw new \Exception("Password es un campo requerido", Constant::BAD_REQUEST);
             }
-            if(!$request->filled('app')){
-                throw new \Exception("App es un campo requerido", Constant::BAD_REQUEST);
-            }
 
-            $user = $this->login_implement->login($conection,$request->email,$request->password,$request->app);
+            $user = $this->login_implement->login($conection,$request->email,$request->password,$request->header('app'));
 
 
         } catch (\Exception $e) {

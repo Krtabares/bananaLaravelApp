@@ -17,12 +17,6 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::get('/cskrada', function () {
-
-	return ['service' => 'Hola'];
-	
-});
-
 /* Rutas de Acceso */
 
 Route::post('login', 'LoginController@login')

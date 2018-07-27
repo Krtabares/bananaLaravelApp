@@ -77,33 +77,16 @@ class OrganizationBnImplement
 
 	public function updateOrganization($conection, $id, $name, $ref_num, $description, $organization_location)
 	{
-		if ($id != 0) {
-
-			$location = $this->location_implement
-			->updateLocation(
-				$conection, $organization_location['id'], $organization_location['address_1'], 
-				$organization_location['address_2'], $organization_location['address_3'],
-				$organization_location['address_4'], $organization_location['city_id'],
-				$organization_location['city_name'], $organization_location['postal'],
-				$organization_location['postal_add'], $organization_location['state_id'],
-				$organization_location['state_name'], $organization_location['country_id'],
-				$organization_location['comments']
-			);
-
-		} else {
-
-			$location = $this->location_implement
-			->insertLocation(
-				$conection, $organization_location['address_1'], 
-				$organization_location['address_2'], $organization_location['address_3'],
-				$organization_location['address_4'], $organization_location['city_id'],
-				$organization_location['city_name'], $organization_location['postal'],
-				$organization_location['postal_add'], $organization_location['state_id'],
-				$organization_location['state_name'], $organization_location['country_id'],
-				$organization_location['comments']
-			);
-			
-		}
+		$location = $this->location_implement
+		->updateLocation(
+			$conection, $organization_location['id'], $organization_location['address_1'], 
+			$organization_location['address_2'], $organization_location['address_3'],
+			$organization_location['address_4'], $organization_location['city_id'],
+			$organization_location['city_name'], $organization_location['postal'],
+			$organization_location['postal_add'], $organization_location['state_id'],
+			$organization_location['state_name'], $organization_location['country_id'],
+			$organization_location['comments']
+		);
 
 		$conection->select('CALL UP_UpdateOrganization(
 			:id, :name, :ref_num, :description, :location_id
