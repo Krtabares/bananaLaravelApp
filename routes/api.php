@@ -83,7 +83,7 @@ Route::get('users/filter', 'UserController@indexFilterUser')
 Route::post('users/create', 'UserController@storeUser')
 	->name('users.store');
 
-Route::put('users/update', 'UserController@updateUser')
+Route::post('users/update', 'UserController@updateUser')
 	->name('users.update');
 
 Route::put('users/archived', 'UserController@archivedUser')
@@ -117,37 +117,37 @@ Route::put('organizations/archived', 'OrganizationController@archivedOrganizatio
 
 Route::post('organizations/delete', 'OrganizationController@deleteOrganization')
 	->name('organizations.delete');
-	
+
 /* Rutas de Terceros */
 
-Route::get('thirds', 'ThirdController@indexThird')
+Route::get('thirds', 'ThirdsController@indexThird')
 	->name('thirds');
 
-Route::get('thirds/combo-select', 'ThirdController@comboSelect')
+Route::get('thirds/combo-select', 'ThirdsController@comboSelect')
 	->name('thirds.combo.select');
 
-Route::get('third/{id}', 'ThirdController@selectThirdById')
-	->name('third');
+Route::get('third/{id}', 'ThirdsController@selectThirdById')
+	->name('thirds.id');
 
-Route::get('thirds/filter', 'ThirdController@indexFilterThird')
+Route::get('thirds/filter', 'ThirdsController@indexFilterThird')
 	->name('thirds.filter');
 
-Route::post('thirds/create', 'ThirdController@storeThird')
+Route::post('thirds/create', 'ThirdsController@storeThird')
 	->name('thirds.store');
 
-Route::post('thirds/update', 'ThirdController@updateThird')
+Route::post('thirds/update', 'ThirdsController@updateThird')
 	->name('thirds.update');
 
-Route::post('thirds/archived', 'ThirdController@archivedThird')
+Route::post('thirds/archived', 'ThirdsController@archivedThird')
 	->name('thirds.archived');
 
-Route::get('thirds/contacts', 'ThirdController@selectThirdContacts')
+Route::get('thirds/contacts', 'ThirdsController@selectThirdContacts')
 	->name('thirds.contacts');
 
-Route::post('thirds/contact/create', 'ThirdController@insertThirdContact')
+Route::post('thirds/contact/create', 'ThirdsController@insertThirdContact')
 	->name('thirds.contact.store');
 
-Route::post('thirds/contact/delete', 'ThirdController@DeleteThirdContact')
+Route::post('thirds/contact/delete', 'ThirdsController@DeleteThirdContact')
 	->name('thirds.contact.delete');
 
 /* Rutas de Contact */

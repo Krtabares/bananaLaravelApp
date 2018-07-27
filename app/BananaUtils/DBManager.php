@@ -44,7 +44,7 @@ class DBManager{
             } else{
 
                 throw new \Exception(Constant::MSG_CLI_NOT_FOUND, 1);
-                
+
             }
 
         } catch (\Illuminate\Database\QueryException  $e) {
@@ -52,7 +52,7 @@ class DBManager{
             throw new \Exception(Constant::MSG_CONNECTION_ERROR, Constant::CONNECTION_ERROR);
         }
 
-        return $conectionSQL; 
+        return $conectionSQL;
 
     }
 

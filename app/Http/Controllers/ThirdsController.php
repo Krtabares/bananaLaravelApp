@@ -9,7 +9,7 @@ use App\BananaUtils\ExceptionAnalizer;
 use App\Http\BnImplements\ThirdBnImplement;
 use App\Http\BnImplements\ContactBnImplement;
 
-class ThirdController extends Controller
+class ThirdsController extends Controller
 {
 	private $third_implement;
 	private $contact_implement;
