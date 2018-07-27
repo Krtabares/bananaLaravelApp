@@ -17,6 +17,12 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+Route::get('/cskrada', function () {
+
+	return ['service' => 'Hola'];
+	
+});
+
 /* Rutas de Acceso */
 
 Route::post('login', 'LoginController@login')
@@ -106,10 +112,10 @@ Route::get('organizations/filter', 'OrganizationController@indexFilterOrganizati
 Route::post('organizations/create', 'OrganizationController@storeOrganization')
 	->name('organizations.store');
 
-Route::post('organizations/update', 'OrganizationController@updateOrganization')
+Route::put('organizations/update', 'OrganizationController@updateOrganization')
 	->name('organizations.update');
 
-Route::post('organizations/archived', 'OrganizationController@archivedOrganization')
+Route::put('organizations/archived', 'OrganizationController@archivedOrganization')
 	->name('organizations.archived');
 
 Route::post('organizations/delete', 'OrganizationController@deleteOrganization')
