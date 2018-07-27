@@ -136,6 +136,8 @@ class OrganizationController extends Controller
 			if ( !$request->filled('reference_no') )
 				throw new \Exception('Reference number is required', Constant::BAD_REQUEST);
 
+			$conection->beginTransaction();
+
 			$organization_update = $this->organization_implement
 				->updateOrganization(
 					$conection,
@@ -146,8 +148,11 @@ class OrganizationController extends Controller
 					$request->organization_location
 				);
 
+			$conection->commit();
+
 		} catch (\Exception $e) {
 
+			$conection->rollBack();
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
