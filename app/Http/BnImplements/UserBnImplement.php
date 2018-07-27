@@ -106,7 +106,7 @@ class UserBnImplement
 			:email, :token)', [
 				'rol_id' => $rol_id,
 				'user_name' => $user_name,
-				'password' => bcrypt( $password ),
+				'password' => md5( $password ),
 				'email' => $email,
 				'token' => $token
 			]);
@@ -123,7 +123,7 @@ class UserBnImplement
 				'user_id' => $user_id,
 				'rol_id' => $rol_id,
 				'user_name' => $user_name,
-				'password' => bcrypt( $password ),
+				'password' => md5($password)  ,
 				'email' => $email,
 				'all_access_organization' => $all_access_organization,
 				'all_access_column' => $all_access_column

@@ -77,7 +77,7 @@ Route::get('users/filter', 'UserController@indexFilterUser')
 Route::post('users/create', 'UserController@storeUser')
 	->name('users.store');
 
-Route::put('users/update', 'UserController@updateUser')
+Route::post('users/update', 'UserController@updateUser')
 	->name('users.update');
 
 Route::put('users/archived', 'UserController@archivedUser')

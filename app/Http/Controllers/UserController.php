@@ -25,7 +25,7 @@ class UserController extends Controller
 		$db_manager = new DBManager();
 
 		try {
-			 
+
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -61,7 +61,7 @@ class UserController extends Controller
 			$user = $this->user_implement->selectUserById($conection, $user_id);
 
 		} catch (\Exception $e) {
-			
+
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
@@ -75,8 +75,8 @@ class UserController extends Controller
 	{
 		$db_manager = new DBManager();
 
-		try {   
-			 
+		try {
+
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -87,9 +87,9 @@ class UserController extends Controller
 
 				$filter_users = $this->user_implement->selectFilterUsers($conection, $request->filter);
 
-			} else 
+			} else
 				throw new \Exception("Filter is required", Constant::BAD_REQUEST);
-			
+
 
 		} catch (\Exception $e) {
 
@@ -110,14 +110,14 @@ class UserController extends Controller
 		try {
 
 			 $conection = $db_manager->getClientBDConecction(
-				$request->header('authorization'),
-				$request->header('user_id'),
-				$request->header('token'),
-				$request->header('app'));
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app);
 
 			if ( !$request->filled('rol_id') )
 				throw new \Exception("Rol is required", Constant::BAD_REQUEST);
-				
+
 			if ( !$request->filled('user_name') )
 				throw new \Exception("User name is required", Constant::BAD_REQUEST);
 
@@ -130,9 +130,9 @@ class UserController extends Controller
 			$user_insert = $this->user_implement
 				->insertUser($conection, $request->rol_id, $request->user_name, $request->password,
 					$request->email);
-			
+
 		} catch (\Exception $e) {
-			
+
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
@@ -150,17 +150,17 @@ class UserController extends Controller
 		try {
 
 			 $conection = $db_manager->getClientBDConecction(
-				$request->header('authorization'),
-				$request->header('user_id'),
-				$request->header('token'),
-				$request->header('app'));
+				$request->authorization,
+				$request->user_id,
+				$request->token,
+				$request->app);
 
 			if ( !$request->filled('user_id') )
 				throw new \Exception("User is required", Constant::BAD_REQUEST);
 
 			if ( !$request->filled('rol_id') )
 				throw new \Exception("Rol is required", Constant::BAD_REQUEST);
-				
+
 			if ( !$request->filled('user_name') )
 				throw new \Exception("User name is required", Constant::BAD_REQUEST);
 
@@ -182,7 +182,7 @@ class UserController extends Controller
 					$request->all_access_column);
 
 		} catch (\Exception $e) {
-			
+
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
@@ -212,9 +212,9 @@ class UserController extends Controller
 				throw new \Exception("Archived is required", Constant::BAD_REQUEST);
 
 			$user_archived = $this->user_implement->archivedUser($conection, $request->user_id, $request->archived);
-			
+
 		} catch (\Exception $e) {
-			
+
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
@@ -244,7 +244,7 @@ class UserController extends Controller
 				throw new \Exception("Permits are required", Constant::BAD_REQUEST);
 
 			foreach ($request->permits_user as $key => $permit_user) {
-				
+
 				$this->user_implement
 					->insertPermitsUser($conection, $request->user_id, $permit_user['column_id'], $permit_user['create'],
 					$permit_user['read'], $permit_user['update'], $permit_user['delete']);
@@ -252,9 +252,9 @@ class UserController extends Controller
 			}
 
 			$permits_user = $this->user_implement->selectAllPermitsUser($conection, $request->user_id);
-			
+
 		} catch (\Exception $e) {
-			
+
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
@@ -284,7 +284,7 @@ class UserController extends Controller
 				throw new \Exception("Permits are required", Constant::BAD_REQUEST);
 
 			foreach ($request->permits_user as $key => $permit_user) {
-				
+
 				$this->user_implement
 					->updatePermitsUser($conection, $request->user_id, $permit_user['column_id'], $permit_user['create'],
 					$permit_user['read'], $permit_user['update'], $permit_user['delete']);
@@ -292,9 +292,9 @@ class UserController extends Controller
 			}
 
 			$permits_user = $this->user_implement->selectAllPermitsUser($conection, $request->user_id);
-			
+
 		} catch (\Exception $e) {
-			
+
 			return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
@@ -306,11 +306,11 @@ class UserController extends Controller
 	}
 
 	public function getUserByEmail(Request $request,$email)
-	{        
+	{
 		// dd($email);
 		$db_manager = new DBManager();
 
-		try {   
+		try {
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
@@ -320,7 +320,7 @@ class UserController extends Controller
 
 			if(!is_null($email) && strlen(trim($email)) > 1){
 				 $user = $this->user_implement->getUserByEmail($conection,$email);
-			}else 
+			}else
 				 throw new \Exception(json_encode("Email es un campo requerido"), Constant::BAD_REQUEST);
 
 		} catch (\Exception $e) {

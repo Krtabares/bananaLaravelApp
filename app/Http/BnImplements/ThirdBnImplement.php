@@ -29,7 +29,7 @@ class ThirdBnImplement
 		return $conection->select('SELECT * FROM bpartners
             ORDER BY updated_at DESC, logo DESC');
 
-        return result
+        return result;
 	}
 
 	public function selectFilterThirds($conection, $search)
@@ -41,9 +41,9 @@ class ThirdBnImplement
 	{
 		$client = $conection->select('SELECT * FROM clients');
 
-		$org_list = $conection->select('SELECT id, organization_name
+		$org_list = $conection->select('SELECT id, name
 			FROM organizations
-			ORDER BY organization_name ASC');
+			ORDER BY name ASC');
 
 		$language_list = $conection->select('SELECT id, languagescol
 			FROM languages
