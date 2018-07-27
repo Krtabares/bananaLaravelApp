@@ -26,8 +26,8 @@ class LoginBnImplement
 
 
         $user = $this->user_implement->getUserByEmail($conection,$email);
-        // dd($user);
-        if ($user[0]->password != $pass) {
+        //  dd($user[0]->password);
+        if (trim($user[0]->password) != $pass) {
 
             throw new \Exception(Constant::MSG_INVALID_PASS, Constant::UNAUTHORIZED);
 

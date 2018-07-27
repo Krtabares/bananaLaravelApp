@@ -110,16 +110,16 @@ class UserController extends Controller
 		try {
 
 			 $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app);
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
 			if ( !$request->filled('rol_id') )
 				throw new \Exception("Rol is required", Constant::BAD_REQUEST);
 
-			if ( !$request->filled('user_name') )
-				throw new \Exception("User name is required", Constant::BAD_REQUEST);
+			// if ( !$request->filled('user_name') )
+			// 	throw new \Exception("User name is required", Constant::BAD_REQUEST);
 
 			if ( !$request->filled('email') )
 				throw new \Exception("Email is required", Constant::BAD_REQUEST);
@@ -128,7 +128,7 @@ class UserController extends Controller
 				throw new \Exception("Password is required", Constant::BAD_REQUEST);
 
 			$user_insert = $this->user_implement
-				->insertUser($conection, $request->rol_id, $request->user_name, $request->password,
+				->insertUser($conection, $request->rol_id, $request->email, $request->password,
 					$request->email);
 
 		} catch (\Exception $e) {
@@ -150,19 +150,19 @@ class UserController extends Controller
 		try {
 
 			 $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app);
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
-			if ( !$request->filled('user_id') )
+			if ( !$request->filled('id') )
 				throw new \Exception("User is required", Constant::BAD_REQUEST);
 
 			if ( !$request->filled('rol_id') )
 				throw new \Exception("Rol is required", Constant::BAD_REQUEST);
 
-			if ( !$request->filled('user_name') )
-				throw new \Exception("User name is required", Constant::BAD_REQUEST);
+			// if ( !$request->filled('user_name') )
+			// 	throw new \Exception("User name is required", Constant::BAD_REQUEST);
 
 			if ( !$request->filled('email') )
 				throw new \Exception("Email is required", Constant::BAD_REQUEST);
@@ -177,7 +177,7 @@ class UserController extends Controller
 				throw new \Exception("Indicate if you have access to all columns", Constant::BAD_REQUEST);
 
 			$user_update = $this->user_implement
-				->updateUser($conection, $request->user_id, $request->rol_id, $request->user_name,
+				->updateUser($conection, $request->id, $request->rol_id, $request->user_name,
 					$request->password, $request->email, $request->all_access_organization,
 					$request->all_access_column);
 
@@ -333,5 +333,32 @@ class UserController extends Controller
 		}
 
 		return response(json_encode($user), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+    public function getElements(Request $request)
+	{
+            // dd($email);
+            $db_manager = new DBManager();
+
+            try {
+
+                $conection = $db_manager->getClientBDConecction(
+                    $request->header('authorization'),
+                    $request->header('user_id'),
+                    $request->header('token'),
+                    $request->header('app'));
+
+                    $elements = $this->user_implement->selectRolsforSelect($conection);
+                    // dd($elements);
+            } catch (\Exception $e) {
+
+                // return ExceptionAnalizer::analizerHTTPResponse($e);
+
+            } finally {
+
+                $db_manager->terminateClientBDConecction();
+            }
+
+            return response(json_encode(['elements'=>$elements]), Constant::OK)->header('Content-Type', 'application/json');
 	}
 }

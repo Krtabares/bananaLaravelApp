@@ -192,7 +192,8 @@ class UserBnImplement
 
 	public function selectRolsforSelect($conection)
     {
-        return $conection->select('SELECT id, name FROM rols ORDER BY rol_name, id;');
+
+        return $conection->select('SELECT id, name FROM rols ORDER BY name, id;');
     }
 
 }
