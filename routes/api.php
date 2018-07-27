@@ -87,7 +87,10 @@ Route::post('users/permits/create', 'UserController@storePermitsUser')
 	->name('users.permits.store');
 
 Route::put('users/permits/update', 'UserController@updatePermitsUser')
-	->name('users.permits.update');
+    ->name('users.permits.update');
+
+Route::get('users/elements', 'userController@getElements')
+	->name('users.elements');
 
 /* Rutas de organizaciones */
 
