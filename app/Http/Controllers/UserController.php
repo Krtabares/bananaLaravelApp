@@ -307,7 +307,7 @@ class UserController extends Controller
 
 	public function getUserByEmail(Request $request,$email)
 	{
-		// dd($email);
+
 		$db_manager = new DBManager();
 
 		try {
@@ -321,7 +321,9 @@ class UserController extends Controller
 			if(!is_null($email) && strlen(trim($email)) > 1){
 				 $user = $this->user_implement->getUserByEmail($conection,$email);
 			}else
-				 throw new \Exception(json_encode("Email es un campo requerido"), Constant::BAD_REQUEST);
+                 throw new \Exception(json_encode("Email es un campo requerido"), Constant::BAD_REQUEST);
+
+
 
 		} catch (\Exception $e) {
 
@@ -337,7 +339,7 @@ class UserController extends Controller
 
     public function getElements(Request $request)
 	{
-            // dd($email);
+
             $db_manager = new DBManager();
 
             try {
@@ -349,10 +351,10 @@ class UserController extends Controller
                     $request->header('app'));
 
                     $elements = $this->user_implement->selectRolsforSelect($conection);
-                    // dd($elements);
+
             } catch (\Exception $e) {
 
-                // return ExceptionAnalizer::analizerHTTPResponse($e);
+                 return ExceptionAnalizer::analizerHTTPResponse($e);
 
             } finally {
 
@@ -360,5 +362,34 @@ class UserController extends Controller
             }
 
             return response(json_encode(['elements'=>$elements]), Constant::OK)->header('Content-Type', 'application/json');
+    }
+    public function getPermits(Request $request)
+	{
+            // dd($email);
+            $db_manager = new DBManager();
+
+            try {
+
+                $conection = $db_manager->getClientBDConecction(
+                    $request->header('authorization'),
+                    $request->header('user_id'),
+                    $request->header('token'),
+                    $request->header('app'));
+
+                if ( !$request->filled('id') )
+                    throw new \Exception("user is required", Constant::BAD_REQUEST);
+
+                    $permissions = $this->user_implement->selectPermissions($conection, $request->id, $request->type);
+
+            } catch (\Exception $e) {
+
+                 return ExceptionAnalizer::analizerHTTPResponse($e);
+
+            } finally {
+
+                $db_manager->terminateClientBDConecction();
+            }
+
+            return response(json_encode(['permissions'=>$permissions]), Constant::OK)->header('Content-Type', 'application/json');
 	}
 }

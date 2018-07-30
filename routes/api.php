@@ -90,7 +90,10 @@ Route::put('users/permits/update', 'UserController@updatePermitsUser')
     ->name('users.permits.update');
 
 Route::get('users/elements', 'userController@getElements')
-	->name('users.elements');
+    ->name('users.elements');
+
+Route::get('users/getPermits', 'userController@getPermits')
+	->name('users.getPermits');
 
 /* Rutas de organizaciones */
 

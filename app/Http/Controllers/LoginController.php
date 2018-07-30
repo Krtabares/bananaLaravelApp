@@ -33,7 +33,7 @@ class LoginController extends Controller
             }
 
             $conection = $db_manager->getClientBDConecction($request->header('authorization'),NULL,Constant::TOKEN_LOGIN,NULL);
-            $storageUrl = $storageManager->setStorageSimple($request->header('authorization'));
+            // $storageUrl = $storageManager->setStorageSimple($request->header('authorization'));
             // dd($storageUrl);
             if(!$request->filled('email')){
             	throw new \Exception("Email es un campo requerido", Constant::BAD_REQUEST);
@@ -54,7 +54,7 @@ class LoginController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-         return response(json_encode(['user'=>$user, 'storage'=>$storageUrl, 'storageName'=>$storageManager->client_name_storageURL]), Constant::OK)->header('Content-Type', 'application/json');
+         return response(json_encode(['user'=>$user, 'storage'=>$db_manager->storageUrl, 'storageName'=>$db_manager->client_name_storageURL]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
 }

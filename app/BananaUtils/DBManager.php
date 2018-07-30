@@ -11,6 +11,8 @@ use App\BananaUtils\ExceptionAnalizer;
 class DBManager{
 
     private $client_name_conecction_BD;
+    public $client_storageURL;
+    public $client_name_storageURL;
 
     public  function getClientBDConecction ($DNS,$user,$token,$app)
     {
@@ -32,6 +34,8 @@ class DBManager{
                 );
 
                 $this->client_name_conecction_BD = $DBinfo->client_name_conecction_BD;
+                $this->client_storageURL = $DBinfo->client_storageURL;
+                $this->client_name_storageURL = $DBinfo->client_name_storageURL;
 
                 \Config::set('database.connections.'.$this->client_name_conecction_BD, $configDb);
 

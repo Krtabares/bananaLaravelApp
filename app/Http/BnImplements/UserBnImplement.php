@@ -177,6 +177,8 @@ class UserBnImplement
 
             $result[0]->contact_id = $this->selectContacsbyUser($conection,$contact_id)[0];
 
+
+
 		return $result;
 	}
 
@@ -195,5 +197,81 @@ class UserBnImplement
 
         return $conection->select('SELECT id, name FROM rols ORDER BY name, id;');
     }
+
+    public function selectpermissions($conection, $user_id = -1, $type = 2)
+    {
+        switch (intval($type)) {
+            case 0:
+                 $functionCall = 'RD_SelectPermitsNotAssociatesUser';
+                break;
+            case 1:
+                 $functionCall = 'RD_SelectPermitsYesAssociatesUser';
+                break;
+            case 2:
+                $functionCall = 'RD_SelectPermitsAssociatesUserAll';
+                break;
+
+            default:
+                $functionCall = 'RD_SelectPermitsAssociatesUserAll';
+                break;
+        }
+
+
+        $permits = $conection->select('CALL '.$functionCall.'(:user_id);',
+            ['user_id' => $user_id]
+        );
+
+        $table_id = 0;
+        $index = 0;
+        $tables = [];
+
+        if ($permits != NULL) {
+
+            foreach ($permits as $key => $permit) {
+
+                if (  $table_id != $permit->table_id ) {
+
+                    $tables[$index]['table_id'] = $permit->table_id;
+                    $tables[$index]['table_name'] = $permit->table_name;
+                    $tables[$index]['table_description'] = $permit->table_description;
+
+                    $columns['column_id'] = $permit->column_id;
+                    $columns['column_name'] = $permit->column_name;
+                    $columns['column_description'] = $permit->column_description;
+                    $columns['create'] = $permit->create;
+                    $columns['read'] = $permit->read;
+                    $columns['update'] = $permit->update;
+                    $columns['delete'] = $permit->delete;
+                    $columns['selected'] = $permit->selected;
+
+                    $tables[$index]['columns'][] = $columns;
+
+                    $table_id = $permit->table_id;
+                    $index++;
+
+                } elseif ( $table_id == $permit->table_id ) {
+
+                    $columns['column_id'] = $permit->column_id;
+                    $columns['column_name'] = $permit->column_name;
+                    $columns['column_description'] = $permit->column_description;
+                    $columns['create'] = $permit->create;
+                    $columns['read'] = $permit->read;
+                    $columns['update'] = $permit->update;
+                    $columns['delete'] = $permit->delete;
+                    $columns['selected'] = $permit->selected;
+
+                    $tables[$index - 1]['columns'][] = $columns;
+
+                }
+            }
+
+        }
+
+
+        return $tables;
+    }
+
+
+
 
 }

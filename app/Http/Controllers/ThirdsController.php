@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Constant;
 use App\BananaUtils\DBManager;
+use App\BananaUtils\FilesUtils;
 use App\BananaUtils\ExceptionAnalizer;
 use App\Http\BnImplements\ThirdBnImplement;
 use App\Http\BnImplements\ContactBnImplement;
+use Illuminate\Support\Facades\Storage;
+
 
 class ThirdsController extends Controller
 {
@@ -245,7 +248,8 @@ class ThirdsController extends Controller
 
 				if ( !$request->filled('branch_office') )
 				    throw new \Exception("Branch office is required", Constant::BAD_REQUEST);
-			*/
+            */
+
 
 			$conection->beginTransaction();
 
@@ -304,14 +308,14 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( !$request->filled('authorization') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+			// if ( $request->header('authorization') != null)
+			// 	throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 		   $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app')
 			);
 
 		   if ( !$request->filled('id') )
@@ -409,7 +413,7 @@ class ThirdsController extends Controller
 				    throw new \Exception("Branch Office data are required", Constant::BAD_REQUEST);
 			*/
 
-			$conection->beginTransaction();
+			// $conection->beginTransaction();
 
 			$third_update = $this->third_implement
 				->updateThird($conection,
@@ -445,12 +449,24 @@ class ThirdsController extends Controller
 					$request->branch_office
 				);
 
-			$conection->commit();
+            // $conection->commit();
+
+            if ( $request->filled('image') ){
+                if($request->filled('storageNameClient')){
+                    // $path = $request->file('avatar')->store('avatars/'.$request->user()->id, 's3');
+                    $storageManager = new FilesUtils();
+                    $storageManager->setStorageSimple($request->header('authorization'));
+                    $fileContents = base64_decode($request->image);
+                    Storage::disk($request->storageNameClient)->put('thirds/'.'ba'. $request->id . 'naa' . $request->organization_id . 'na.jpg', $fileContents,'public');
+                }
+            }
+
+
 
 		} catch (\Exception $e) {
 
-			$conection->rollBack();
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			// $conection->rollBack();
+		  // return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
 
