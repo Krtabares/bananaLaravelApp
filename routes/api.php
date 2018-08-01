@@ -231,10 +231,10 @@ Route::get('warehouses/', 'WarehouseController@indexWarehouse')
 Route::post('warehouses/create', 'WarehouseController@createWarehouse')
 	->name('warehouses.create');
 
-Route::post('warehouses/update', 'WarehouseController@updateWarehouse')
+Route::put('warehouses/update', 'WarehouseController@updateWarehouse')
 	->name('warehouses.update');
 
-Route::post('warehouses/delete', 'WarehouseController@deleteWarehouse')
+Route::delete('warehouses/delete', 'WarehouseController@deleteWarehouse')
 	->name('warehouses.delete');
 
 /* Rutas de fabricantes */
