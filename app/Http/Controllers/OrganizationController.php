@@ -202,29 +202,22 @@ class OrganizationController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
-	public function deleteOrganization(Request $request)
+	public function deleteOrganization(Request $request, $id)
 	{
 		$db_manager = new DBManager();
 
 		try {
 
-			if ( !$request->filled('authorization') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
-
 			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
-
-			if ( !$request->filled('id') )
-				throw new \Exception('Organization is required', Constant::BAD_REQUEST);
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
 			$organization_delete = $this->organization_implement
 				->deleteOrganization(
 					$conection,
-					$request->id
+					$id
 				);
 
 		} catch (\Exception $e) {

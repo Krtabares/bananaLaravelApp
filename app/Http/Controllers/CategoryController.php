@@ -24,7 +24,7 @@ class CategoryController extends Controller
 
 		try {
 			 
-			 $conection = $db_manager->getClientBDConecction(
+			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
 				$request->header('token'),
@@ -50,15 +50,11 @@ class CategoryController extends Controller
 
 		try {
 
-			if ( !$request->filled('authorization') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
-
 			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
 			if ( !$request->filled('name') )
 				throw new \Exception('Name is required', Constant::BAD_REQUEST);
