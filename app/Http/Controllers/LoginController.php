@@ -54,7 +54,7 @@ class LoginController extends Controller
             $db_manager->terminateClientBDConecction();
         }
 
-         return response(json_encode(['user'=>$user, 'storage'=>$db_manager->storageUrl, 'storageName'=>$db_manager->client_name_storageURL]), Constant::OK)->header('Content-Type', 'application/json');
+         return response(json_encode(['user'=>$user, 'storage'=>$db_manager->client_storageURL, 'storageName'=>$db_manager->client_name_storageURL]), Constant::OK)->header('Content-Type', 'application/json');
     }
 
 }
