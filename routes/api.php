@@ -115,7 +115,7 @@ Route::put('organizations/update', 'OrganizationController@updateOrganization')
 Route::put('organizations/archived', 'OrganizationController@archivedOrganization')
 	->name('organizations.archived');
 
-Route::post('organizations/delete', 'OrganizationController@deleteOrganization')
+Route::delete('organizations/delete/{id}', 'OrganizationController@deleteOrganization')
 	->name('organizations.delete');
 
 /* Rutas de Terceros */

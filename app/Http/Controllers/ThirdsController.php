@@ -147,14 +147,11 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( !$request->filled('authorization') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
-
-		   $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
+			$conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app')
 			);
 
 			if ( !$request->filled('organization_id') )
@@ -307,9 +304,6 @@ class ThirdsController extends Controller
 		$db_manager = new DBManager();
 
 		try {
-
-			// if ( $request->header('authorization') != null)
-			// 	throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 		   $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
@@ -482,14 +476,11 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( !$request->filled('authorization') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
-
-		   $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
+			$conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app')
 			);
 
 			if ( !$request->filled('third_id') )

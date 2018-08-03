@@ -83,9 +83,12 @@ class ThirdBnImplement
 
 		$third_contacts = $this->selectThirdContacts($conection, $third_id);
 
+		$branch_offices = $this->selectBranchOffice($conection, $third_id);
+
 		return [
 			'third' => $third[0],
 			'branch_office' => $branch_office[0],
+			'branch_offices' => $branch_offices,
 			'location' => $location[0],
 			'third_contacts' => $third_contacts
 		];
@@ -124,14 +127,6 @@ class ThirdBnImplement
 		$branch_office
 	)
 	{
-
-		/*$check = $conection->select('SELECT id FROM bpartners WHERE name = :name LIMIT 1 ;',[
-			'name'=>$name
-		]);
-
-		if(!empty($check)){
-			throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
-		}*/
 
 		$lid = $conection->select('CALL CR_InsertBpartners(
 				:org_id,
@@ -191,9 +186,6 @@ class ThirdBnImplement
 					'greeting_id' => $greeting_id
 				]
 			);
-		// dd($lid);
-
-		// $third_insert = $conection->select('SELECT * FROM bpartners ORDER BY id DESC LIMIT 1');
 
 		$location_insert = $this->location_implement
 			->insertLocation(
@@ -208,7 +200,7 @@ class ThirdBnImplement
 
 		$branch_office_insert = $this->insertBranchOffice(
 			$conection, $lid[0]->LID, $location_insert->id,
-			'Principal Office', 1, 1, 1, 1, $branch_office['phone'],
+			$name, 1, 1, 1, 1, $branch_office['phone'],
 			$branch_office['phone_2'], '', ''
 		);
 
@@ -253,18 +245,6 @@ class ThirdBnImplement
 		$branch_office
 	)
 	{
-		/*
-			$check = $conection->select('SELECT id FROM bpartners
-					WHERE name = :name
-					AND id <> :third_id LIMIT 1 ;',[
-				'name' => $name,
-				'third_id' => $third_id
-			]);
-
-			if(!empty($check)){
-				throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
-			}
-		*/
 
 		$conection->select('CALL UP_UpdateBpartners(
 				:third_id,
@@ -390,17 +370,19 @@ class ThirdBnImplement
 		return ['third' => $third_delete, 'location' => $location_delete];
 	}*/
 
+	public function selectBranchOffice($conection, $id)
+	{
+		$branch_office = $conection->select('SELECT * FROM bpartner_locations where bpartner_id = :id', [
+			'id' => $id
+		]);
+
+		return $branch_office;
+	}
+
 	public function insertBranchOffice($conection, $third_id, $location_id,
 		$name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
 		$phone_2, $fax, $isdn)
 	{
-		/*$check = $conection->select('SELECT id FROM bpartner_locations WHERE name = :name LIMIT 1 ;',[
-			'name'=>$name
-		]);
-
-		if(!empty($check)){
-			throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
-		}*/
 
 		$conection->select('CALL CR_InsertBpartnerLocation(
 				:third_id,
@@ -443,16 +425,6 @@ class ThirdBnImplement
 		$name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
 		$phone_2, $fax, $isdn)
 	{
-		/*$check = $conection->select('SELECT id FROM bpartner_locations
-			WHERE name = :name
-			AND id <> :branch_office_id LIMIT 1 ;',[
-			'name' => $name,
-			'branch_office_id' => $branch_office_id
-		]);
-
-		if(!empty($check)){
-			throw new \Exception('Constant::MSG_DUPLICATE', Constant::DUPLICATE );
-		}*/
 
 		$conection->select('CALL UP_InsertBpartnerLocation(
 				:branch_office_id,
@@ -540,10 +512,7 @@ class ThirdBnImplement
 	}
 
 	public function deleteThirdContact ($conection, $contact_id, $third_id) {
-		/*
-			eliminar relacion entre tercero y contacto
-			eliminar contacto
-		*/
+
 		$conection->select('CALL DL_BpartnerContactRelation(:third_id, :contact_id)',[
 			'third_id' => $third_id,
 			'contact_id' => $contact_id
