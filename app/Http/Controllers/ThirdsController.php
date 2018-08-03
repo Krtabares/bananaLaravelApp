@@ -407,7 +407,7 @@ class ThirdsController extends Controller
 				    throw new \Exception("Branch Office data are required", Constant::BAD_REQUEST);
 			*/
 
-			// $conection->beginTransaction();
+		  $conection->beginTransaction();
 
 			$third_update = $this->third_implement
 				->updateThird($conection,
@@ -443,7 +443,7 @@ class ThirdsController extends Controller
 					$request->branch_office
 				);
 
-            // $conection->commit();
+             $conection->commit();
 
             if ( $request->filled('image') ){
                 if($request->filled('storageNameClient')){
@@ -451,7 +451,7 @@ class ThirdsController extends Controller
                     $storageManager = new FilesUtils();
                     $storageManager->setStorageSimple($request->header('authorization'));
                     $fileContents = base64_decode($request->image);
-                    Storage::disk($request->storageNameClient)->put('thirds/'.'ba'. $request->id . 'naa' . $request->organization_id . 'na.jpg', $fileContents,'public');
+                    Storage::disk($request->storageNameClient)->put('thirds/'.'ba'. $request->id . 'na' . $request->organization_id . 'na.jpg', $fileContents,'public');
                 }
             }
 
@@ -459,8 +459,8 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			// $conection->rollBack();
-		  // return ExceptionAnalizer::analizerHTTPResponse($e);
+		    $conection->rollBack();
+		  return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
 
