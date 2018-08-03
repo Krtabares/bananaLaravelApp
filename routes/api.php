@@ -348,7 +348,12 @@ Route::get('fieldConfig/getfieldList/{id}', 'FieldConfigController@getfieldList'
 	->name('fieldConfig.getfieldList');
 
 Route::post('fieldConfig/UpdateConfiguration', 'FieldConfigController@UpdateConfiguration')
-	->name('fieldConfig.UpdateConfiguration');
+    ->name('fieldConfig.UpdateConfiguration');
+
+/*  Rutas de migrations  */
+
+Route::get('migration/clients', 'BananaMigrationsController@selectColumnsClients')
+->name('migration.clients');
 
 /*  Rutas de products  */
 
