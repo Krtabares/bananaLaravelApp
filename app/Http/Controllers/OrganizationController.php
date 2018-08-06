@@ -23,7 +23,10 @@ class OrganizationController extends Controller
 		$db_manager = new DBManager();
 
 		try {
-			 
+				 
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+				
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -50,6 +53,9 @@ class OrganizationController extends Controller
 
 		try {
 
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+				
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -76,6 +82,9 @@ class OrganizationController extends Controller
 
 		try {
 
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+				
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -111,6 +120,9 @@ class OrganizationController extends Controller
 
 		try {
 
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+				
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -156,6 +168,9 @@ class OrganizationController extends Controller
 
 		try {
 
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+				
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -205,6 +220,9 @@ class OrganizationController extends Controller
 
 		try {
 
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+				
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -243,6 +261,9 @@ class OrganizationController extends Controller
 
 		try {
 
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+				
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),

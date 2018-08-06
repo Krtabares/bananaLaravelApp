@@ -32,7 +32,7 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( $request->header('authorization') == null )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
@@ -45,7 +45,7 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -62,7 +62,7 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( $request->header('authorization') == null )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
@@ -75,7 +75,7 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -91,7 +91,7 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( $request->header('authorization') == null )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			 $conection = $db_manager->getClientBDConecction(
@@ -112,7 +112,7 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -129,7 +129,7 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( $request->header('authorization') == null )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
@@ -142,7 +142,7 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -159,7 +159,7 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( $request->header('authorization') == null )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
@@ -302,8 +302,8 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			$conection->rollBack();
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -320,7 +320,7 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( $request->header('authorization') == null )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 		   $conection = $db_manager->getClientBDConecction(
@@ -477,8 +477,8 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-		    $conection->rollBack();
-		  return ExceptionAnalizer::analizerHTTPResponse($e);
+		    
+		  return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -494,7 +494,7 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( $request->header('authorization') == null )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
@@ -515,7 +515,7 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -532,7 +532,7 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( $request->header('authorization') == null )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
@@ -551,8 +551,8 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			$conection->rollBack();
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -568,15 +568,15 @@ class ThirdsController extends Controller
 		$db_manager = new DBManager();
 
 		try {
-
-			if ( !$request->filled('authorization') )
+			
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-		   $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
+			$conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
 			);
 
 		   if ( !$request->filled('id') )
@@ -608,11 +608,11 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			$conection->rollBack();
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
-
+			
 			$db_manager->terminateClientBDConecction();
 		}
 
@@ -651,8 +651,8 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			$conection->rollBack();
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 

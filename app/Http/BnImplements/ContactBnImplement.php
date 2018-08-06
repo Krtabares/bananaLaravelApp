@@ -149,8 +149,10 @@ class ContactBnImplement
 				'archived' => $archived
 			]
 		);
-
-		//return $contact_archived[0];
+		$contact_archived = $conection->select('SELECT * FROM contacts WHERE id = :id', [
+			'id' => $contact_id
+		]);
+		return $contact_archived[0];
 	}
 
 }

@@ -23,6 +23,9 @@ class ContactController extends Controller
 
 		try {
 
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -52,15 +55,14 @@ class ContactController extends Controller
 
 		try {
 
-			if ( !$request->filled('authorization') )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
 			if ( !$request->filled('id') )
 				throw new \Exception('Contact is required', Constant::BAD_REQUEST);
@@ -109,15 +111,14 @@ class ContactController extends Controller
 
 		try {
 
-			if ( !$request->filled('authorization') )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 		   $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
 			if ( !$request->filled('contact_id') )
 				throw new \Exception("Contact is required", Constant::BAD_REQUEST);
