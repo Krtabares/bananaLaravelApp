@@ -18,6 +18,7 @@ class WarehouseController extends Controller
 		$this->warehouse_implement = $warehouse_implement;
 	}
 
+//----------------------------------INDEX---------------------------------------------------------------------------
 	public function indexWarehouse(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -42,8 +43,11 @@ class WarehouseController extends Controller
 		}
 
 		return response(['warehouses' => $warehouses], Constant::OK)->header('Content-Type', 'application/json');
+
 	}
 
+
+//----------------------------------------CREATE-------------------------------------------------------------------------
 	public function createWarehouse(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -81,86 +85,87 @@ class WarehouseController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
-	// public function updateWarehouse(Request $request)
-	// {
-	// 	$db_manager = new DBManager();
+	//-----------------------------------------UPDATE--------------------------------------------------------------------
 
-	// 	try {
+	public function updateWarehouse(Request $request)
+	{
+		$db_manager = new DBManager();
 
-	// 		if ( !$request->filled('authorization') )
-	// 			throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+		try {
 
-	// 		$conection = $db_manager->getClientBDConecction(
-	// 			$request->authorization,
-	// 			$request->user_id,
-	// 			$request->token,
-	// 			$request->app
-	// 		);
+			
 
-	// 		if ( !$request->filled('id') )
-	// 			throw new \Exception('Warehouse is required', Constant::BAD_REQUEST);
+				$conection = $db_manager->getClientBDConecction(
+					$request->header('authorization'),
+					$request->header('user_id'),
+					$request->header('token'),
+					$request->header('app'));
+		
 
-	// 		if ( !$request->filled('name') )
-	// 			throw new \Exception('Name is required', Constant::BAD_REQUEST);
+			if ( !$request->filled('id') )
+				throw new \Exception('Warehouse is required', Constant::BAD_REQUEST);
 
-	// 		$warehouse_update = $this->warehouse_implement
-	// 			->updateWarehouse(
-    //                 $conection,
-    //                 $request->id,
-    //                 $request->reference,
-    //                 $request->name,
-    //                 $request->warehouse_col,
-    //                 $request->notes
-	// 			);
+			if ( !$request->filled('name') )
+				throw new \Exception('Name is required', Constant::BAD_REQUEST);
 
-	// 	} catch (\Exception $e) {
+			$warehouse_update = $this->warehouse_implement
+				->updateWarehouse(
+                    $conection,
+                    $request->id,
+                    $request->reference,
+                    $request->name,
+                    $request->warehouse_col,
+                    $request->notes
+				);
 
-	// 		return ExceptionAnalizer::analizerHTTPResponse($e);
+		} catch (\Exception $e) {
 
-	// 	} finally {
+			return ExceptionAnalizer::analizerHTTPResponse($e);
 
-	// 		$db_manager->terminateClientBDConecction();
-	// 	}
+		} finally {
 
-	// 	return response(['warehouse_update' => $warehouse_update], Constant::OK)
-	// 		->header('Content-Type', 'application/json');
-	// }
+			$db_manager->terminateClientBDConecction();
+		}
 
-	// public function deleteWarehouse(Request $request)
-	// {
-	// 	$db_manager = new DBManager();
+		return response(['warehouse_update' => $warehouse_update], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
 
-	// 	try {
 
-	// 		if ( !$request->filled('authorization') )
-	// 			throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-	// 		$conection = $db_manager->getClientBDConecction(
-	// 			$request->authorization,
-	// 			$request->user_id,
-	// 			$request->token,
-	// 			$request->app
-	// 		);
+	//--------------------------------------------DELETE---------------------------------------------------------------
 
-	// 		if ( !$request->filled('id') )
-	// 			throw new \Exception('Warehouse is required', Constant::BAD_REQUEST);
+	public function deleteWarehouse(Request $request, $id)
+	{
+		$db_manager = new DBManager();
 
-	// 		$warehouse_delete = $this->warehouse_implement
-	// 			->deleteWarehouse(
-	// 				$conection,
-	// 				$request->id
-	// 			);
+		try {
 
-	// 	} catch (\Exception $e) {
+			$conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
-	// 		return ExceptionAnalizer::analizerHTTPResponse($e);
+			if ( !$request->filled('id') )
+				throw new \Exception('Warehouse is required', Constant::BAD_REQUEST);
 
-	// 	} finally {
+			$warehouse_delete = $this->warehouse_implement
+				->deleteWarehouse(
+					$conection,
+					$id
+				);
 
-	// 		$db_manager->terminateClientBDConecction();
-	// 	}
+		} catch (\Exception $e) {
 
-	// 	return response(['warehouse_delete' => $warehouse_delete], Constant::OK)
-	// 		->header('Content-Type', 'application/json');
-	// }
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['warehouse_delete' => $warehouse_delete], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
 }

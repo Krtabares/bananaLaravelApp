@@ -19,6 +19,7 @@ class PriceListController extends Controller
 		$this->price_list_implement = $price_list_implement;
 	}
 
+	//----------------------------------INDEX---------------------------------------------------------------------------
 	public function indexPriceList(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -45,6 +46,7 @@ class PriceListController extends Controller
 		return response(['price_lists' => $price_lists], Constant::OK)->header('Content-Type', 'application/json');
 	}
 
+	//----------------------------------------CREATE-------------------------------------------------------------------------
 	public function createPriceList(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -54,12 +56,11 @@ class PriceListController extends Controller
 			if ( !$request->filled('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$conection = $db_manager->getClientBDConecction(
+					$request->header('authorization'),
+					$request->header('user_id'),
+					$request->header('token'),
+					$request->header('app'));
 
 			if ( !$request->filled('reference') )
 				throw new \Exception('Reference is required', Constant::BAD_REQUEST);
@@ -94,6 +95,8 @@ class PriceListController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
+
+	//-----------------------------------------UPDATE--------------------------------------------------------------------
 	public function updatePriceList(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -103,12 +106,11 @@ class PriceListController extends Controller
 			if ( !$request->filled('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$conection = $db_manager->getClientBDConecction(
+					$request->header('authorization'),
+					$request->header('user_id'),
+					$request->header('token'),
+					$request->header('app'));
 
 			if ( !$request->filled('id') )
 				throw new \Exception('Price list is required', Constant::BAD_REQUEST);
@@ -147,6 +149,8 @@ class PriceListController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
+	
+	//--------------------------------------------DELETE---------------------------------------------------------------
 	public function deletePriceList(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -156,12 +160,12 @@ class PriceListController extends Controller
 			if ( !$request->filled('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$conection = $db_manager->getClientBDConecction(
+					$request->header('authorization'),
+					$request->header('user_id'),
+					$request->header('token'),
+					$request->header('app')
+				);
 
 			if ( !$request->filled('id') )
 				throw new \Exception('PriceList is required', Constant::BAD_REQUEST);

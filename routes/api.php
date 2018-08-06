@@ -234,7 +234,7 @@ Route::post('warehouses/create', 'WarehouseController@createWarehouse')
 Route::put('warehouses/update', 'WarehouseController@updateWarehouse')
 	->name('warehouses.update');
 
-Route::delete('warehouses/delete', 'WarehouseController@deleteWarehouse')
+Route::delete('warehouses/delete/{id}', 'WarehouseController@deleteWarehouse')
 	->name('warehouses.delete');
 
 /* Rutas de fabricantes */
@@ -245,13 +245,13 @@ Route::get('manufacturers/', 'ManufacturerController@indexManufacturer')
 Route::post('manufacturers/create', 'ManufacturerController@createManufacturer')
 	->name('manufacturers.create');
 
-Route::post('manufacturers/update', 'ManufacturerController@updateManufacturer')
+Route::put('manufacturers/update', 'ManufacturerController@updateManufacturer')
 	->name('manufacturers.update');
 
-Route::post('manufacturers/archived', 'ManufacturerController@archivedManufacturer')
+Route::put('manufacturers/archived', 'ManufacturerController@archivedManufacturer')
 	->name('manufacturers.archived');
 
-Route::post('manufacturers/delete', 'ManufacturerController@deleteManufacturer')
+Route::delete('manufacturers/delete', 'ManufacturerController@deleteManufacturer')
 	->name('manufacturers.delete');
 
 /* Rutas de lista de precios */
@@ -262,10 +262,10 @@ Route::get('price-lists/', 'PriceListController@indexPriceList')
 Route::post('price-lists/create', 'PriceListController@createPriceList')
 	->name('price-lists.create');
 
-Route::post('price-lists/update', 'PriceListController@updatePriceList')
+Route::put('price-lists/update', 'PriceListController@updatePriceList')
 	->name('price-lists.update');
 
-Route::post('price-lists/delete', 'PriceListController@deletePriceList')
+Route::delete('price-lists/delete', 'PriceListController@deletePriceList')
 	->name('price-lists.delete');
 
 /*  Rutas de paises  */
