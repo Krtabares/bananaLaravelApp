@@ -620,32 +620,26 @@ class ThirdsController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
-	public function deleteThirdContact(Request $request)
+	public function deleteThirdContact(Request $request, $third_id, $contact_id)
 	{
 		$db_manager = new DBManager();
 
 		try {
 
-			if ( !$request->filled('authorization') )
+			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-		   $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
+			$conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
 			);
-
-			if ( !$request->filled('contact_id') )
-				throw new \Exception("Contact is required", Constant::BAD_REQUEST);
-
-			if ( !$request->filled('third_id') )
-				throw new \Exception("Third is required", Constant::BAD_REQUEST);
 
 			$conection->beginTransaction();
 
 			$third_contact_removed = $this->third_implement
-				->deleteThirdContact($conection, $request->contact_id, $request->third_id);
+				->deleteThirdContact($conection, $contact_id, $third_id);
 
 			$conection->commit();
 

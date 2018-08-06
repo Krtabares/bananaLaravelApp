@@ -150,7 +150,7 @@ Route::get('thirds/contacts', 'ThirdsController@selectThirdContacts')
 Route::post('thirds/contact/create', 'ThirdsController@insertThirdContact')
 	->name('thirds.contact.store');
 
-Route::delete('thirds/contact/delete', 'ThirdsController@DeleteThirdContact')
+Route::delete('thirds/contact/delete/{third_id}/{contact_id}', 'ThirdsController@DeleteThirdContact')
 	->name('thirds.contact.delete');
 
 /* Rutas de Contact */

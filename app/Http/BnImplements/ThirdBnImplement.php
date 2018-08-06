@@ -511,6 +511,14 @@ class ThirdBnImplement
 			'third_id' => $third_id,
 			'contact_id' => $contact_id
 		]);
+
+		$delete = $conection->select('SELECT * FROM bpartner_contact
+		WHERE bpartner_id = :third_id AND contact_id = :contact_id', [
+			'third_id' => $third_id,
+			'contact_id' => $contact_id
+		]);
+
+		return $result = ($delete == null) ? 1 : 0 ;
 	}
 
 
