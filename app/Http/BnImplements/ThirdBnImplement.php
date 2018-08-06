@@ -26,10 +26,11 @@ class ThirdBnImplement
 
 	public function selectThirds($conection)
 	{
-		return $conection->select('SELECT * FROM bpartners
-            ORDER BY updated_at DESC, logo DESC');
-
-        return result;
+		return $conection->select('SELECT DISTINCT b.name, b.id, b.reference_no, bl.phone, bl.phone_2
+			FROM bpartners b
+			INNER JOIN bpartner_locations bl ON b.id = bl.bpartner_id
+			ORDER BY b.updated_at DESC'
+		);
 	}
 
 	public function selectFilterThirds($conection, $search)
@@ -349,26 +350,19 @@ class ThirdBnImplement
 			]);
 	}
 
-	/*public function deleteThird($conection, $third_id, $location_id)
+	public function deleteThird($conection, $third_id, $location_id)
 	{
 		$conection->select('CALL DL_DeleteBpartnerData(:third_id, :location_id)', [
 			'third_id' => $third_id,
 			'location_id' => $location_id
 		]);
 
-		$third_delete = $conection->select('SELECT * FROM bpartners WHERE id = :third_id', [
+		$delete = $conection->select('SELECT * FROM bpartners WHERE id = :third_id', [
 			'third_id' => $third_id
 		]);
 
-		$location_delete = $conection->select('SELECT * FROM locations WHERE id = :location_id', [
-			'location_id' => $location_id
-		]);
-
-		if ( $third_delete == null && $location_delete == null )
-			return 'successfully deleted';
-
-		return ['third' => $third_delete, 'location' => $location_delete];
-	}*/
+		return $result = ($delete == null) ? 1 : 0 ;
+	}
 
 	public function selectBranchOffice($conection, $id)
 	{

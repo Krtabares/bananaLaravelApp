@@ -135,11 +135,14 @@ Route::get('thirds/filter', 'ThirdsController@indexFilterThird')
 Route::post('thirds/create', 'ThirdsController@storeThird')
 	->name('thirds.store');
 
-Route::post('thirds/update', 'ThirdsController@updateThird')
+Route::put('thirds/update', 'ThirdsController@updateThird')
 	->name('thirds.update');
 
-Route::post('thirds/archived', 'ThirdsController@archivedThird')
+Route::put('thirds/archived', 'ThirdsController@archivedThird')
 	->name('thirds.archived');
+
+Route::delete('thirds/delete/{third_id}/{location_id}', 'ThirdsController@deleteThird')
+	->name('thirds.delete');
 
 Route::get('thirds/contacts', 'ThirdsController@selectThirdContacts')
 	->name('thirds.contacts');
@@ -147,7 +150,7 @@ Route::get('thirds/contacts', 'ThirdsController@selectThirdContacts')
 Route::post('thirds/contact/create', 'ThirdsController@insertThirdContact')
 	->name('thirds.contact.store');
 
-Route::post('thirds/contact/delete', 'ThirdsController@DeleteThirdContact')
+Route::delete('thirds/contact/delete', 'ThirdsController@DeleteThirdContact')
 	->name('thirds.contact.delete');
 
 /* Rutas de Contact */

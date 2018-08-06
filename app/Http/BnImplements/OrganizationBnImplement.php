@@ -27,6 +27,12 @@ class OrganizationBnImplement
 			ORDER BY organization_name ASC');
 	}
 
+	public function selectFilterOrganizations($conection, $search)
+	{
+		$organizations = $conection->select('CALL RD_SelectFilteredOrganizations(:search)', ['search' => $search]);
+		return ['filter_organizations' => $organizations];
+	}
+
 	public function selectOrganizations($conection)
 	{
 		$organizations = $conection->select('SELECT * FROM organizations ORDER BY updated_at');
