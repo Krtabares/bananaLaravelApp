@@ -21,7 +21,8 @@ class FilesUtils{
 
                 $configStorage = array(
                     'driver' => 'local',
-                    'root' => $DBinfo->client_storageURL.'store/'.$DBinfo->id,
+                    // 'root' => $DBinfo->client_storageURL.'store/'.$DBinfo->id,
+                    'root' => 'store/'.$DBinfo->id,
                     'url'=> $DBinfo->client_storageURL,
                     'visibility' => 'public'
 
