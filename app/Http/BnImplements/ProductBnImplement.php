@@ -56,7 +56,7 @@ class ProductBnImplement
 		 :manufacture_id,
 		 :price_list_id)',
 		 [
-            'sku'=>$product->sku
+            'sku'=>$product->sku,
 			'ean13'=>$product->ean13,
 			'upc'=>$product->,
 			'archived'=>$product->archived,

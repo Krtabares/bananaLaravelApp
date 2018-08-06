@@ -24,6 +24,9 @@ class WarehouseController extends Controller
 		$db_manager = new DBManager();
 
 		try {
+
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 			 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
@@ -35,7 +38,7 @@ class WarehouseController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e,$conection);
 
 		} finally {
 
@@ -54,11 +57,15 @@ class WarehouseController extends Controller
 
 		try {
 
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
 				$request->header('token'),
-				$request->header('app'));
+				$request->header('app')
+			);
 
 			if ( !$request->filled('name') )
 				throw new \Exception('Name is required', Constant::BAD_REQUEST);
@@ -74,7 +81,7 @@ class WarehouseController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e,$conection);
 
 		} finally {
 
@@ -93,13 +100,14 @@ class WarehouseController extends Controller
 
 		try {
 
-			
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-				$conection = $db_manager->getClientBDConecction(
-					$request->header('authorization'),
-					$request->header('user_id'),
-					$request->header('token'),
-					$request->header('app'));
+			$conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 		
 
 			if ( !$request->filled('id') )
@@ -120,7 +128,7 @@ class WarehouseController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -140,6 +148,10 @@ class WarehouseController extends Controller
 		$db_manager = new DBManager();
 
 		try {
+			
+
+			if (!$request->hasHeader('authorization'))
+				throw new \Exception(constant::MGS_UNAUTHORIZED, constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
@@ -147,8 +159,7 @@ class WarehouseController extends Controller
 				$request->header('token'),
 				$request->header('app'));
 
-			if ( !$request->filled('id') )
-				throw new \Exception('Warehouse is required', Constant::BAD_REQUEST);
+			
 
 			$warehouse_delete = $this->warehouse_implement
 				->deleteWarehouse(
@@ -158,7 +169,7 @@ class WarehouseController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e,$conection);
 
 		} finally {
 

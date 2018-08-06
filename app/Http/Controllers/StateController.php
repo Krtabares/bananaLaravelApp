@@ -34,7 +34,7 @@ class StateController extends Controller
 
         } catch (\Exception $e) {
 
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e,$conection);
 
         } finally {
 
@@ -66,7 +66,7 @@ class StateController extends Controller
 
         } catch (\Exception $e) {
 
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
@@ -102,7 +102,7 @@ class StateController extends Controller
             
         } catch (\Exception $e) {
             
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
@@ -141,7 +141,7 @@ class StateController extends Controller
             
         } catch (\Exception $e) {
             
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
@@ -173,7 +173,7 @@ class StateController extends Controller
             
         } catch (\Exception $e) {
             
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
