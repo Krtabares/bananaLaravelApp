@@ -36,7 +36,7 @@ class UserController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -62,7 +62,7 @@ class UserController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e,$conection );
 
 		} finally {
 			$db_manager->terminateClientBDConecction();
@@ -93,7 +93,7 @@ class UserController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -133,7 +133,7 @@ class UserController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conections);
 
 		} finally {
 
@@ -215,7 +215,7 @@ class UserController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -255,7 +255,7 @@ class UserController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -295,7 +295,7 @@ class UserController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -327,7 +327,7 @@ class UserController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -354,7 +354,7 @@ class UserController extends Controller
 
             } catch (\Exception $e) {
 
-                 return ExceptionAnalizer::analizerHTTPResponse($e);
+                 return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
             } finally {
 
@@ -383,7 +383,7 @@ class UserController extends Controller
 
             } catch (\Exception $e) {
 
-                 return ExceptionAnalizer::analizerHTTPResponse($e);
+                 return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
             } finally {
 

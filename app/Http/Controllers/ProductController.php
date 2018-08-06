@@ -13,9 +13,7 @@ class ProductController extends Controller
 
 	private $product_implement;
 
-	function __construct(
-		ProductBnImplement $product_implement
-	)
+	function __construct( ProductBnImplement $product_implement)
 	{
 		$this->product_implement = $product_implement;
 	}
@@ -36,7 +34,7 @@ class ProductController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 
@@ -96,8 +94,8 @@ class ProductController extends Controller
 			
 		} catch (\Exception $e) {
 			
-			$conection->rollBack();
-			return ExceptionAnalizer::analizerHTTPResponse($e);
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
 

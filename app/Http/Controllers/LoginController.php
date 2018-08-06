@@ -47,7 +47,7 @@ class LoginController extends Controller
 
         } catch (\Exception $e) {
 
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 

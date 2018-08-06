@@ -100,7 +100,7 @@ class WarehouseBnImplement {
             'id' => $id
         ]);
 
-        $update = $conection->select('SELECT * FROM warhouses WHERE id = :id', [
+        $update = $conection->select('SELECT * FROM warehouses WHERE id = :id', [
             'id' => $id
         ]);
         
