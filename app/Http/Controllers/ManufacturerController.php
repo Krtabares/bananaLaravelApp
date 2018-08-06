@@ -18,6 +18,8 @@ class ManufacturerController extends Controller
 		$this->manufacturer_implement = $manufacturer_implement;
 	}
 
+
+//----------------------------------INDEX---------------------------------------------------------------------------
 	public function indexManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -44,6 +46,9 @@ class ManufacturerController extends Controller
 		return response(['manufacturers' => $manufacturers], Constant::OK)->header('Content-Type', 'application/json');
 	}
 
+
+
+	//----------------------------------------CREATE-------------------------------------------------------------------------
 	public function createManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -53,12 +58,12 @@ class ManufacturerController extends Controller
 			if ( !$request->filled('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$conection = $db_manager->getClientBDConecction(
+					$request->header('authorization'),
+					$request->header('user_id'),
+					$request->header('token'),
+					$request->header('app')
+				);
 
 			if ( !$request->filled('name') )
 				throw new \Exception('Name is required', Constant::BAD_REQUEST);
@@ -82,6 +87,7 @@ class ManufacturerController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
+	//-----------------------------------------UPDATE--------------------------------------------------------------------
 	public function updateManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -91,12 +97,12 @@ class ManufacturerController extends Controller
 			if ( !$request->filled('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$conection = $db_manager->getClientBDConecction(
+					$request->header('authorization'),
+					$request->header('user_id'),
+					$request->header('token'),
+					$request->header('app')
+				);
 
 			if ( !$request->filled('id') )
 				throw new \Exception('Manufacturer is required', Constant::BAD_REQUEST);
@@ -124,6 +130,8 @@ class ManufacturerController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
+
+	//-----------------------------------------UPDATE-ARCHIVE--------------------------------------------------------------------
 	public function archivedManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -133,12 +141,12 @@ class ManufacturerController extends Controller
 			if ( !$request->filled('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$conection = $db_manager->getClientBDConecction(
+					$request->header('authorization'),
+					$request->header('user_id'),
+					$request->header('token'),
+					$request->header('app')
+				);
 
 			if ( !$request->filled('id') )
 				throw new \Exception('Manufacturer is required', Constant::BAD_REQUEST);
@@ -166,6 +174,8 @@ class ManufacturerController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
+
+	//--------------------------------------------DELETE---------------------------------------------------------------
 	public function deleteManufacturer(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -175,12 +185,12 @@ class ManufacturerController extends Controller
 			if ( !$request->filled('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$conection = $db_manager->getClientBDConecction(
+					$request->header('authorization'),
+					$request->header('user_id'),
+					$request->header('token'),
+					$request->header('app')
+				);
 
 			if ( !$request->filled('id') )
 				throw new \Exception('Manufacturer is required', Constant::BAD_REQUEST);

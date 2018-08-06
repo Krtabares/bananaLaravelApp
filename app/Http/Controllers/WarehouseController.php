@@ -18,6 +18,7 @@ class WarehouseController extends Controller
 		$this->warehouse_implement = $warehouse_implement;
 	}
 
+//----------------------------------INDEX---------------------------------------------------------------------------
 	public function indexWarehouse(Request $request)
 	{
 		$db_manager = new DBManager();
@@ -42,23 +43,22 @@ class WarehouseController extends Controller
 		}
 
 		return response(['warehouses' => $warehouses], Constant::OK)->header('Content-Type', 'application/json');
+
 	}
 
+
+//----------------------------------------CREATE-------------------------------------------------------------------------
 	public function createWarehouse(Request $request)
 	{
 		$db_manager = new DBManager();
 
 		try {
 
-			if ( !$request->filled('authorization') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
-
 			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
 			if ( !$request->filled('name') )
 				throw new \Exception('Name is required', Constant::BAD_REQUEST);
@@ -85,21 +85,22 @@ class WarehouseController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
+	//-----------------------------------------UPDATE--------------------------------------------------------------------
+
 	public function updateWarehouse(Request $request)
 	{
 		$db_manager = new DBManager();
 
 		try {
 
-			if ( !$request->filled('authorization') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+			
 
-			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$conection = $db_manager->getClientBDConecction(
+					$request->header('authorization'),
+					$request->header('user_id'),
+					$request->header('token'),
+					$request->header('app'));
+		
 
 			if ( !$request->filled('id') )
 				throw new \Exception('Warehouse is required', Constant::BAD_REQUEST);
@@ -130,21 +131,21 @@ class WarehouseController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
-	public function deleteWarehouse(Request $request)
+
+
+	//--------------------------------------------DELETE---------------------------------------------------------------
+
+	public function deleteWarehouse(Request $request, $id)
 	{
 		$db_manager = new DBManager();
 
 		try {
 
-			if ( !$request->filled('authorization') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
-
 			$conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
-			);
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
 
 			if ( !$request->filled('id') )
 				throw new \Exception('Warehouse is required', Constant::BAD_REQUEST);
@@ -152,7 +153,7 @@ class WarehouseController extends Controller
 			$warehouse_delete = $this->warehouse_implement
 				->deleteWarehouse(
 					$conection,
-					$request->id
+					$id
 				);
 
 		} catch (\Exception $e) {
