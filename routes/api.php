@@ -358,6 +358,9 @@ Route::post('fieldConfig/UpdateConfiguration', 'FieldConfigController@UpdateConf
 Route::get('migration/clients', 'BananaMigrationsController@selectColumnsClients')
 ->name('migration.clients');
 
+Route::post('migration/generate', 'BananaMigrationsController@generateMigration')
+->name('migration.generate');
+
 /*  Rutas de products  */
 
 Route::get('products/getProductList', 'ProductController@getProductList')
