@@ -14,12 +14,18 @@ class ExceptionAnalizer{
         $this->exception = $exception;
     }
 
-    public static function analizerHTTPResponse($exception)
+    public static function analizerHTTPResponse($exception, $conection = null)
     {
         if ($exception instanceof \Illuminate\Database\QueryException)  {
 
+            if(isset($conection) && $conection instanceof \DB ){
+                $conection->rollBack();
+            }
+
             $MSG = Constant::MSG_ERROR_DB;
             $status = Constant::NOT_IMPLEMENTED;
+
+
             // dd($exception->getCode());
              dd($exception);
 
@@ -62,17 +68,17 @@ class ExceptionAnalizer{
                 break;
             }
 
-            return response( $MSG , $status)->header('Content-Type', 'application/json'); 
+            return response( $MSG , $status)->header('Content-Type', 'application/json');
         }else{
 
-            
+
 
             switch ($exception->getCode()) {
 
                 case Constant::BAD_REQUEST:
                     $status = Constant::BAD_REQUEST;
                     break;
-                    
+
                 case Constant::UNAUTHORIZED:
                     $status = Constant::UNAUTHORIZED;
                     break;
@@ -94,6 +100,6 @@ class ExceptionAnalizer{
 
 
     }
-  
+
 
 }
