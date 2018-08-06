@@ -32,6 +32,9 @@ class ThirdsController extends Controller
 
 		try {
 
+			if ( $request->header('authorization') == null )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -59,6 +62,9 @@ class ThirdsController extends Controller
 
 		try {
 
+			if ( $request->header('authorization') == null )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -84,6 +90,9 @@ class ThirdsController extends Controller
 		$db_manager = new DBManager();
 
 		try {
+
+			if ( $request->header('authorization') == null )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
@@ -120,6 +129,9 @@ class ThirdsController extends Controller
 
 		try {
 
+			if ( $request->header('authorization') == null )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
 				$request->header('user_id'),
@@ -147,14 +159,14 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( !$request->filled('authorization') )
+			if ( $request->header('authorization') == null )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-		   $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
+			$conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app')
 			);
 
 			if ( !$request->filled('organization_id') )
@@ -308,8 +320,8 @@ class ThirdsController extends Controller
 
 		try {
 
-			// if ( $request->header('authorization') != null)
-			// 	throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+			if ( $request->header('authorization') == null )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 		   $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
@@ -413,7 +425,7 @@ class ThirdsController extends Controller
 				    throw new \Exception("Branch Office data are required", Constant::BAD_REQUEST);
 			*/
 
-			// $conection->beginTransaction();
+		  $conection->beginTransaction();
 
 			$third_update = $this->third_implement
 				->updateThird($conection,
@@ -449,7 +461,7 @@ class ThirdsController extends Controller
 					$request->branch_office
 				);
 
-            // $conection->commit();
+             $conection->commit();
 
             if ( $request->filled('image') ){
                 if($request->filled('storageNameClient')){
@@ -457,7 +469,7 @@ class ThirdsController extends Controller
                     $storageManager = new FilesUtils();
                     $storageManager->setStorageSimple($request->header('authorization'));
                     $fileContents = base64_decode($request->image);
-                    Storage::disk($request->storageNameClient)->put('thirds/'.'ba'. $request->id . 'naa' . $request->organization_id . 'na.jpg', $fileContents,'public');
+                    Storage::disk($request->storageNameClient)->put('thirds/'.'ba'. $request->id . 'na' . $request->organization_id . 'na.jpg', $fileContents,'public');
                 }
             }
 
@@ -465,8 +477,8 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			// $conection->rollBack();
-		  // return ExceptionAnalizer::analizerHTTPResponse($e);
+		    $conection->rollBack();
+		  return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
 
@@ -482,14 +494,14 @@ class ThirdsController extends Controller
 
 		try {
 
-			if ( !$request->filled('authorization') )
+			if ( $request->header('authorization') == null )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-		   $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
+			$conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app')
 			);
 
 			if ( !$request->filled('third_id') )
@@ -514,32 +526,26 @@ class ThirdsController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
-	public function deleteThird(Request $request)
+	public function deleteThird(Request $request, $third_id, $location_id)
 	{
 		$db_manager = new DBManager();
 
 		try {
 
-			if ( !$request->filled('authorization') )
+			if ( $request->header('authorization') == null )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-		   $conection = $db_manager->getClientBDConecction(
-				$request->authorization,
-				$request->user_id,
-				$request->token,
-				$request->app
+			$conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app')
 			);
-
-		   if ( !$request->filled('third_id') )
-				throw new \Exception("Third is required", Constant::BAD_REQUEST);
-
-			if ( !$request->filled('location_id') )
-				throw new \Exception("Location is required", Constant::BAD_REQUEST);
 
 			$conection->beginTransaction();
 
 			$third_delete = $this->third_implement
-				->deleteThird($conection, $request->third_id, $request->location_id);
+				->deleteThird($conection, $third_id, $location_id);
 
 			$conection->commit();
 
@@ -553,7 +559,7 @@ class ThirdsController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response($third_delete, Constant::OK)
+		return response(['third_delete' => $third_delete], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 

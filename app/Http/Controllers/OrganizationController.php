@@ -70,6 +70,41 @@ class OrganizationController extends Controller
 		return response($organization, Constant::OK)->header('Content-Type', 'application/json');
 	}
 
+	public function indexFilterOrganization(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			 $conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
+
+			if ( $request->filled('filter') ) {
+
+				$filter_organizations = $this->organization_implement->selectFilterOrganizations(
+					$conection, $request->filter
+				);
+
+			} else
+				throw new \Exception("Filter is required", Constant::BAD_REQUEST);
+
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response($filter_organizations, Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
 	public function storeOrganization(Request $request)
 	{
 		$db_manager = new DBManager();
