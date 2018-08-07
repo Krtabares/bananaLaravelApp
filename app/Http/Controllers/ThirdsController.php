@@ -656,4 +656,66 @@ class ThirdsController extends Controller
 		return response(['third_contact_removed' => $third_contact_removed], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
+
+	public function storeBranchOffice(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app')
+			);
+
+			if ( !$request->filled('id') )
+				throw new \Exception("Third is required", Constant::BAD_REQUEST);
+
+			if ( !$request->filled('name') )
+				throw new \Exception("Branch office name is required", Constant::BAD_REQUEST);
+
+			if ( !$request->filled('branch_location') )
+				throw new \Exception("Branch office location is required", Constant::BAD_REQUEST);
+
+			if ( $request->branch_location['address_1'] == NULL )
+				throw new \Exception("Indicate at least one address", Constant::BAD_REQUEST);
+
+			$conection->beginTransaction();
+
+			
+			$branch = $this->third_implement->insertBranchOffice(
+				$conection,
+				$request->third_id,
+				$request->location_id,
+				$request->name,
+				$request->is_ship_to,
+				$request->is_bill_to,
+				$request->is_pay_from,
+				$request->is_remit_to,
+				$request->phone,
+				$request->phone_2,
+				$request->fax,
+				$request->isdn
+			);
+
+			$conection->commit();
+
+		} catch (\Exception $e) {
+
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response($third_insert, Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
 }

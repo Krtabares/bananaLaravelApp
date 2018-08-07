@@ -153,6 +153,9 @@ Route::post('thirds/contact/create', 'ThirdsController@insertThirdContact')
 Route::delete('thirds/contact/delete/{third_id}/{contact_id}', 'ThirdsController@DeleteThirdContact')
 	->name('thirds.contact.delete');
 
+Route::post('thirds/branch/create', 'ThirdsController@storeBranchOffice')
+	->name('thirds.branch.store');
+
 /* Rutas de Contact */
 
 Route::get('contact/{id}', 'ContactController@selectContactById')

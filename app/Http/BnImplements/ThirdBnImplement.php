@@ -420,7 +420,7 @@ class ThirdBnImplement
 		$phone_2, $fax, $isdn)
 	{
 
-		$conection->select('CALL UP_InsertBpartnerLocation(
+		$conection->select('CALL UP_UpdateBpartnerLocation(
 				:branch_office_id,
 				:name,
 				:is_ship_to,

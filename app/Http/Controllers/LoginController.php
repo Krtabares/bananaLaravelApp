@@ -28,7 +28,7 @@ class LoginController extends Controller
         $storageManager = new FilesUtils();
         try {
 
-            if( $request->header('authorization') == null ){
+            if( !$request->hasHeader('authorization') ){
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
             }
 
