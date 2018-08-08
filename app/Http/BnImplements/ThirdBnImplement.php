@@ -200,7 +200,7 @@ class ThirdBnImplement
 			);
 
 		$branch_office_insert = $this->insertBranchOffice(
-			$conection, $lid[0]->LID, $location_insert->id,
+			$conection, $lid[0]->LID, $location_insert,
 			$name, 1, 1, 1, 1, $branch_office['phone'],
 			$branch_office['phone_2'], '', ''
 		);
@@ -378,7 +378,7 @@ class ThirdBnImplement
 		$phone_2, $fax, $isdn)
 	{
 
-		$conection->select('CALL CR_InsertBpartnerLocation(
+		$branch_insert = $conection->select('CALL CR_InsertBpartnerLocation(
 				:third_id,
 				:location_id,
 				:name,
@@ -405,14 +405,14 @@ class ThirdBnImplement
 				]
 			);
 
-		$branch_insert = $conection->select('
-			SELECT *
-			FROM bpartner_locations
-			ORDER BY id DESC
-			LIMIT 1'
-		);
+		// $branch_insert = $conection->select('
+		// 	SELECT *
+		// 	FROM bpartner_locations
+		// 	ORDER BY id DESC
+		// 	LIMIT 1'
+		// );
 
-		return $branch_insert[0];
+		return $branch_insert[0]->LID;
 	}
 
 	public function updateBranchOffice($conection, $branch_office_id,
@@ -420,7 +420,7 @@ class ThirdBnImplement
 		$phone_2, $fax, $isdn)
 	{
 
-		$conection->select('CALL UP_InsertBpartnerLocation(
+		$conection->select('CALL UP_UpdateBpartnerLocation(
 				:branch_office_id,
 				:name,
 				:is_ship_to,
@@ -453,6 +453,33 @@ class ThirdBnImplement
 		]);
 
 		return $branch_update[0];
+	}
+
+	public function newBranchOffice($conection, $third_id, $branch_location,
+		$name, $is_ship_to, $is_bill_to, $is_pay_from, $is_remit_to, $phone,
+		$phone_2, $fax, $isdn)
+	{
+		if ($branch_office['id'] == 0) {
+			$location_id = $this->location_implement
+				->insertLocation(
+					$conection, $branch_location['address_1'],
+					$branch_location['address_2'], $branch_location['address_3'],
+					$branch_location['address_4'], $branch_location['city_id'],
+					$branch_location['city_name'], $branch_location['postal'],
+					$branch_location['postal_add'], $branch_location['state_id'],
+					$branch_location['state_name'], $branch_location['country_id'],
+					$branch_location['comments']
+				);
+		} else {
+			$location_id = $branch_location['id'];
+		}
+
+		$branch_office = $this->insertBranchOffice(
+			$conection, $third_id, $location_id, $name, $is_ship_to, $is_bill_to,
+			$is_pay_from, $is_remit_to, $phone,	$phone_2, $fax, $isdn
+		);
+
+		return ['branch_office' => $branch_office];
 	}
 
 	public function selectThirdContacts($conection, $third_id)

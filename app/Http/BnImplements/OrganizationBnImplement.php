@@ -75,7 +75,7 @@ class OrganizationBnImplement
 				'name' => $name,
 				'ref_num' => $ref_num,
 				'description' => $description,
-				'location_id' => $location->id
+				'location_id' => $location
 			]);
 		
 		return $organization[0]->LID;
