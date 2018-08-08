@@ -22,6 +22,8 @@ class RolController extends Controller
         $db_manager = new DBManager();
 
         try {
+            if ( !$request->hasHeader('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
              
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
@@ -33,7 +35,7 @@ class RolController extends Controller
 
         } catch (\Exception $e) {
 
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
@@ -48,7 +50,9 @@ class RolController extends Controller
         $db_manager = new DBManager();
 
         try {
-             
+            if ( !$request->hasHeader('authorization') )
+            throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
                 $request->header('user_id'),
@@ -59,7 +63,7 @@ class RolController extends Controller
 
         } catch (\Exception $e) {
 
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
@@ -75,6 +79,9 @@ class RolController extends Controller
 
         try {   
             
+            if ( !$request->hasHeader('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
                 $request->header('user_id'),
@@ -91,7 +98,7 @@ class RolController extends Controller
 
         } catch (\Exception $e) {
 
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e , $conection);
 
         } finally {
 
@@ -106,17 +113,22 @@ class RolController extends Controller
         $db_manager = new DBManager();
 
         try {
-            if(!$request->filled('authorization'))
-                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
 
+
+             if ( !$request->hasHeader('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+            
             $conection = $db_manager->getClientBDConecction(
-                $request->authorization,
-                $request->user_id,
-                $request->token,
-                $request->app
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app')
             );
+          
+               
 
-            $conection->beginTransaction();
+            
+            $conection->beginTriansacton();
 
             if ( !$request->filled('rol_name') )
                 throw new \Exception("Rol name is required", Constant::BAD_REQUEST);
@@ -141,8 +153,8 @@ class RolController extends Controller
             
         } catch (\Exception $e) {
             
-            $conection->rollBack();
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
@@ -159,15 +171,15 @@ class RolController extends Controller
         $db_manager = new DBManager();
 
         try {
-            if(!$request->filled('authorization'))
-                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
+            if ( !$request->hasHeader('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-           $conection = $db_manager->getClientBDConecction(
-                $request->authorization,
-                $request->user_id,
-                $request->token,
-                $request->app
-            );
+                $conection = $db_manager->getClientBDConecction(
+                    $request->header('authorization'),
+                    $request->header('user_id'),
+                    $request->header('token'),
+                    $request->header('app')
+                );
             $conection->beginTransaction();
 
             if ( !$request->filled('rol_id') )
@@ -197,7 +209,7 @@ class RolController extends Controller
         } catch (\Exception $e) {
             
             $conection->rollBack();
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
@@ -212,16 +224,15 @@ class RolController extends Controller
         $db_manager = new DBManager();
 
         try {
-
-            if(!$request->filled('authorization'))
-                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::UNAUTHORIZED);
-
-           $conection = $db_manager->getClientBDConecction(
-                $request->authorization,
-                $request->user_id,
-                $request->token,
-                $request->app
-            );
+            
+            if ( !$request->hasHeader('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+                
+            $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
 
             if ( !$request->filled('rol_id') )
                 throw new \Exception("Rol is required", Constant::BAD_REQUEST);
@@ -234,7 +245,7 @@ class RolController extends Controller
             
         } catch (\Exception $e) {
             
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
@@ -252,7 +263,9 @@ class RolController extends Controller
         $db_manager = new DBManager();
 
         try {
-             
+            if ( !$request->hasHeader('authorization') )
+            throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
                 $request->header('user_id'),
@@ -263,7 +276,7 @@ class RolController extends Controller
 
         } catch (\Exception $e) {
 
-            return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e,$conection );
 
         } finally {
 

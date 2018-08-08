@@ -58,7 +58,7 @@ class ProductBnImplement
 		 [
             'sku'=>$product->sku,
 			'ean13'=>$product->ean13,
-			'upc'=>$product->,
+			'upc'=>$product->upc,
 			'archived'=>$product->archived,
 			'name'=>$product->name,
 			'description'=>$product->description,
