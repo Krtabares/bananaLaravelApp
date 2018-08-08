@@ -40,8 +40,11 @@ class ThirdsController extends Controller
 				$request->header('user_id'),
 				$request->header('token'),
 				$request->header('app'));
+			
+			if ( !$request->filled('type_third') )
+				throw new \Exception("Type third is required", Constant::BAD_REQUEST);
 
-			$thirds = $this->third_implement->selectThirds($conection);
+			$thirds = $this->third_implement->selectThirds($conection, $request->type_third);
 
 		} catch (\Exception $e) {
 
@@ -716,6 +719,104 @@ class ThirdsController extends Controller
 		}
 
 		return response($branch, Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
+	public function updateBranchOffice(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app')
+			);
+
+			if ( !$request->filled('id') )
+				throw new \Exception("Branch office is required", Constant::BAD_REQUEST);
+
+			if ( !$request->filled('name') )
+				throw new \Exception("Branch office name is required", Constant::BAD_REQUEST);
+
+			if ( !$request->filled('branch_location') )
+				throw new \Exception("Branch office location is required", Constant::BAD_REQUEST);
+
+			if ( $request->branch_location['address_1'] == NULL )
+				throw new \Exception("Indicate at least one address", Constant::BAD_REQUEST);
+
+			$conection->beginTransaction();
+
+			$branch = $this->third_implement->editBranchOffice(
+				$conection,
+				$request->id,
+				$request->branch_location,
+				$request->name,
+				$request->is_ship_to,
+				$request->is_bill_to,
+				$request->is_pay_from,
+				$request->is_remit_to,
+				$request->phone,
+				$request->phone_2,
+				$request->fax,
+				$request->isdn
+			);
+
+			$conection->commit();
+
+		} catch (\Exception $e) {
+
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response($branch, Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
+	public function deleteBranchOffice(Request $request, $id)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
+			);
+
+			$conection->beginTransaction();
+
+			$branch_removed = $this->third_implement
+				->deleteBranch($conection, $id);
+
+			$conection->commit();
+
+		} catch (\Exception $e) {
+
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['branch_removed' => $branch_removed], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 }
