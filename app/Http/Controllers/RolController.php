@@ -114,7 +114,6 @@ class RolController extends Controller
 
         try {
 
-
              if ( !$request->hasHeader('authorization') )
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
             
@@ -128,9 +127,9 @@ class RolController extends Controller
                
 
             
-            $conection->beginTriansacton();
+            $conection->beginTransaction();
 
-            if ( !$request->filled('rol_name') )
+            if ( !$request->filled('name') )
                 throw new \Exception("Rol name is required", Constant::BAD_REQUEST);
 
             if ( !$request->filled('description') )
@@ -146,7 +145,7 @@ class RolController extends Controller
                 throw new \Exception("Permits rol are required", Constant::BAD_REQUEST);
 
                 $rol_insert = $this->rol_implement
-                    ->insertRol($conection, $request->rol_name, $request->description,
+                    ->insertRol($conection, $request->name, $request->description,
                         $request->all_access_column, $request->all_access_organization, $request->permits_rol);
 
             $conection->commit();
@@ -182,10 +181,10 @@ class RolController extends Controller
                 );
             $conection->beginTransaction();
 
-            if ( !$request->filled('rol_id') )
+            if ( !$request->filled('id') )
                 throw new \Exception("Rol is required", Constant::BAD_REQUEST);
 
-            if ( !$request->filled('rol_name') )
+            if ( !$request->filled('name') )
                 throw new \Exception("Rol name is required", Constant::BAD_REQUEST);
 
             if ( !$request->filled('description') )
@@ -201,14 +200,14 @@ class RolController extends Controller
                 throw new \Exception("Permits rol are required", Constant::BAD_REQUEST);
 
                 $rol_update = $this->rol_implement
-                    ->updateRol($conection, $request->rol_id, $request->rol_name, $request->description,
+                    ->updateRol($conection, $request->id, $request->name, $request->description,
                         $request->all_access_column, $request->all_access_organization, $request->permits_rol);
 
             $conection->commit();
             
         } catch (\Exception $e) {
             
-            $conection->rollBack();
+            
             return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {

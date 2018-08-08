@@ -50,7 +50,7 @@ Route::get('rols/filter', 'RolController@indexFilterRol')
 Route::post('rols/create', 'RolController@storeRol')
 	->name('rols.store');
 
-Route::post('rols/update', 'RolController@updateRol')
+Route::put('rols/update', 'RolController@updateRol')
 	->name('rols.update');
 
 Route::put('rols/archived', 'RolController@archivedRol')
