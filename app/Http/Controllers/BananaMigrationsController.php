@@ -51,7 +51,7 @@ class BananaMigrationsController extends Controller
     {
         // ini_set('memory_limit', '-1');
         $db_manager = new DBManager();
-
+        $conection = null;
 
         try {
 
@@ -61,16 +61,20 @@ class BananaMigrationsController extends Controller
                 $request->header('token'),
                 $request->header('app'));
 
+                $conection->beginTransaction();
+
                 if ( !$request->filled('guideMigration') )
 				    throw new \Exception("Guide Migration is required", Constant::BAD_REQUEST);
 
-                //  $this->migration_implement->preprareQueryMigration($request->guideMigration);
+                $this->migration_implement->migrate( $conection ,$request->guideMigration, $request->jsonImport);
 
-                dd($request->jsonImport);
+                //  dd($request->jsonImport);
+                $conection->commit();
+                // $conection->rollBack();
 
         } catch (\Exception $e) {
 
-            // return ExceptionAnalizer::analizerHTTPResponse($e);
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
         } finally {
 
