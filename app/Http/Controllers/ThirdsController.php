@@ -688,10 +688,10 @@ class ThirdsController extends Controller
 			$conection->beginTransaction();
 
 			
-			$branch = $this->third_implement->insertBranchOffice(
+			$branch = $this->third_implement->newBranchOffice(
 				$conection,
-				$request->third_id,
-				$request->location_id,
+				$request->id,
+				$request->branch_location,
 				$request->name,
 				$request->is_ship_to,
 				$request->is_bill_to,
@@ -715,7 +715,7 @@ class ThirdsController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response($third_insert, Constant::OK)
+		return response($branch, Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 }
