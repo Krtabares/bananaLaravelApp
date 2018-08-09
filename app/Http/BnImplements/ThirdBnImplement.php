@@ -28,20 +28,20 @@ class ThirdBnImplement
 	{
 		switch ($type) {
 
-			case 'all':
+			case 'Thirds':
 				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					ORDER BY b.updated_at DESC'
 					);
 			break;
-			case 'vendor':
+			case 'Vendor':
 				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					WHERE b.is_vendor
 					ORDER BY b.updated_at DESC'
 				);
 			break;
-			case 'customer':
+			case 'Customer':
 				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					WHERE b.is_customer

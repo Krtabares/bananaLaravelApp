@@ -18,11 +18,46 @@ class LocationController extends Controller
 		$this->location_implement = $location_implement;
 	}
 
+	public function searchLocation(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
+
+			if ( !$request->filled('search') )
+				throw new \Exception('Search is required', Constant::BAD_REQUEST);
+
+			$search_locations = $this->location_implement->searchLocation($conection, $request->search);
+
+		} catch (\Exception $e) {
+			
+			return ExceptionAnalizer::analizerHTTPResponse($e);
+
+		} finally {
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['search_locations' => $search_locations], Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
 	public function indexLocationCountry(Request $request)
 	{
 		$db_manager = new DBManager();
 
 		try {
+			
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 			 
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
@@ -52,6 +87,9 @@ class LocationController extends Controller
 		$db_manager = new DBManager();
 
 		try {
+
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 			 
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
@@ -84,6 +122,9 @@ class LocationController extends Controller
 		$db_manager = new DBManager();
 
 		try {
+
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 			 
 			$conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),

@@ -190,6 +190,9 @@ Route::get('location/states', 'LocationController@indexLocationState')
 Route::get('location/cities', 'LocationController@indexLocationCity')
 	->name('location.cities');
 
+Route::get('location/search', 'LocationController@searchLocation')
+	->name('location.search');
+
 /* Rutas de unidades */
 
 Route::get('metering-units/', 'UnitController@indexUnit')
