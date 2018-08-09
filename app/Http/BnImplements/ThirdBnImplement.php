@@ -538,6 +538,19 @@ class ThirdBnImplement
 		return ['branch_office' => $branch_office, 'location' => $location_update];
 	}
 
+	public function archivedBranchOffice($conection, $branch_id, $archived)
+	{
+		$conection->select('CALL DL_ArchivedBranch(:branch_id, :archived);',[
+			'branch_id' => $branch_id,
+			'archived' => $archived
+		]);
+
+		$branch_archived = $conection->select('SELECT * FROM bpartner_locations WHERE id = :id', [
+			'id' => $branch_id
+		]);
+		return $branch_archived[0];
+	}
+
 	public function deleteBranch ($conection, $id) {
 
 		$conection->select('CALL DL_DeleteBranch(:id)',[
@@ -584,16 +597,19 @@ class ThirdBnImplement
 				$third_contact['last_contact'],
 				$third_contact['last_result']
 			);
+			$contact_id = $contact_insert->id;
+			$contact = $contact_insert;
 		} else {
 			$contact_id = $third_contact['id'];
+			$contact = $third_contact;
 		}
 
 		$conection->select('CALL CR_InsertBpartnerContact(:third_id, :contact_id)',[
 			'third_id' => $third_id,
-			'contact_id' => $contact_insert->id
+			'contact_id' => $contact_id
 		]);
 
-		return ['contact' => $contact_insert];
+		return ['contact' => $contact];
 	}
 
 	public function deleteThirdContact ($conection, $contact_id, $third_id) {

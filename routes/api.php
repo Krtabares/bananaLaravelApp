@@ -159,6 +159,9 @@ Route::post('thirds/branch/create', 'ThirdsController@storeBranchOffice')
 Route::put('thirds/branch/update', 'ThirdsController@updateBranchOffice')
 	->name('thirds.branch.update');
 
+Route::put('thirds/branch/archived', 'ThirdsController@archivedBranchOffice')
+	->name('thirds.branch.archived');
+
 Route::delete('thirds/branch/delete/{id}', 'ThirdsController@deleteBranchOffice')
 	->name('thirds.branch.delete');
 
