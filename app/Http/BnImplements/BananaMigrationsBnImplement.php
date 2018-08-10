@@ -286,7 +286,6 @@ class BananaMigrationsBnImplement
             $statemensQuerys = [];
             $i = 0;
 
-            error_log("inicio");
             foreach ($jsonimport as $key => $registro) {
 
                 $valueQuery = "";
@@ -295,14 +294,14 @@ class BananaMigrationsBnImplement
                 foreach ($querys as $keyquery => $value) {// recorre los querys disponibles
 
                     $arrayattr = [];
-
-                     foreach ($guideMigration as $keyGuide => $valueGuide) {// ferifica si el atributo exixte en el arreglo si no lo agrega
+                    $auxRegistro = [];
+                    foreach ($guideMigration as $keyGuide => $valueGuide) {// ferifica si el atributo exixte en el arreglo si no lo agrega
 
                             if(!array_key_exists($keyGuide,$registro)){
                                 $attr = null;
                                 switch ($valueGuide['column']['type_data']) {
                                     case 'String':
-                                            $attr = ""  ;
+                                            $attr = " "  ;
                                         break;
                                     case 'Boolean':
                                             $attr =  0 ;
@@ -311,13 +310,13 @@ class BananaMigrationsBnImplement
                                         $attr =  0 ;
                                     break;
                                 }
-
-                                $registro[$keyGuide] = $attr;
-                            }
+                                $auxRegistro[$keyGuide] = $attr;
+                            }else
+                                $auxRegistro[$keyGuide] = $registro[$keyGuide];
                         }
-
+                        // dd($auxRegistro);
+                    $registro = $auxRegistro;
                     foreach ($registro as $key => $attr) {
-
 
                         if($guideMigration[$key]['column'] != null && $guideMigration[$key]['column']['table_name'] == $keyquery ){
 
@@ -327,40 +326,56 @@ class BananaMigrationsBnImplement
                                         $attr =  $conection->getPdo()->quote($attr)  ;
                                     break;
                                 case 'Boolean':
-                                        $attr =  ( strtoupper($attr)  == 'TRUE' || strtoupper($attr) == "T" || $attr == '1' )? 1 : 0 ;
+                                        $attr =  ( strtoupper($attr)  == 'TRUE' || strtoupper($attr) == "T" || $attr == '1' || $attr == 1 )? 1 : 0 ;
                                     break;
 
                             }
 
-                            $arrayattr[] = $attr;
+                            $arrayattr[$key] = $attr;
                         }
 
 
                     }
+                    // dd($arrayattr);
 
                     $valueQuery = " ( ".implode(" , ",$arrayattr)." ) ";
                     $statemensQuerys[$keyquery][] = $valueQuery;
-                    if($i< 1000)
-                        error_log($i." " . $valueQuery);
-                    $i = $i + 1;
+
                 }
 
             }
-            error_log("final");
-
+            // dd($statemensQuerys);
+            $jsonimport = null;
+            $guideMigration = null;
+            $table_name = null;
+            $i = false;
             foreach ($querys as $key => $value) {
+
                 $conection->select("TRUNCATE `banana`.". $key ."_tmp;");
                 $conection->select($value . implode(" , ", $statemensQuerys[$key]));
 
+                if(!$i){
+                    $table_name = $key;
+                    $i = true;
+                }
             }
 
-            // dd($guideMigration,$jsonimport, $querys,  $statemensQuerys );
+            $conection->select("call CR_insertImport(:table)",['table' => $table_name]);
 
-
-        // }
     }
 
-    /**
+    public function validateDataThird()
+    {
+
+    }
+
+    public function applyMigration($conection, $idImport){
+
+
+
+    }
+
+/**
  * Reemplaza todos los acentos por sus equivalentes sin ellos
  *
  * @param $string
@@ -418,8 +433,7 @@ function sanear_string($string)
              "(", ")", "?", "'", "¡",
              "¿", "[", "^", "<code>", "]",
              "+", "}", "{", "¨", "´",
-             ">", "< ", ";", ","
-            //  ,
+             ">", "< ", ";", //"," ,
             //  ":",
             //  ".",
             //  " "

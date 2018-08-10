@@ -56,7 +56,7 @@ class ThirdBnImplement
 			break;
 
 		}
-			
+
 	}
 
 	public function selectFilterThirds($conection, $search)
@@ -182,7 +182,8 @@ class ThirdBnImplement
 				:manufacturer,
 				:po_price_list_id,
 				:language_id,
-				:greeting_id
+                :greeting_id
+                :id
 			)', [
 					'org_id' => $org_id,
 					'logo' => $logo,
@@ -210,7 +211,8 @@ class ThirdBnImplement
 					'manufacturer' => $manufacturer,
 					'po_price_list_id' => $po_price_list_id,
 					'language_id' => $language_id,
-					'greeting_id' => $greeting_id
+                    'greeting_id' => $greeting_id,
+                    'id' => null
 				]
 			);
 
@@ -395,9 +397,9 @@ class ThirdBnImplement
 		$branch_offices = $conection->select('SELECT * FROM bpartner_locations where bpartner_id = :id', [
 			'id' => $id
 		]);
-		
+
 		foreach ($branch_offices as $key => $branch) {
-			
+
 			$localization = $conection->select('SELECT l.* FROM locations l
 				INNER JOIN bpartner_locations b_l ON l.id = b_l.location_id
 				WHERE b_l.id = :id', [
