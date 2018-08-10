@@ -166,10 +166,10 @@ class ThirdsController extends Controller
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
-                $request->header('authorization'),
-                $request->header('user_id'),
-                $request->header('token'),
-                $request->header('app')
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
 			);
 
 			if ( !$request->filled('organization_id') )
@@ -189,81 +189,81 @@ class ThirdsController extends Controller
 
 			/*
 				if ( !$request->filled('logo') )
-				    throw new \Exception("Logo is required", Constant::BAD_REQUEST);
+					throw new \Exception("Logo is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_customer') )
-				    throw new \Exception("Customer is required", Constant::BAD_REQUEST);
+					throw new \Exception("Customer is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_vendor') )
-				    throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
+					throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('name_2') )
-				    throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
+					throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_employee') )
-				    throw new \Exception("Employee is required", Constant::BAD_REQUEST);
+					throw new \Exception("Employee is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_prospect') )
-				    throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
+					throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_sales_rep') )
-				    throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
+					throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('sales_rep_id') )
-				    throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('credit_status') )
-				    throw new \Exception("Credit status is required", Constant::BAD_REQUEST);
+					throw new \Exception("Credit status is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('credit_limit') )
-				    throw new \Exception("Credit limit is required", Constant::BAD_REQUEST);
+					throw new \Exception("Credit limit is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('tax_id') )
-				    throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_tax_exempt') )
-				    throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
+					throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_po_tax_exempt') )
-				    throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
+					throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('url') )
-				    throw new \Exception("Url is required", Constant::BAD_REQUEST);
+					throw new \Exception("Url is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('description') )
-				    throw new \Exception("Description is required", Constant::BAD_REQUEST);
+					throw new \Exception("Description is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_summary') )
-				    throw new \Exception("Summary is required", Constant::BAD_REQUEST);
+					throw new \Exception("Summary is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('price_list_id') )
-				    throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('delivery_rule') )
-				    throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
+					throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('delivery_via_rule') )
-				    throw new \Exception("Delivery via rule is required", Constant::BAD_REQUEST);
+					throw new \Exception("Delivery via rule is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('flat_discount') )
-				    throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
+					throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_manufacturer') )
-				    throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
+					throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('po_price_list_id') )
-				    throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('language_id') )
-				    throw new \Exception("Language id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Language id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('greeting_id') )
-				    throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
 
 
 				if ( !$request->filled('branch_office') )
-				    throw new \Exception("Branch office is required", Constant::BAD_REQUEST);
-            */
+					throw new \Exception("Branch office is required", Constant::BAD_REQUEST);
+			*/
 
 
 			$conection->beginTransaction();
@@ -327,10 +327,10 @@ class ThirdsController extends Controller
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 		   $conection = $db_manager->getClientBDConecction(
-                $request->header('authorization'),
-                $request->header('user_id'),
-                $request->header('token'),
-                $request->header('app')
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
 			);
 
 		   if ( !$request->filled('id') )
@@ -353,79 +353,79 @@ class ThirdsController extends Controller
 
 			/*
 				if ( !$request->filled('logo') )
-			    throw new \Exception("Logo is required", Constant::BAD_REQUEST);
+				throw new \Exception("Logo is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_customer') )
-				    throw new \Exception("Customer is required", Constant::BAD_REQUEST);
+					throw new \Exception("Customer is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_vendor') )
-				    throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
+					throw new \Exception("Vendor is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('name_2') )
-				    throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
+					throw new \Exception("Third name 2 is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_employee') )
-				    throw new \Exception("Employee is required", Constant::BAD_REQUEST);
+					throw new \Exception("Employee is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_prospect') )
-				    throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
+					throw new \Exception("Prospect is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_sales_rep') )
-				    throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
+					throw new \Exception("Sales rep is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('sales_rep_id') )
-				    throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Sales rep id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('credit_status') )
-				    throw new \Exception("Credit status is required", Constant::BAD_REQUEST);
+					throw new \Exception("Credit status is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('credit_limit') )
-				    throw new \Exception("Credit limit is required", Constant::BAD_REQUEST);
+					throw new \Exception("Credit limit is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('tax_id') )
-				    throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Tax id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_tax_exempt') )
-				    throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
+					throw new \Exception("Tax exempt is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_po_tax_exempt') )
-				    throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
+					throw new \Exception("Pot ax exempt is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('url') )
-				    throw new \Exception("Url is required", Constant::BAD_REQUEST);
+					throw new \Exception("Url is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('description') )
-				    throw new \Exception("Description is required", Constant::BAD_REQUEST);
+					throw new \Exception("Description is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_summary') )
-				    throw new \Exception("Summary is required", Constant::BAD_REQUEST);
+					throw new \Exception("Summary is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('price_list_id') )
-				    throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Price list id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('delivery_rule') )
-				    throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
+					throw new \Exception("Delivery rule is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('delivery_via_rule') )
-				    throw new \Exception("Delivery via rule is required", Constant::BAD_REQUEST);
+					throw new \Exception("Delivery via rule is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('flat_discount') )
-				    throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
+					throw new \Exception("Flat discount is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('is_manufacturer') )
-				    throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
+					throw new \Exception("Manufacturer is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('po_price_list_id') )
-				    throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Po price list id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('language_id') )
-				    throw new \Exception("Language id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Language id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('greeting_id') )
-				    throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
+					throw new \Exception("Greeting id is required", Constant::BAD_REQUEST);
 
 				if ( !$request->filled('branch_office_data') )
-				    throw new \Exception("Branch Office data are required", Constant::BAD_REQUEST);
+					throw new \Exception("Branch Office data are required", Constant::BAD_REQUEST);
 			*/
 
 		  $conection->beginTransaction();
@@ -464,23 +464,23 @@ class ThirdsController extends Controller
 					$request->branch_office
 				);
 
-             $conection->commit();
+			 $conection->commit();
 
-            if ( $request->filled('image') ){
-                if($request->filled('storageNameClient')){
-                    // $path = $request->file('avatar')->store('avatars/'.$request->user()->id, 's3');
-                    $storageManager = new FilesUtils();
-                    $storageManager->setStorageSimple($request->header('authorization'));
-                    $fileContents = base64_decode($request->image);
-                    Storage::disk($request->storageNameClient)->put('thirds/'.'ba'. $request->id . 'na' . $request->organization_id . 'na.jpg', $fileContents,'public');
-                }
-            }
+			if ( $request->filled('image') ){
+				if($request->filled('storageNameClient')){
+					// $path = $request->file('avatar')->store('avatars/'.$request->user()->id, 's3');
+					$storageManager = new FilesUtils();
+					$storageManager->setStorageSimple($request->header('authorization'));
+					$fileContents = base64_decode($request->image);
+					Storage::disk($request->storageNameClient)->put('thirds/'.'ba'. $request->id . 'na' . $request->organization_id . 'na.jpg', $fileContents,'public');
+				}
+			}
 
 
 
 		} catch (\Exception $e) {
 
-		    
+			
 		  return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
 
 		} finally {
@@ -501,10 +501,10 @@ class ThirdsController extends Controller
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
-                $request->header('authorization'),
-                $request->header('user_id'),
-                $request->header('token'),
-                $request->header('app')
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
 			);
 
 			if ( !$request->filled('third_id') )
@@ -539,10 +539,10 @@ class ThirdsController extends Controller
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
-                $request->header('authorization'),
-                $request->header('user_id'),
-                $request->header('token'),
-                $request->header('app')
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
 			);
 
 			$conection->beginTransaction();
@@ -585,8 +585,11 @@ class ThirdsController extends Controller
 		   if ( !$request->filled('id') )
 				throw new \Exception('Third is required', Constant::BAD_REQUEST);
 
-			if ( !$request->filled('name') )
-				throw new \Exception('Contact name is required', Constant::BAD_REQUEST);
+			if ( !$request->filled('contact') )
+				throw new \Exception('Contact is required', Constant::BAD_REQUEST);
+
+			if ( $request->contact['name'] == NULL )
+				throw new \Exception("Contact name is required", Constant::BAD_REQUEST);
 
 			$conection->beginTransaction();
 
@@ -594,17 +597,7 @@ class ThirdsController extends Controller
 				->insertThirdContact(
 					$conection,
 					$request->id,
-					$request->name,
-					$request->description,
-					$request->comments,
-					$request->email,
-					$request->phone,
-					$request->phone_2,
-					$request->fax,
-					$request->title,
-					$request->birthday,
-					$request->last_contact,
-					$request->last_result
+					$request->contact
 				);
 
 			$conection->commit();
@@ -670,10 +663,10 @@ class ThirdsController extends Controller
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
-                $request->header('authorization'),
-                $request->header('user_id'),
-                $request->header('token'),
-                $request->header('app')
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
 			);
 
 			if ( !$request->filled('id') )
@@ -732,10 +725,10 @@ class ThirdsController extends Controller
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
 			$conection = $db_manager->getClientBDConecction(
-                $request->header('authorization'),
-                $request->header('user_id'),
-                $request->header('token'),
-                $request->header('app')
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
 			);
 
 			if ( !$request->filled('id') )
@@ -780,6 +773,44 @@ class ThirdsController extends Controller
 		}
 
 		return response($branch, Constant::OK)
+			->header('Content-Type', 'application/json');
+	}
+
+	public function archivedBranchOffice(Request $request)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app')
+			);
+
+			if ( !$request->filled('branch_id') )
+				throw new \Exception("Third is required", Constant::BAD_REQUEST);
+
+			if ( !$request->filled('archived') )
+				throw new \Exception("Archived is required", Constant::BAD_REQUEST);
+
+			$branch_archived = $this->third_implement
+				->archivedBranchOffice($conection, $request->branch_id, $request->archived);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response(['branch_archived' => $branch_archived], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
 
