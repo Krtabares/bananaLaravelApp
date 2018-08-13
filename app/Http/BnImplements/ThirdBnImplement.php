@@ -28,20 +28,20 @@ class ThirdBnImplement
 	{
 		switch ($type) {
 
-			case 'all':
+			case 'Thirds':
 				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					ORDER BY b.updated_at DESC'
 					);
 			break;
-			case 'vendor':
+			case 'Vendor':
 				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					WHERE b.is_vendor
 					ORDER BY b.updated_at DESC'
 				);
 			break;
-			case 'customer':
+			case 'Customer':
 				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					WHERE b.is_customer
@@ -56,7 +56,7 @@ class ThirdBnImplement
 			break;
 
 		}
-			
+
 	}
 
 	public function selectFilterThirds($conection, $search)
@@ -182,7 +182,8 @@ class ThirdBnImplement
 				:manufacturer,
 				:po_price_list_id,
 				:language_id,
-				:greeting_id
+                :greeting_id,
+                :id
 			)', [
 					'org_id' => $org_id,
 					'logo' => $logo,
@@ -210,11 +211,28 @@ class ThirdBnImplement
 					'manufacturer' => $manufacturer,
 					'po_price_list_id' => $po_price_list_id,
 					'language_id' => $language_id,
-					'greeting_id' => $greeting_id
+                    'greeting_id' => $greeting_id,
+                    'id' => null
 				]
 			);
 
-		$location_insert = $this->location_implement
+		if ( $third_location['id'] == 0 ) {
+			$location_insert = $this->location_implement
+				->insertLocation(
+					$conection, $third_location['address_1'],
+					$third_location['address_2'], $third_location['address_3'],
+					$third_location['address_4'], $third_location['city_id'],
+					$third_location['city_name'], $third_location['postal'],
+					$third_location['postal_add'], $third_location['state_id'],
+					$third_location['state_name'], $third_location['country_id'],
+					$third_location['comments']
+				);
+			$location_id = $location_insert;
+		} else {
+			$location_id = $third_location['id'];
+		}
+
+		/* $location_insert = $this->location_implement
 			->insertLocation(
 				$conection, $third_location['address_1'],
 				$third_location['address_2'], $third_location['address_3'],
@@ -223,17 +241,17 @@ class ThirdBnImplement
 				$third_location['postal_add'], $third_location['state_id'],
 				$third_location['state_name'], $third_location['country_id'],
 				$third_location['comments']
-			);
+			); */
 
 		$branch_office_insert = $this->insertBranchOffice(
-			$conection, $lid[0]->LID, $location_insert,
+			$conection, $lid[0]->LID, $location_id,
 			$name, 1, 1, 1, 1, $branch_office['phone'],
 			$branch_office['phone_2'], '', ''
 		);
 
 		return [
 			'third' => $lid[0]->LID,
-			'location' => $location_insert,
+			'location' => $location_id,
 			'branch_office' => $branch_office_insert
 		];
 	}
@@ -395,9 +413,9 @@ class ThirdBnImplement
 		$branch_offices = $conection->select('SELECT * FROM bpartner_locations where bpartner_id = :id', [
 			'id' => $id
 		]);
-		
+
 		foreach ($branch_offices as $key => $branch) {
-			
+
 			$localization = $conection->select('SELECT l.* FROM locations l
 				INNER JOIN bpartner_locations b_l ON l.id = b_l.location_id
 				WHERE b_l.id = :id', [

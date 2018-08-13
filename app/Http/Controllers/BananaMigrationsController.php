@@ -51,7 +51,7 @@ class BananaMigrationsController extends Controller
     {
         // ini_set('memory_limit', '-1');
         $db_manager = new DBManager();
-        $conection = null;
+
 
         try {
 
@@ -66,15 +66,13 @@ class BananaMigrationsController extends Controller
                 if ( !$request->filled('guideMigration') )
 				    throw new \Exception("Guide Migration is required", Constant::BAD_REQUEST);
 
-                $this->migration_implement->migrate( $conection ,$request->guideMigration, $request->jsonImport);
+                $this->migration_implement->migrate($conection, $request->guideMigration, $request->jsonImport);
 
                 //  dd($request->jsonImport);
                 $conection->commit();
-                // $conection->rollBack();
-
         } catch (\Exception $e) {
 
-            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
+            //  return ExceptionAnalizer::analizerHTTPResponse($e);
 
         } finally {
 
@@ -84,4 +82,38 @@ class BananaMigrationsController extends Controller
 
         return response(json_encode('complete'), Constant::OK)->header('Content-Type', 'application/json');
     }
+
+    public function validateDataThird(Request $request)
+    {
+
+        $db_manager = new DBManager();
+        $conection = null;
+
+        try {
+
+             $conection = $db_manager->getClientBDConecction(
+                $request->header('authorization'),
+                $request->header('user_id'),
+                $request->header('token'),
+                $request->header('app'));
+
+
+               $result =  $this->migration_implement->validateDataThird( $conection );
+
+        } catch (\Exception $e) {
+
+            return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
+
+        } finally {
+
+            $db_manager->terminateClientBDConecction();
+
+        }
+
+        return response(json_encode(['result' => $result]), Constant::OK)->header('Content-Type', 'application/json');
+    }
+
+
+
+
 }

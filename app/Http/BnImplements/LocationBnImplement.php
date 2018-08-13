@@ -25,6 +25,22 @@ class LocationBnImplement
 		$this->city_implement = $city_implement;
 	}
 
+	public function searchLocation($conection, $search)
+	{
+		return $conection->select('
+			SELECT * FROM locations WHERE
+			`address_1` LIKE :address_1 ||
+			`address_2` LIKE :address_2 ||
+			`address_3` LIKE :address_3 ||
+			`address_4` LIKE :address_4 
+		',
+		[
+			'address_1' => '%'.$search.'%',
+			'address_2' => '%'.$search.'%',
+			'address_3' => '%'.$search.'%',
+			'address_4' => '%'.$search.'%'
+		]);
+	}
 
 	public function insertLocation($conection, $address_1, $address_2, 
 		$address_3, $address_4, $city_id, $city_name, $postal, $postal_add,
