@@ -59,7 +59,23 @@ class OrganizationBnImplement
 
 	public function createOrganization($conection, $name, $ref_num, $description, $organization_location)
 	{
-		$location = $this->location_implement
+		if ( $organization_location['id'] == 0 ) {
+			$location = $this->location_implement
+			->insertLocation(
+				$conection, $organization_location['address_1'], 
+				$organization_location['address_2'], $organization_location['address_3'],
+				$organization_location['address_4'], $organization_location['city_id'],
+				$organization_location['city_name'], $organization_location['postal'],
+				$organization_location['postal_add'], $organization_location['state_id'],
+				$organization_location['state_name'], $organization_location['country_id'],
+				$organization_location['comments']
+			);
+			$location_id = $location;
+		} else {
+			$location_id = $organization_location['id'];
+		}
+
+		/* $location = $this->location_implement
 		->insertLocation(
 			$conection, $organization_location['address_1'], 
 			$organization_location['address_2'], $organization_location['address_3'],
@@ -68,14 +84,14 @@ class OrganizationBnImplement
 			$organization_location['postal_add'], $organization_location['state_id'],
 			$organization_location['state_name'], $organization_location['country_id'],
 			$organization_location['comments']
-		);
+		); */
 
 		$organization = $conection->select('CALL CR_InsertOrganization(
 			:name, :ref_num, :description, :location_id)', [
 				'name' => $name,
 				'ref_num' => $ref_num,
 				'description' => $description,
-				'location_id' => $location
+				'location_id' => $location_id
 			]);
 		
 		return $organization[0]->LID;
