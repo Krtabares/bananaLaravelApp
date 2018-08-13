@@ -367,9 +367,9 @@ class BananaMigrationsBnImplement
     public function validateDataThird($conection)
     {
 
-       $result = $conection->select("SELECT reference_no, COUNT(*) Total
+       $result = $conection->select("SELECT cif, COUNT(*) Total
         FROM bpartners_tmp
-        GROUP BY reference_no
+        GROUP BY cif
         HAVING COUNT(*) > 1 ");
 
         return $result;
