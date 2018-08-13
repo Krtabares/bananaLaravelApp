@@ -376,10 +376,18 @@ Route::get('migration/clients', 'BananaMigrationsController@selectColumnsClients
 Route::post('migration/generate', 'BananaMigrationsController@generateMigration')
 ->name('migration.generate');
 
+Route::post('migration/validateDataThird', 'BananaMigrationsController@validateDataThird')
+    ->name('migration.validateDataThird');
+
+
 /*  Rutas de products  */
 
 Route::get('products/getProductList', 'ProductController@getProductList')
 	->name('products.getProductList');
 
 Route::post('products/create', 'ProductController@storeProduct')
-	->name('products.create');
+    ->name('products.create');
+
+
+
+

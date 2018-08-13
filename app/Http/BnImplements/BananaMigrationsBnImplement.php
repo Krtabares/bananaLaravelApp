@@ -326,7 +326,7 @@ class BananaMigrationsBnImplement
                                         $attr =  $conection->getPdo()->quote($attr)  ;
                                     break;
                                 case 'Boolean':
-                                        $attr =  ( strtoupper($attr)  == 'TRUE' || strtoupper($attr) == "T" || $attr == '1' || $attr == 1 )? 1 : 0 ;
+                                        $attr =  ( strtoupper($attr)  == 'TRUE' || strtoupper($attr) == "T" || $attr == '1' || $attr == 1 )? 0 : 1 ;
                                     break;
 
                             }
@@ -364,16 +364,23 @@ class BananaMigrationsBnImplement
 
     }
 
-    public function validateDataThird()
+    public function validateDataThird($conection)
     {
 
+       $result = $conection->select("SELECT reference_no, COUNT(*) Total
+        FROM bpartners_tmp
+        GROUP BY reference_no
+        HAVING COUNT(*) > 1 ");
+
+        return $result;
+
     }
 
-    public function applyMigration($conection, $idImport){
+    // public function applyMigration($conection, $idImport){
 
 
 
-    }
+    // }
 
 /**
  * Reemplaza todos los acentos por sus equivalentes sin ellos
