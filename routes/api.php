@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 
 /* Rutas de Acceso */
 
+Route::get('/test/server', 'ThirdsController@test');
+
 Route::post('login', 'LoginController@login')
 	->name('login');
 
@@ -77,7 +79,7 @@ Route::get('users/filter', 'UserController@indexFilterUser')
 Route::post('users/create', 'UserController@storeUser')
 	->name('users.store');
 
-Route::post('users/update', 'UserController@updateUser')
+Route::put('users/update', 'UserController@updateUser')
 	->name('users.update');
 
 Route::put('users/archived', 'UserController@archivedUser')
@@ -164,6 +166,10 @@ Route::put('thirds/branch/archived', 'ThirdsController@archivedBranchOffice')
 
 Route::delete('thirds/branch/delete/{id}', 'ThirdsController@deleteBranchOffice')
 	->name('thirds.branch.delete');
+
+	/* Rutas de terceros BananaApp */
+	Route::get('thirds/customers/{seller_id}', 'ThirdsController@customersBySellerId')
+		->name('thirds.customer');
 
 /* Rutas de Contact */
 

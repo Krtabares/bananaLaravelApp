@@ -121,6 +121,23 @@ class ThirdBnImplement
 		];
 	}
 
+	public function customersBySellerId($conection, $seller_id)
+	{
+		return $conection->select("SELECT t.id, t.`name` `business_name`, t.name_2 `tradename`, t.cif,
+				b.phone,  t.url `email`, l.address_1 `address`, l.postal,
+				IF( l.city_name = NULL OR l.city_name = '', c.city , l.city_name) `city`,
+				IF( l.state_name = NULL OR l.state_name = '', s.state, l.state_name) `state`
+			FROM bpartners t
+			INNER JOIN bpartner_locations b ON t.id = b.bpartner_id AND b.principal = 1
+			INNER JOIN locations l ON l.id = b.location_id
+			LEFT JOIN cities c ON c.id = l.city_id
+			LEFT JOIN states s ON s.id = l.state_id
+			WHERE t.sales_rep_id = ( SELECT r.id FROM bpartners r WHERE r.user_id = :seller_id )
+			ORDER BY t.`name` ASC;", [
+				'seller_id' => $seller_id
+			]);
+	}
+
 	public function insertThird(
 		$conection,
 		$org_id,
@@ -644,6 +661,11 @@ class ThirdBnImplement
 		]);
 
 		return $result = ($delete == null) ? 1 : 0 ;
+	}
+
+	public function test()
+	{
+		return DB::select('SELECT * FROM banana_clients');
 	}
 
 
