@@ -166,7 +166,7 @@ Route::delete('thirds/branch/delete/{id}', 'ThirdsController@deleteBranchOffice'
 	->name('thirds.branch.delete');
 
 	/* Rutas de terceros BananaApp */
-	Route::get('thirds/customer/{seller_id}', 'ThirdsController@customersBySeller')
+	Route::get('thirds/customers/{seller_id}', 'ThirdsController@customersBySellerId')
 		->name('thirds.customer');
 
 /* Rutas de Contact */

@@ -865,7 +865,7 @@ class ThirdsController extends Controller
 			->header('Content-Type', 'application/json');
 	}
 
-	/* Metodos de terceros app */
+	/* Metodos de terceros para BananApp */
 
 	public function customersBySellerId(Request $request, $seller_id)
 	{
