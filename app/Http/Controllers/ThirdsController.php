@@ -915,7 +915,7 @@ class ThirdsController extends Controller
 
 		} catch (\Exception $e) {
 
-			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
+			return ExceptionAnalizer::analizerHTTPResponse($e);
 
 		} finally {
 
