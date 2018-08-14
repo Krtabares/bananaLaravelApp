@@ -2,7 +2,7 @@
 
 namespace App\BananaUtils;
 
-use App\constant;
+use App\Constant;
 use App\BananaClient;
 use App\BananaUtils\SessionToken;
 use App\BananaUtils\ExceptionAnalizer;
