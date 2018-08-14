@@ -67,10 +67,7 @@ class AccessController extends Controller
 
         try {   
             
-            dd( $request->header('authorization'),
-            $request->header('user_id'),
-            $request->header('token'),
-            $request->header('app') );
+            dd( $request );
 			/* if ( !$request->hasHeader('authorization') )
                 throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST); */
                 
