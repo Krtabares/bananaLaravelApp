@@ -663,5 +663,10 @@ class ThirdBnImplement
 		return $result = ($delete == null) ? 1 : 0 ;
 	}
 
+	public function test($conection)
+	{
+		return $conection->select('SELECT * FROM bpartners');
+	}
+
 
 }

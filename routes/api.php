@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 
 /* Rutas de Acceso */
 
+Route::get('/test/server', 'ThirdsController@test');
+
 Route::post('login', 'LoginController@login')
 	->name('login');
 

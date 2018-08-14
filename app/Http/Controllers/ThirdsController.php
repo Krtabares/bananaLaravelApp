@@ -896,5 +896,33 @@ class ThirdsController extends Controller
 
 		return response($customers, Constant::OK)->header('Content-Type', 'application/json');
 	}
+	
+	public function test()
+	{
+		try {
+
+			$conection = null;
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
+
+			$customers = $this->third_implement->test($conection);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response($customers, Constant::OK)->header('Content-Type', 'application/json');
+	}
 
 }
