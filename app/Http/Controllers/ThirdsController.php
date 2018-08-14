@@ -32,6 +32,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -65,6 +66,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -94,6 +96,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -132,6 +135,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -162,6 +166,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -323,6 +328,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -497,6 +503,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -535,6 +542,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -571,7 +579,8 @@ class ThirdsController extends Controller
 		$db_manager = new DBManager();
 
 		try {
-			
+
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -622,6 +631,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -659,6 +669,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -721,6 +732,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -782,6 +794,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -820,6 +833,7 @@ class ThirdsController extends Controller
 
 		try {
 
+			$conection = null;
 			if ( !$request->hasHeader('authorization') )
 				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
@@ -850,4 +864,37 @@ class ThirdsController extends Controller
 		return response(['branch_removed' => $branch_removed], Constant::OK)
 			->header('Content-Type', 'application/json');
 	}
+
+	/* Metodos de terceros app */
+
+	public function customersBySellerId(Request $request, $seller_id)
+	{
+		$db_manager = new DBManager();
+
+		try {
+
+			$conection = null;
+			if ( !$request->hasHeader('authorization') )
+				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+
+			$conection = $db_manager->getClientBDConecction(
+				$request->header('authorization'),
+				$request->header('user_id'),
+				$request->header('token'),
+				$request->header('app'));
+
+			$customers = $this->third_implement->customersBySellerId($conection, $seller_id);
+
+		} catch (\Exception $e) {
+
+			return ExceptionAnalizer::analizerHTTPResponse($e, $conection);
+
+		} finally {
+
+			$db_manager->terminateClientBDConecction();
+		}
+
+		return response($customers, Constant::OK)->header('Content-Type', 'application/json');
+	}
+
 }
