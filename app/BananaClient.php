@@ -14,7 +14,9 @@ class BananaClient extends Model
     	'client_DB_name',
     	'client_DB_host',
     	'client_DB_user',
-    	'client_DB_password',
+		'client_DB_password',
+		'client_DB_driver',
+		'client_DB_dns',
     	'client_name_conecction_BD'
     ];
 }
