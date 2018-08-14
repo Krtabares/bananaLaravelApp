@@ -901,17 +901,17 @@ class ThirdsController extends Controller
 	{
 		try {
 
-			$conection = null;
-			if ( !$request->hasHeader('authorization') )
-				throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
+			// $conection = null;
+			// if ( !$request->hasHeader('authorization') )
+			// 	throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST);
 
-			$conection = $db_manager->getClientBDConecction(
-				$request->header('authorization'),
-				$request->header('user_id'),
-				$request->header('token'),
-				$request->header('app'));
+			// $conection = $db_manager->getClientBDConecction(
+			// 	$request->header('authorization'),
+			// 	$request->header('user_id'),
+			// 	$request->header('token'),
+			// 	$request->header('app'));
 
-			$customers = $this->third_implement->test($conection);
+			$customers = $this->third_implement->test();
 
 		} catch (\Exception $e) {
 

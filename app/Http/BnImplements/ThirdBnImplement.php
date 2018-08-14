@@ -663,9 +663,9 @@ class ThirdBnImplement
 		return $result = ($delete == null) ? 1 : 0 ;
 	}
 
-	public function test($conection)
+	public function test()
 	{
-		return $conection->select('SELECT * FROM bpartners');
+		return DB::select('SELECT * FROM banana_clients');
 	}
 
 
