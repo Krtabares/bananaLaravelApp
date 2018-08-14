@@ -665,7 +665,7 @@ class ThirdBnImplement
 
 	public function test()
 	{
-		return DB::select('SELECT * FROM banana_clients');
+		return DB::select('CALL test_procedure()');
 	}
 
 
