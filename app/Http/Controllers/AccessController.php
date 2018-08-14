@@ -66,7 +66,14 @@ class AccessController extends Controller
         $db_manager = new DBManager();
 
         try {   
-             
+            
+            dd( $request->header('authorization'),
+            $request->header('user_id'),
+            $request->header('token'),
+            $request->header('app') );
+			/* if ( !$request->hasHeader('authorization') )
+                throw new \Exception(Constant::MSG_UNAUTHORIZED, Constant::BAD_REQUEST); */
+                
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
                 $request->header('user_id'),
