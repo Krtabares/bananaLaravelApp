@@ -69,13 +69,13 @@ class AccessController extends Controller
              
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
-                $request->header('user_id'),
+                $request->header('user'),
                 $request->header('token'),
                 $request->header('app'));
 
             // if ( $request->filled('user_id') ) {
 
-                $tables = $this->access_implement->selectTableAccessUser($conection, $request->header('user_id'));
+                $tables = $this->access_implement->selectTableAccessUser($conection, $request->header('user'));
 
             // } else 
             //     throw new \Exception("User id is required", Constant::BAD_REQUEST);

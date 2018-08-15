@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 
 /* Rutas de Acceso */
 
+Route::get('/test/server', 'ThirdsController@test');
+
 Route::post('login', 'LoginController@login')
 	->name('login');
 
@@ -170,6 +172,10 @@ Route::put('thirds/branch/archived', 'ThirdsController@archivedBranchOffice')
 
 Route::delete('thirds/branch/delete/{id}', 'ThirdsController@deleteBranchOffice')
 	->name('thirds.branch.delete');
+
+	/* Rutas de terceros BananaApp */
+	Route::get('thirds/customers/{seller_id}', 'ThirdsController@customersBySellerId')
+		->name('thirds.customer');
 
 /* Rutas de Contact */
 

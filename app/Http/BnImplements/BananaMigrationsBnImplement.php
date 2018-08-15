@@ -150,7 +150,7 @@ class BananaMigrationsBnImplement
 
     public function preprareQueryInsertMigration($guideMigration)
     {
-
+        // dd($guideMigration);
         if (!is_array($guideMigration)) {
             throw new \Exception("error in guide migration", Constant::BAD_REQUEST);
         }else{
@@ -167,6 +167,7 @@ class BananaMigrationsBnImplement
                 // verifica si la columna llega vacia
                 if (!is_null($obj['column'])) {
 
+
                     $is_add=false;
                     //recorre tablas para saber si la tabla de l columna ya existe
                     foreach ($tablesAndColumns as $key => $value) {
@@ -181,16 +182,22 @@ class BananaMigrationsBnImplement
                         $tablesAndColumns[$obj['column']['table_name']] = [];
                     }
 
+
                     $tablesAndColumns[$obj['column']['table_name']][] = $obj['column']['column_name'];
                     $migrationColumnsName[$obj['column']['table_name']][] = ':'.$obj['columnName'];
+
+                    // if($obj['columnName'] == 'CIF') dd( $obj, $tablesAndColumns, $migrationColumnsName);
 
                 }
 
             } //end foreach
 
+            //  dd($tablesAndColumns);
 
             foreach ($tablesAndColumns as $key => $value)
                 $strColumns[$key] = implode(' , ', $value);
+
+            // dd($strColumns);
 
             foreach ($migrationColumnsName as $key => $value)
                 $strMigrationColumnsName[$key] = implode(' , ', $value);
@@ -199,7 +206,7 @@ class BananaMigrationsBnImplement
 
                 $querys[$key] = "  INSERT INTO " . $key . "_tmp ( " .$strColumns[$key]. " ) VALUES ";
             }
-
+            // dd($querys);
            return $querys;
 
         }
@@ -336,7 +343,7 @@ class BananaMigrationsBnImplement
 
 
                     }
-                    // dd($arrayattr);
+                    //  dd($arrayattr);
 
                     $valueQuery = " ( ".implode(" , ",$arrayattr)." ) ";
                     $statemensQuerys[$keyquery][] = $valueQuery;
@@ -344,7 +351,7 @@ class BananaMigrationsBnImplement
                 }
 
             }
-            // dd($statemensQuerys);
+            // dd($querys,$statemensQuerys);
             $jsonimport = null;
             $guideMigration = null;
             $table_name = null;
@@ -367,9 +374,9 @@ class BananaMigrationsBnImplement
     public function validateDataThird($conection)
     {
 
-       $result = $conection->select("SELECT reference_no, COUNT(*) Total
+       $result = $conection->select("SELECT cif, COUNT(*) Total
         FROM bpartners_tmp
-        GROUP BY reference_no
+        GROUP BY cif
         HAVING COUNT(*) > 1 ");
 
         return $result;
