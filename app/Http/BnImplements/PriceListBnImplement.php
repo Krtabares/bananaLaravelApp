@@ -11,14 +11,7 @@ class PriceListBnImplement
 		return $conection->select('SELECT * FROM price_lists ORDER BY updated_at DESC');
 	}
 
-	public function createPriceList(
-		$conection,
-		$reference,
-		$name,
-		$valid_from,
-		$valid_until,
-		$tax_include,
-		$currency_id
+	public function createPriceList($conection,$reference,$name,$valid_from,$valid_until,$tax_include,$currency_id
 	)
 	{
 		$price_list = $conection->select('CALL CR_InsertPriceList(

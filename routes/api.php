@@ -37,6 +37,12 @@ Route::get('/access/user/permits', 'AccessController@userPermitsAccess')
 Route::get('/access/total/permits', 'AccessController@totalAccess')
 	->name('access.total.permits');
 
+/*Rutas de Signin*/
+
+Route::post('signin/create', 'signinBananaController@createSignin' )->name('create.signin');
+Route::put('signin/update', 'signinBananaController@updateSignin')->name('udpate.signin');
+
+
 /* Rutas de Rol */
 Route::get('rols', 'RolController@indexRol')
 	->name('rols');
