@@ -126,7 +126,7 @@ class ThirdBnImplement
 		return $conection->select("SELECT t.id, t.`name` `business_name`, t.name_2 `tradename`, t.cif,
 				b.phone,  t.url `email`, l.address_1 `address`, l.postal,
 				IF( l.city_name = NULL OR l.city_name = '', c.city , l.city_name) `city`,
-				IF( l.state_name = NULL OR l.state_name = '', s.state, l.state_name) `state`
+				IF( l.state_name = NULL OR l.state_name = '', s.state, l.state_name) `state`, t.`name` as alias
 			FROM bpartners t
 			INNER JOIN bpartner_locations b ON t.id = b.bpartner_id AND b.principal = 1
 			INNER JOIN locations l ON l.id = b.location_id
