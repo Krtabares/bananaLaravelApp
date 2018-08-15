@@ -10,7 +10,7 @@ class BananaMigrationsBnImplement
 
 	public function selectColumnsClients($conection)
     {
-        return $conection->select("SELECT t1.id id_column, t1.column_name, t2.table_name , (if(t3.required is null,0, t3.required)) as required, t4.name as type_data,  0 as selected  from columns t1
+        return $conection->raw("SELECT t1.id id_column, t1.column_name, t2.table_name , (if(t3.required is null,0, t3.required)) as required, t4.name as type_data,  0 as selected  from columns t1
         left join tables t2 ON t1.table_id = t2.id
         left join field_configurations t3 ON t1.id = t3.column_id
         left join column_type t4 on t1.column_type_id = t4.id
@@ -63,7 +63,7 @@ class BananaMigrationsBnImplement
     // )
     // {
 
-    //  $conection->select('CALL migrateBpartner(
+    //  $conection->raw('CALL migrateBpartner(
     //         :org_id,
     //         :logo,
     //         :customer,
@@ -358,8 +358,8 @@ class BananaMigrationsBnImplement
             $i = false;
             foreach ($querys as $key => $value) {
 
-                $conection->select("TRUNCATE `banana`.". $key ."_tmp;");
-                $conection->select($value . implode(" , ", $statemensQuerys[$key]));
+                $conection->raw("TRUNCATE `banana`.". $key ."_tmp;");
+                $conection->raw($value . implode(" , ", $statemensQuerys[$key]));
 
                 if(!$i){
                     $table_name = $key;
@@ -367,14 +367,14 @@ class BananaMigrationsBnImplement
                 }
             }
 
-            $conection->select("call CR_insertImport(:table)",['table' => $table_name]);
+            $conection->raw("call CR_insertImport(:table)",['table' => $table_name]);
 
     }
 
     public function validateDataThird($conection)
     {
 
-       $result = $conection->select("SELECT cif, COUNT(*) Total
+       $result = $conection->raw("SELECT cif, COUNT(*) Total
         FROM bpartners_tmp
         GROUP BY cif
         HAVING COUNT(*) > 1 ");

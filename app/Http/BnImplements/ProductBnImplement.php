@@ -35,13 +35,13 @@ class ProductBnImplement
 		 $bind['status'] = $status;
 
 
-		 return $connection->select($query, $bind);
+		 return $connection->raw($query, $bind);
 
 	}
 
 	public function saveProduct($connection, $product)
 	{
-		$connection->select('CALL CR_InsertProduct(
+		$connection->raw('CALL CR_InsertProduct(
 		 :sku,
 		 :ean13,
 		 :upc,

@@ -10,7 +10,7 @@ class TableBnImplement
 
 	public function selectColumnsTable($conection, $table_id)
 	{
-		return $conection->select('CALL RD_SelectColumnsTable(:table_id)',
+		return $conection->raw('CALL RD_SelectColumnsTable(:table_id)',
 			['table_id' => $table_id]
 		);
 	}

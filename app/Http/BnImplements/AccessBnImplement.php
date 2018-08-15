@@ -10,7 +10,7 @@ class AccessBnImplement
 
 	public function selectTableAccessUser($conection, $user_id)
     {
-        return $conection->select('CALL RD_SelectTableAccessUser(:user_id)',
+        return $conection->raw('CALL RD_SelectTableAccessUser(:user_id)',
             ['user_id' => $user_id]
         );
     }
@@ -18,7 +18,7 @@ class AccessBnImplement
     public function SelectColumnAccessUser($conection, $user_id,$table_id)
     {
 
-        $result = $conection->select('CALL RD_SelectColumnAccessUser(:user_id,:table_id)',
+        $result = $conection->raw('CALL RD_SelectColumnAccessUser(:user_id,:table_id)',
             [
                 'user_id' => $user_id,
                 'table_id'=> $table_id
@@ -27,7 +27,7 @@ class AccessBnImplement
 
         foreach ($result as $key => $column) {
             if( $column->REFERENCED_TABLE_NAME != null){
-                $options = $conection->select("SELECT id 'key', description value FROM ".$column->REFERENCED_TABLE_NAME);
+                $options = $conection->raw("SELECT id 'key', description value FROM ".$column->REFERENCED_TABLE_NAME);
                 $column->REFERENCED_TABLE_NAME = $options;
             }
         }
@@ -37,7 +37,7 @@ class AccessBnImplement
 
     public function selectTotalAccess($conection, $user_id)
     {
-    	$permits = $conection->select('CALL RD_SelectTotalAccess(:user_id)', 
+    	$permits = $conection->raw('CALL RD_SelectTotalAccess(:user_id)', 
     		['user_id' => $user_id]
     	);
 

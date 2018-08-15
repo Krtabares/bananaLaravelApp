@@ -8,12 +8,12 @@ class ManufacturerBnImplement
 {
 	public function selectManufacturers($conection)
 	{
-		return $conection->select('SELECT * FROM manufacturers ORDER BY updated_at DESC');
+		return $conection->raw('SELECT * FROM manufacturers ORDER BY updated_at DESC');
 	}
 
 	public function createManufacturer($conection, $name)
 	{
-		$manufacturer = $conection->select('CALL CR_InsertManufacturer(:name)',[
+		$manufacturer = $conection->raw('CALL CR_InsertManufacturer(:name)',[
 			'name' => $name
 		]);
 
@@ -22,12 +22,12 @@ class ManufacturerBnImplement
 
 	public function updateManufacturer($conection, $id, $name)
 	{
-		$conection->select('CALL UP_UpdateManufacturer(:id, :name)', [
+		$conection->raw('CALL UP_UpdateManufacturer(:id, :name)', [
 			'id' => $id,
 			'name' => $name
 		]);
 
-		$manufacturer = $conection->select('SELECT * FROM manufacturers WHERE id = :id', [
+		$manufacturer = $conection->raw('SELECT * FROM manufacturers WHERE id = :id', [
 			'id' => $id
 		]);
 
@@ -36,12 +36,12 @@ class ManufacturerBnImplement
 
 	public function archivedManufacturer($conection, $id, $archived)
 	{
-		$conection->select('CALL DL_ArchivedManufacturer(:id, :archived)', [
+		$conection->raw('CALL DL_ArchivedManufacturer(:id, :archived)', [
 			'id' => $id,
 			'archived' => $archived
 		]);
 
-		$manufacturer = $conection->select('SELECT * FROM manufacturers WHERE id = :id', [
+		$manufacturer = $conection->raw('SELECT * FROM manufacturers WHERE id = :id', [
 			'id' => $id
 		]);
 
@@ -50,11 +50,11 @@ class ManufacturerBnImplement
 
 	public function deleteManufacturer($conection, $id)
 	{
-		$conection->select('CALL DL_DeleteManufacturer(:id)', [
+		$conection->raw('CALL DL_DeleteManufacturer(:id)', [
 			'id' => $id
 		]);
 
-		$delete = $conection->select('SELECT * FROM manufacturers WHERE id = :id', [
+		$delete = $conection->raw('SELECT * FROM manufacturers WHERE id = :id', [
 			'id' => $id
 		]);
 

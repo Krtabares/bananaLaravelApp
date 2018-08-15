@@ -22,31 +22,31 @@ class OrganizationBnImplement
 
 	public function listOrganizations($conection)
 	{
-		return $conection->select('SELECT id, organization_name
+		return $conection->raw('SELECT id, organization_name
 			FROM organizations
 			ORDER BY organization_name ASC');
 	}
 
 	public function selectFilterOrganizations($conection, $search)
 	{
-		$organizations = $conection->select('CALL RD_SelectFilteredOrganizations(:search)', ['search' => $search]);
+		$organizations = $conection->raw('CALL RD_SelectFilteredOrganizations(:search)', ['search' => $search]);
 		return ['filter_organizations' => $organizations];
 	}
 
 	public function selectOrganizations($conection)
 	{
-		$organizations = $conection->select('SELECT * FROM organizations ORDER BY updated_at');
+		$organizations = $conection->raw('SELECT * FROM organizations ORDER BY updated_at');
 		return $organizations;
 	}
 
 	public function selectOrganizationById($conection, $organization_id)
 	{
-		$organization = $conection->select('SELECT * FROM organizations
+		$organization = $conection->raw('SELECT * FROM organizations
 			WHERE id = :organization_id', [
 			'organization_id' => $organization_id
 		]);
 
-		$location = $conection->select('SELECT * FROM locations
+		$location = $conection->raw('SELECT * FROM locations
 			WHERE id = :location_id', [
 			'location_id' => $organization[0]->location_id
 		]);
@@ -86,7 +86,7 @@ class OrganizationBnImplement
 			$organization_location['comments']
 		); */
 
-		$organization = $conection->select('CALL CR_InsertOrganization(
+		$organization = $conection->raw('CALL CR_InsertOrganization(
 			:name, :ref_num, :description, :location_id)', [
 				'name' => $name,
 				'ref_num' => $ref_num,
@@ -110,7 +110,7 @@ class OrganizationBnImplement
 			$organization_location['comments']
 		);
 
-		$conection->select('CALL UP_UpdateOrganization(
+		$conection->raw('CALL UP_UpdateOrganization(
 			:id, :name, :ref_num, :description, :location_id
 		)', [
 			'id' => $id,
@@ -120,7 +120,7 @@ class OrganizationBnImplement
 			'location_id' => $location->id
 		]);
 
-		$organization = $conection->select('SELECT * FROM organizations WHERE id = :id',[
+		$organization = $conection->raw('SELECT * FROM organizations WHERE id = :id',[
 			'id' => $id
 		]);
 
@@ -132,12 +132,12 @@ class OrganizationBnImplement
 
 	public function archivedOrganization($conection, $id, $archived)
 	{
-		$conection->select('CALL DL_ArchivedOrganization(:id, :archived)', [
+		$conection->raw('CALL DL_ArchivedOrganization(:id, :archived)', [
 			'id' => $id,
 			'archived' => $archived
 		]);
 
-		$organization = $conection->select('SELECT * FROM organizations WHERE id = :id',[
+		$organization = $conection->raw('SELECT * FROM organizations WHERE id = :id',[
 			'id' => $id
 		]);
 
@@ -146,11 +146,11 @@ class OrganizationBnImplement
 
 	public function deleteOrganization($conection, $id)
 	{
-		$conection->select('CALL DL_DeleteOrganization(:id)', [
+		$conection->raw('CALL DL_DeleteOrganization(:id)', [
 			'id' => $id
 		]);
 
-		$delete = $conection->select('SELECT * FROM organizations WHERE id = :id', [
+		$delete = $conection->raw('SELECT * FROM organizations WHERE id = :id', [
 			'id' => $id
 		]);
 

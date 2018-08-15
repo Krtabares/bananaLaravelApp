@@ -27,7 +27,7 @@ class SessionToken{
                 throw new \Exception("App es un campo requerido para autenticar", Constant::BAD_REQUEST);
         }
 
-        $result = $connection->select('SELECT * ,  
+        $result = $connection->raw('SELECT * ,  
             if (now() > expires_at, 1, 0) expired
             FROM oauth_access_tokens  
             WHERE user_id = :id  AND name = :app AND revoked = 0', [

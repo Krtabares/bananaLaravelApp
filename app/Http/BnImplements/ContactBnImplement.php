@@ -20,7 +20,7 @@ class ContactBnImplement
 		$last_result
 	)
 	{
-		/*$check = $conection->select('SELECT id FROM contacts WHERE name = :name LIMIT 1 ;',[
+		/*$check = $conection->raw('SELECT id FROM contacts WHERE name = :name LIMIT 1 ;',[
 			'name'=>$name
 		]);
 
@@ -28,7 +28,7 @@ class ContactBnImplement
 			throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
 		}*/
 
-		$id = $conection->select('CALL CR_InsertContacts(
+		$id = $conection->raw('CALL CR_InsertContacts(
 				:name,
 				:description,
 				:comments,
@@ -56,7 +56,7 @@ class ContactBnImplement
 			]
 		);
 
-		$contact_insert = $conection->select('SELECT * FROM contacts WHERE id = :id',[
+		$contact_insert = $conection->raw('SELECT * FROM contacts WHERE id = :id',[
 			'id' => $id[0]->LID
 		]);
 
@@ -65,7 +65,7 @@ class ContactBnImplement
 
 	public function searchContact($conection, $search)
 	{
-		return $conection->select('
+		return $conection->raw('
 			SELECT * FROM contacts WHERE
 			`name` LIKE :name ||
 			`title` LIKE :title
@@ -91,7 +91,7 @@ class ContactBnImplement
 		$last_result
 	)
 	{
-		/*$check = $conection->select('SELECT id FROM contacts
+		/*$check = $conection->raw('SELECT id FROM contacts
 			WHERE name = :name AND id <> :contact_id LIMIT 1 ;',[
 			'name' => $name,
 			'contact_id' => $contact_id
@@ -101,7 +101,7 @@ class ContactBnImplement
 			throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
 		}*/
 
-		$conection->select('CALL UP_UpdateContact(
+		$conection->raw('CALL UP_UpdateContact(
 				:contact_id,
 				:name,
 				:description,
@@ -131,7 +131,7 @@ class ContactBnImplement
 			]
 		);
 
-		$contact_update = $conection->select('
+		$contact_update = $conection->raw('
 			SELECT * 
 			FROM contacts
 			WHERE id = :contact_id', [
@@ -143,7 +143,7 @@ class ContactBnImplement
 
 	public function archivedContact($conection, $contact_id, $archived)
 	{
-		$conection->select('CALL DL_ArchivedContact(
+		$conection->raw('CALL DL_ArchivedContact(
 			:contact_id, :archived
 		);',
 			[
@@ -151,7 +151,7 @@ class ContactBnImplement
 				'archived' => $archived
 			]
 		);
-		$contact_archived = $conection->select('SELECT * FROM contacts WHERE id = :id', [
+		$contact_archived = $conection->raw('SELECT * FROM contacts WHERE id = :id', [
 			'id' => $contact_id
 		]);
 		return $contact_archived[0];
