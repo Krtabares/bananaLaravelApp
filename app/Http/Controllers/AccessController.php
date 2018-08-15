@@ -36,13 +36,13 @@ class AccessController extends Controller
              
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
-                $request->header('user_id'),
+                $request->header('user'),
                 $request->header('token'),
                 $request->header('app'));
 
             if ( $request->filled('table_id') ) {
 
-                $columns = $this->access_implement->SelectColumnAccessUser($conection,$request->header('user_id'), $request->table_id);
+                $columns = $this->access_implement->SelectColumnAccessUser($conection,$request->header('user'), $request->table_id);
                 $custom_columns = $this->customColumns_implement->getCustomColumnsByTable($conection,$request->table_id);
                  // $columns = [];
 
@@ -100,7 +100,7 @@ class AccessController extends Controller
              
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
-                $request->header('user_id'),
+                $request->header('user'),
                 $request->header('token'),
                 $request->header('app'));
 
@@ -132,7 +132,7 @@ class AccessController extends Controller
              
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
-                $request->header('user_id'),
+                $request->header('user'),
                 $request->header('token'),
                 $request->header('app'));
 
@@ -163,7 +163,7 @@ class AccessController extends Controller
              
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
-                $request->header('user_id'),
+                $request->header('user'),
                 $request->header('token'),
                 $request->header('app'));
 

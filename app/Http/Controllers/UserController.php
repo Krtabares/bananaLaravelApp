@@ -28,7 +28,7 @@ class UserController extends Controller
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('user_id'),
+				$request->header('user'),
 				$request->header('token'),
 				$request->header('app'));
 
@@ -54,7 +54,7 @@ class UserController extends Controller
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('user_id'),
+				$request->header('user'),
 				$request->header('token'),
 				$request->header('app'));
 
@@ -79,7 +79,7 @@ class UserController extends Controller
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('user_id'),
+				$request->header('user'),
 				$request->header('token'),
 				$request->header('app'));
 
@@ -111,7 +111,7 @@ class UserController extends Controller
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('user_id'),
+				$request->header('user'),
 				$request->header('token'),
 				$request->header('app'));
 
@@ -151,7 +151,7 @@ class UserController extends Controller
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('user_id'),
+				$request->header('user'),
 				$request->header('token'),
 				$request->header('app'));
 
@@ -201,7 +201,7 @@ class UserController extends Controller
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('user_id'),
+				$request->header('user'),
 				$request->header('token'),
 				$request->header('app'));
 
@@ -233,7 +233,7 @@ class UserController extends Controller
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('user_id'),
+				$request->header('user'),
 				$request->header('token'),
 				$request->header('app'));
 
@@ -273,7 +273,7 @@ class UserController extends Controller
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('user_id'),
+				$request->header('user'),
 				$request->header('token'),
 				$request->header('app'));
 
@@ -314,7 +314,7 @@ class UserController extends Controller
 
 			 $conection = $db_manager->getClientBDConecction(
 				$request->header('authorization'),
-				$request->header('user_id'),
+				$request->header('user'),
 				$request->header('token'),
 				$request->header('app'));
 
@@ -346,7 +346,7 @@ class UserController extends Controller
 
                 $conection = $db_manager->getClientBDConecction(
                     $request->header('authorization'),
-                    $request->header('user_id'),
+                    $request->header('user'),
                     $request->header('token'),
                     $request->header('app'));
 
@@ -372,7 +372,7 @@ class UserController extends Controller
 
                 $conection = $db_manager->getClientBDConecction(
                     $request->header('authorization'),
-                    $request->header('user_id'),
+                    $request->header('user'),
                     $request->header('token'),
                     $request->header('app'));
 
