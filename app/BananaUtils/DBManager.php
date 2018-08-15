@@ -52,7 +52,7 @@ class DBManager{
             }
 
         } catch (\Illuminate\Database\QueryException  $e) {
-
+            dd($e);
             throw new \Exception(Constant::MSG_CONNECTION_ERROR, Constant::CONNECTION_ERROR);
         }
 
