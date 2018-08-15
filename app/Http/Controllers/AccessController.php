@@ -67,7 +67,7 @@ class AccessController extends Controller
 
         try {
 
-            dd($request);
+            //dd($request);
              
              $conection = $db_manager->getClientBDConecction(
                 $request->header('authorization'),
