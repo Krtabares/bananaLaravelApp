@@ -29,27 +29,27 @@ class ThirdBnImplement
 		switch ($type) {
 
 			case 'Thirds':
-				return $conection->raw('SELECT b.name, b.id, b.reference_no
+				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					ORDER BY b.updated_at DESC'
 					);
 			break;
 			case 'Vendor':
-				return $conection->raw('SELECT b.name, b.id, b.reference_no
+				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					WHERE b.is_vendor
 					ORDER BY b.updated_at DESC'
 				);
 			break;
 			case 'Customer':
-				return $conection->raw('SELECT b.name, b.id, b.reference_no
+				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					WHERE b.is_customer
 					ORDER BY b.updated_at DESC'
 				);
 			break;
 			default:
-				return $conection->raw('SELECT b.name, b.id, b.reference_no
+				return $conection->select('SELECT b.name, b.id, b.reference_no
 					FROM bpartners b
 					ORDER BY b.updated_at DESC'
 					);
@@ -61,22 +61,22 @@ class ThirdBnImplement
 
 	public function selectFilterThirds($conection, $search)
 	{
-		return $conection->raw('CALL RD_SelectFilteredThirds(:search)', ['search' => $search]);
+		return $conection->select('CALL RD_SelectFilteredThirds(:search)', ['search' => $search]);
 	}
 
 	public function comboSelect($conection)
 	{
-		$client = $conection->raw('SELECT * FROM clients');
+		$client = $conection->select('SELECT * FROM clients');
 
-		$org_list = $conection->raw('SELECT id, name
+		$org_list = $conection->select('SELECT id, name
 			FROM organizations
 			ORDER BY name ASC');
 
-		$language_list = $conection->raw('SELECT id, languagescol
+		$language_list = $conection->select('SELECT id, languagescol
 			FROM languages
 			ORDER BY languagescol ASC');
 
-		$sales_rep = $conection->raw('SELECT id, name
+		$sales_rep = $conection->select('SELECT id, name
 			FROM bpartners
 			WHERE is_sales_rep = 1
 			ORDER BY name ASC');
@@ -91,19 +91,19 @@ class ThirdBnImplement
 
 	public function selectThirdById($conection, $third_id)
 	{
-		$third = $conection->raw('SELECT * FROM bpartners
+		$third = $conection->select('SELECT * FROM bpartners
 			WHERE id = :third_id', [
 			'third_id' => $third_id
 		]);
 
-		$branch_office = $conection->raw('SELECT * FROM bpartner_locations
+		$branch_office = $conection->select('SELECT * FROM bpartner_locations
 			WHERE bpartner_id = :third_id
 			ORDER BY id ASC
 			LIMIT 1', [
 			'third_id' => $third_id
 		]);
 
-		$location = $conection->raw('SELECT * FROM locations
+		$location = $conection->select('SELECT * FROM locations
 			WHERE id = :location_id', [
 			'location_id' => $branch_office[0]->location_id
 		]);
@@ -123,7 +123,7 @@ class ThirdBnImplement
 
 	public function customersBySellerId($conection, $seller_id)
 	{
-		return $conection->raw("SELECT t.id, t.`name` `business_name`, t.name_2 `tradename`, t.cif,
+		return $conection->select("SELECT t.id, t.`name` `business_name`, t.name_2 `tradename`, t.cif,
 				b.phone,  t.url `email`, l.address_1 `address`, l.postal,
 				IF( l.city_name = NULL OR l.city_name = '', c.city , l.city_name) `city`,
 				IF( l.state_name = NULL OR l.state_name = '', s.state, l.state_name) `state`, t.`name` as alias
@@ -172,7 +172,7 @@ class ThirdBnImplement
 	)
 	{
 
-		$lid = $conection->raw('CALL CR_InsertBpartners(
+		$lid = $conection->select('CALL CR_InsertBpartners(
 				:org_id,
 				:logo,
 				:customer,
@@ -308,7 +308,7 @@ class ThirdBnImplement
 	)
 	{
 
-		$conection->raw('CALL UP_UpdateBpartners(
+		$conection->select('CALL UP_UpdateBpartners(
 				:third_id,
 				:org_id,
 				:logo,
@@ -369,7 +369,7 @@ class ThirdBnImplement
 				]
 			);
 
-		$third_udpate = $conection->raw('SELECT * FROM bpartners WHERE id = :third_id', [
+		$third_udpate = $conection->select('SELECT * FROM bpartners WHERE id = :third_id', [
 			'third_id' => $third_id
 		]);
 
@@ -400,12 +400,12 @@ class ThirdBnImplement
 
 	public function archivedThird($conection, $third_id, $archived)
 	{
-		$conection->raw('CALL DL_ArchivedThird(:third_id, :archived)', [
+		$conection->select('CALL DL_ArchivedThird(:third_id, :archived)', [
 			'third_id' => $third_id,
 			'archived' => $archived
 		]);
 
-		return $conection->raw('SELECT * FROM bpartners
+		return $conection->select('SELECT * FROM bpartners
 			WHERE id = :third_id', [
 				'third_id' => $third_id
 			]);
@@ -413,12 +413,12 @@ class ThirdBnImplement
 
 	public function deleteThird($conection, $third_id, $location_id)
 	{
-		$conection->raw('CALL DL_DeleteBpartnerData(:third_id, :location_id)', [
+		$conection->select('CALL DL_DeleteBpartnerData(:third_id, :location_id)', [
 			'third_id' => $third_id,
 			'location_id' => $location_id
 		]);
 
-		$delete = $conection->raw('SELECT * FROM bpartners WHERE id = :third_id', [
+		$delete = $conection->select('SELECT * FROM bpartners WHERE id = :third_id', [
 			'third_id' => $third_id
 		]);
 
@@ -427,13 +427,13 @@ class ThirdBnImplement
 
 	public function selectBranchOffice($conection, $id)
 	{
-		$branch_offices = $conection->raw('SELECT * FROM bpartner_locations where bpartner_id = :id', [
+		$branch_offices = $conection->select('SELECT * FROM bpartner_locations where bpartner_id = :id', [
 			'id' => $id
 		]);
 
 		foreach ($branch_offices as $key => $branch) {
 
-			$localization = $conection->raw('SELECT l.* FROM locations l
+			$localization = $conection->select('SELECT l.* FROM locations l
 				INNER JOIN bpartner_locations b_l ON l.id = b_l.location_id
 				WHERE b_l.id = :id', [
 				'id' => $branch->id
@@ -450,7 +450,7 @@ class ThirdBnImplement
 		$phone_2, $fax, $isdn)
 	{
 
-		$id = $conection->raw('CALL CR_InsertBpartnerLocation(
+		$id = $conection->select('CALL CR_InsertBpartnerLocation(
 				:third_id,
 				:location_id,
 				:name,
@@ -477,7 +477,7 @@ class ThirdBnImplement
 				]
 			);
 
-		$branch_insert = $conection->raw('SELECT * FROM bpartner_locations WHERE id = :id',[
+		$branch_insert = $conection->select('SELECT * FROM bpartner_locations WHERE id = :id',[
 			'id' => $id[0]->LID
 		]);
 
@@ -489,7 +489,7 @@ class ThirdBnImplement
 		$phone_2, $fax, $isdn)
 	{
 
-		$conection->raw('CALL UP_UpdateBpartnerLocation(
+		$conection->select('CALL UP_UpdateBpartnerLocation(
 				:branch_office_id,
 				:name,
 				:is_ship_to,
@@ -514,7 +514,7 @@ class ThirdBnImplement
 				]
 			);
 
-		$branch_update = $conection->raw('
+		$branch_update = $conection->select('
 			SELECT *
 			FROM bpartner_locations
 			WHERE id = :branch_office_id', [
@@ -575,12 +575,12 @@ class ThirdBnImplement
 
 	public function archivedBranchOffice($conection, $branch_id, $archived)
 	{
-		$conection->raw('CALL DL_ArchivedBranch(:branch_id, :archived);',[
+		$conection->select('CALL DL_ArchivedBranch(:branch_id, :archived);',[
 			'branch_id' => $branch_id,
 			'archived' => $archived
 		]);
 
-		$branch_archived = $conection->raw('SELECT * FROM bpartner_locations WHERE id = :id', [
+		$branch_archived = $conection->select('SELECT * FROM bpartner_locations WHERE id = :id', [
 			'id' => $branch_id
 		]);
 		return $branch_archived[0];
@@ -588,11 +588,11 @@ class ThirdBnImplement
 
 	public function deleteBranch ($conection, $id) {
 
-		$conection->raw('CALL DL_DeleteBranch(:id)',[
+		$conection->select('CALL DL_DeleteBranch(:id)',[
 			'id' => $id
 		]);
 
-		$delete = $conection->raw('SELECT * FROM bpartner_locations
+		$delete = $conection->select('SELECT * FROM bpartner_locations
 		WHERE id = :id', [
 			'id' => $id
 		]);
@@ -602,7 +602,7 @@ class ThirdBnImplement
 
 	public function selectThirdContacts($conection, $third_id)
 	{
-		return $conection->raw('SELECT c.* FROM contacts c
+		return $conection->select('SELECT c.* FROM contacts c
 			JOIN bpartner_contact b_c ON b_c.contact_id = c.id
 			JOIN bpartners b ON b.id = b_c.bpartner_id
 			WHERE b.id = :third_id
@@ -639,7 +639,7 @@ class ThirdBnImplement
 			$contact = $third_contact;
 		}
 
-		$conection->raw('CALL CR_InsertBpartnerContact(:third_id, :contact_id)',[
+		$conection->select('CALL CR_InsertBpartnerContact(:third_id, :contact_id)',[
 			'third_id' => $third_id,
 			'contact_id' => $contact_id
 		]);
@@ -649,12 +649,12 @@ class ThirdBnImplement
 
 	public function deleteThirdContact ($conection, $contact_id, $third_id) {
 
-		$conection->raw('CALL DL_BpartnerContactRelation(:third_id, :contact_id)',[
+		$conection->select('CALL DL_BpartnerContactRelation(:third_id, :contact_id)',[
 			'third_id' => $third_id,
 			'contact_id' => $contact_id
 		]);
 
-		$delete = $conection->raw('SELECT * FROM bpartner_contact
+		$delete = $conection->select('SELECT * FROM bpartner_contact
 		WHERE bpartner_id = :third_id AND contact_id = :contact_id', [
 			'third_id' => $third_id,
 			'contact_id' => $contact_id

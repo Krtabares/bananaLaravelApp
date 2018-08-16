@@ -20,7 +20,7 @@ class CustomColumnsBnImplement
     public function updateCustomColumns($conection,$idTable, $idtype, $name, $idColumn)
     {
 
-        $check = $conection->raw('SELECT id FROM custom_column WHERE name = :name and id <> :idColumn',
+        $check = $conection->select('SELECT id FROM custom_column WHERE name = :name and id <> :idColumn',
             [
                 'name'=>$name,
                 'idColumn'=>$idColumn
@@ -30,7 +30,7 @@ class CustomColumnsBnImplement
             throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
         }
 
-        $conection->raw('UPDATE custom_column SET table_id = :id_table, type_id = :type, name= :name WHERE id = :idColumn ', [
+        $conection->select('UPDATE custom_column SET table_id = :id_table, type_id = :type, name= :name WHERE id = :idColumn ', [
             'id_table' => $idTable,
             'type' => $idtype,
             'name' => $name,
@@ -41,13 +41,13 @@ class CustomColumnsBnImplement
     public function deleteCustomColumns($conection, $idColumn)
     {
 
-        $check = $conection->raw('SELECT id FROM custom_column WHERE  id = :idColumn',['idColumn'=>$idColumn]);
+        $check = $conection->select('SELECT id FROM custom_column WHERE  id = :idColumn',['idColumn'=>$idColumn]);
 
         if(empty($check)){ 
             throw new \Exception(Constant::MSG_NOT_FOUND, Constant::NOT_FOUND );
         }
 
-        $conection->raw('DELETE FROM custom_column WHERE  id = :idColumn',['idColumn'=>$idColumn]);
+        $conection->select('DELETE FROM custom_column WHERE  id = :idColumn',['idColumn'=>$idColumn]);
 
 
     }
@@ -56,13 +56,13 @@ class CustomColumnsBnImplement
     public function insertCustomColumns($conection,$idTable, $idtype, $name)
     {
 
-        $check = $conection->raw('SELECT id FROM custom_column WHERE name = :name ',['name'=>$name]);
+        $check = $conection->select('SELECT id FROM custom_column WHERE name = :name ',['name'=>$name]);
 
         if(!empty($check)){
             throw new \Exception(Constant::MSG_DUPLICATE, Constant::DUPLICATE );
         }
 
-        $conection->raw('CALL CR_InsertCustomColumn(:id_table, :type, :name)', [
+        $conection->select('CALL CR_InsertCustomColumn(:id_table, :type, :name)', [
             'id_table' => $idTable,
             'type' => $idtype,
             'name' => $name
@@ -75,7 +75,7 @@ class CustomColumnsBnImplement
     {
 
 
-       $type = $conection->raw("SELECT type_id from custom_column WHERE id = :custom_column_id",['custom_column_id'=>$custom_column_id]);
+       $type = $conection->select("SELECT type_id from custom_column WHERE id = :custom_column_id",['custom_column_id'=>$custom_column_id]);
 
        if(empty($type)){
             throw new \Exception(Constant::MSG_NOT_FOUND, Constant::NOT_FOUND);
@@ -101,7 +101,7 @@ class CustomColumnsBnImplement
                break;
        }
 
-        $conection->raw('CALL CR_InsertCustomColumnValue(:number_value, :string_value, :date_value, :custom_column_id, :context_id)', [
+        $conection->select('CALL CR_InsertCustomColumnValue(:number_value, :string_value, :date_value, :custom_column_id, :context_id)', [
             'number_value' => $number_value,
             'string_value' => $string_value,
             'date_value' => $date_value,
@@ -113,7 +113,7 @@ class CustomColumnsBnImplement
 
     public function getCustomColumnsByTable($conection, $idTable, $idContext=null)
     {
-        $type = $conection->raw("
+        $type = $conection->select("
           SELECT t1.*, t1.name 'key', t1.name label, t2.name name_type, t3.position as 'order', t4.input_name control_type, t4.id control_type_id, t5.table_name  FROM custom_column t1 
           INNER JOIN column_type t2 ON t1.type_id = t2.id 
           INNER JOIN field_configurations t3 ON  t1.id = t3.custom_column_id
@@ -134,14 +134,14 @@ class CustomColumnsBnImplement
             $bind['context_id'] = $idContext;
         }
 
-        $type = $conection->raw($query,$bind);
+        $type = $conection->select($query,$bind);
 
         return $type;
     }
 
     public function getElementsView($conection)
     {
-       return $conection->raw('SELECT * FROM column_type');
+       return $conection->select('SELECT * FROM column_type');
     }
 
     public function customValues($conection, $values, $contextid)

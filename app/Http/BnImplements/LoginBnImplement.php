@@ -48,7 +48,7 @@ class LoginBnImplement
 
     public function insertToken($conection, $user_id, $name, $token, $revoked)
     {
-        $conection->raw('CALL CR_InsertToken(:user_id, :name, :token, :revoked)', [
+        $conection->statement('CALL CR_InsertToken(:user_id, :name, :token, :revoked)', [
             'user_id' => $user_id,
             'name' => $name,
             'token' => $token,

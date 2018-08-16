@@ -9,7 +9,7 @@ class UserBnImplement
 {
 	public function selectUsers($conection)
 	{
-		return $conection->raw('SELECT users.id, users.rol_id, rols.name rol_name, users.name user_name,
+		return $conection->select('SELECT users.id, users.rol_id, rols.name rol_name, users.name user_name,
 				users.email, users.all_access_organization, users.all_access_column,
 				users.archived, users.created_at, users.updated_at
 			FROM users, rols
@@ -19,9 +19,10 @@ class UserBnImplement
 
 	public function selectUserByid($conection, $user_id)
 	{
-		$user = $conection->raw('SELECT * FROM users WHERE id = :user_id', [
+		$user = $conection->select('SELECT * FROM users WHERE id = :user_id', [
 			'user_id' => $user_id
 		]);
+		//dd( $user );
 		$permits = $this->selectPermitsUser($conection, $user_id, 2);
 
 		return ['user' => $user, 'permissions' => $permits];
@@ -29,7 +30,7 @@ class UserBnImplement
 
 	public function selectFilterUsers($conection, $search)
 	{
-		return $conection->raw('CALL RD_SelectFilteredUsers(:search)', ['search' => $search]);
+		return $conection->select('CALL RD_SelectFilteredUsers(:search)', ['search' => $search]);
 	}
 
 	public function selectPermitsUser($conection, $user_id, $type)
@@ -50,7 +51,7 @@ class UserBnImplement
 				break;
 		}
 
-		$permits = $conection->raw('CALL '.$functionCall.'(:user_id);',
+		$permits = $conection->select('CALL '.$functionCall.'(:user_id);',
 			['user_id' => $user_id]
 		);
 
@@ -102,7 +103,7 @@ class UserBnImplement
 	{
 		$token = 'GENERAR TOKEN';
 
-		$array_object = $conection->raw('CALL CR_InsertUser(:rol_id, :user_name, :password,
+		$array_object = $conection->select('CALL CR_InsertUser(:rol_id, :user_name, :password,
 			:email, :token)', [
 				'rol_id' => $rol_id,
 				'user_name' => $user_name,
@@ -118,7 +119,7 @@ class UserBnImplement
 		$all_access_organization, $all_access_column)
 	{
 
-		$array_object = $conection->raw('CALL UP_UpdateUser(:user_id, :rol_id, :user_name, :password,
+		$array_object = $conection->select('CALL UP_UpdateUser(:user_id, :rol_id, :user_name, :password,
 			:email, :all_access_organization, :all_access_column)', [
 				'user_id' => $user_id,
 				'rol_id' => $rol_id,
@@ -134,7 +135,7 @@ class UserBnImplement
 
 	public function archivedUser($conection, $user_id, $archived)
 	{
-		$array_object = $conection->raw('CALL DL_ArchivedUser(:user_id, :archived)', [
+		$array_object = $conection->select('CALL DL_ArchivedUser(:user_id, :archived)', [
 			'user_id' => $user_id,
 			'archived' => $archived
 		]);
@@ -144,7 +145,7 @@ class UserBnImplement
 
 	public function insertPermitsUser($conection, $user_id, $column_id, $create, $read, $update, $delete)
 	{
-		$conection->raw('CALL CR_InsertPermitsUser(:user_id, :column_id, :create, :read, :update, :delete)', [
+		$conection->select('CALL CR_InsertPermitsUser(:user_id, :column_id, :create, :read, :update, :delete)', [
 			'user_id' => $user_id,
 			'column_id' => $column_id,
 			'create' => $create,
@@ -156,7 +157,7 @@ class UserBnImplement
 
 	public function updatePermitsUser($conection, $user_id, $column_id, $create, $read, $update, $delete)
 	{
-		$conection->raw('CALL UP_UpdatePermitsUser(:user_id, :column_id, :create, :read, :update, :delete)', [
+		$conection->select('CALL UP_UpdatePermitsUser(:user_id, :column_id, :create, :read, :update, :delete)', [
 			'user_id' => $user_id,
 			'column_id' => $column_id,
 			'create' => $create,
@@ -168,7 +169,8 @@ class UserBnImplement
 
 	public function getUserByEmail($conection,$email)
 	{
-		$result = $conection->raw('CALL RD_LoginUser(:email_user)',['email_user' => $email]);
+		$result = $conection->select('CALL RD_LoginUser(:email_user)',['email_user' => $email]);
+		//dd($result);
 		if (count($result)==0) {
 			throw new \Exception('User : ' . $email.' '.Constant::MSG_NOT_FOUND, Constant::NOT_FOUND);
         }else{
@@ -184,7 +186,7 @@ class UserBnImplement
 
 	public function selectContacsbyUser($conection,$id)
     {
-       $result = $conection->raw('SELECT * FROM contacts WHERE id = :id',['id'=>$id]);
+       $result = $conection->select('SELECT * FROM contacts WHERE id = :id',['id'=>$id]);
        if(empty($result)){
         $result = [0=>[]];
        }
@@ -195,7 +197,7 @@ class UserBnImplement
 	public function selectRolsforSelect($conection)
     {
 
-        return $conection->raw('SELECT id, name FROM rols ORDER BY name, id;');
+        return $conection->select('SELECT id, name FROM rols ORDER BY name, id;');
     }
 
     public function selectpermissions($conection, $user_id = -1, $type = 2)
@@ -217,7 +219,7 @@ class UserBnImplement
         }
 
 
-        $permits = $conection->raw('CALL '.$functionCall.'(:user_id);',
+        $permits = $conection->select('CALL '.$functionCall.'(:user_id);',
             ['user_id' => $user_id]
         );
 

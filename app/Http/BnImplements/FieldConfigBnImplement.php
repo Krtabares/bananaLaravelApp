@@ -20,7 +20,7 @@ class FieldConfigBnImplement
 
   public function getColumn($conection, $idtable)
   {
-    return $colums =  $conection->raw('
+    return $colums =  $conection->select('
         SELECT t1.id, t1.description name, t3.input_name control_type, t2.position, false as is_custom, t2.input_type_id as id_type FROM columns t1 
         left join field_configurations t2 ON t1.id = t2.column_id
         left join input_types t3 ON t2.input_type_id = t3.id
@@ -36,7 +36,7 @@ class FieldConfigBnImplement
 
   public function insertConfiguration($conection, $inputTypeId, $position, $required = 0 , $columId = null, $customColumId=null )
   {
-    $conection->raw(' CALL CR_InsertField(:inputTypeId,:position,:required,:columId, :customColumId)',
+    $conection->select(' CALL CR_InsertField(:inputTypeId,:position,:required,:columId, :customColumId)',
       [
         'inputTypeId'=>$inputTypeId,
         'position'=>$position,
@@ -48,7 +48,7 @@ class FieldConfigBnImplement
 
   public function UpdateConfiguration($conection, $inputTypeId, $position, $required = 0, $columId = null, $customColumId=null)
   {
-    $conection->raw(' CALL UP_UpdateFieldConf(:inputTypeId,:position,:required,:columId, :customColumId)',
+    $conection->select(' CALL UP_UpdateFieldConf(:inputTypeId,:position,:required,:columId, :customColumId)',
       [
         'inputTypeId'=>$inputTypeId,
         'position'=>$position,
@@ -59,7 +59,7 @@ class FieldConfigBnImplement
   }
       public function getElementsView($conection)
     {
-       return $conection->raw('SELECT input_name name, id  FROM input_types');
+       return $conection->select('SELECT input_name name, id  FROM input_types');
     }
 
 

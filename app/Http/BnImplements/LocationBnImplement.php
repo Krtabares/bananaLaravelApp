@@ -27,7 +27,7 @@ class LocationBnImplement
 
 	public function searchLocation($conection, $search)
 	{
-		return $conection->raw('
+		return $conection->select('
 			SELECT * FROM locations WHERE
 			`address_1` LIKE :address_1 ||
 			`address_2` LIKE :address_2 ||
@@ -46,7 +46,7 @@ class LocationBnImplement
 		$address_3, $address_4, $city_id, $city_name, $postal, $postal_add,
 		$state_id, $state_name, $country_id, $comments)
 	{
-		$location_insert = $conection->raw('CALL CR_InsertLocation(:address_1, :address_2, 
+		$location_insert = $conection->select('CALL CR_InsertLocation(:address_1, :address_2, 
 			:address_3, :address_4, :city_id, :city_name, :postal, :postal_add,
 			:state_id, :state_name, :country_id, :comments)', [
 			'address_1' => $address_1,
@@ -63,7 +63,7 @@ class LocationBnImplement
 			'comments' => $comments
 		]);
 
-		//$location_insert = $conection->raw('SELECT * FROM locations ORDER BY id DESC LIMIT 1');
+		//$location_insert = $conection->select('SELECT * FROM locations ORDER BY id DESC LIMIT 1');
 
     	return $location_insert[0]->LID;
 	}
@@ -72,7 +72,7 @@ class LocationBnImplement
 			$address_3, $address_4, $city_id, $city_name, $postal, $postal_add,
 			$state_id, $state_name, $country_id, $comments)
 	{
-		$conection->raw('CALL UP_UpdateLocation(:location_id, :address_1, :address_2, 
+		$conection->select('CALL UP_UpdateLocation(:location_id, :address_1, :address_2, 
 			:address_3, :address_4, :city_id, :city_name, :postal, :postal_add,
 			:state_id, :state_name, :country_id, :comments)', [
 			'location_id' => $location_id,
@@ -90,7 +90,7 @@ class LocationBnImplement
 			'comments' => $comments
 		]);
 
-		$location_update = $conection->raw('
+		$location_update = $conection->select('
 			SELECT * 
 			FROM locations 
 			WHERE id = :location_id', [

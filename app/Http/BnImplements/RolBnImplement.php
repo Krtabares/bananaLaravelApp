@@ -9,19 +9,19 @@ class RolBnImplement
 {
     public function selectRols($conection)
     {
-        return $conection->raw('SELECT * FROM rols ORDER BY name, id;');
+        return $conection->select('SELECT * FROM rols ORDER BY name, id;');
     }
 
     public function selectRolById($conection, $id)
     {
-        $rol = $conection->raw('SELECT * FROM rols where id = :id_rol', ['id_rol'=>$id]);
+        $rol = $conection->select('SELECT * FROM rols where id = :id_rol', ['id_rol'=>$id]);
         $permissions_rols = $this->selectPermitsRol($conection, $id,2);
         return ['rol'=>$rol,'permissions'=>$permissions_rols];
     }
 
     public function insertRol($conection, $rol_name, $description, $all_access_column, $all_access_organization, $permits_rol)
     {
-        $rol_insert = $conection->raw('CALL CR_InsertRol(:rol_name, :description, :all_access_column, :all_access_organization)', [
+        $rol_insert = $conection->select('CALL CR_InsertRol(:rol_name, :description, :all_access_column, :all_access_organization)', [
             'rol_name' => $rol_name,
             'description' => $description,
             'all_access_column' => $all_access_column,
@@ -46,7 +46,7 @@ class RolBnImplement
 
     public function updateRol($conection, $rol_id, $rol_name, $description, $all_access_column, $all_access_organization, $permits_rol)
     {
-        $rol_update = $conection->raw('CALL UP_UpdateRol(:rol_id, :rol_name, :description, :all_access_column, :all_access_organization)', [
+        $rol_update = $conection->select('CALL UP_UpdateRol(:rol_id, :rol_name, :description, :all_access_column, :all_access_organization)', [
             'rol_id' => $rol_id,
             'rol_name' => $rol_name,
             'description' => $description,
@@ -68,7 +68,7 @@ class RolBnImplement
 
     public function archivedRol($conection, $rol_id, $archived)
     {
-        $rol_archived = $conection->raw('CALL DL_ArchivedRol(:rol_id, :archived)', [
+        $rol_archived = $conection->select('CALL DL_ArchivedRol(:rol_id, :archived)', [
             'rol_id' => $rol_id,
             'archived' => $archived
         ]);
@@ -95,7 +95,7 @@ class RolBnImplement
         }
 
 
-        $permits = $conection->raw('CALL '.$functionCall.'(:rol_id);',
+        $permits = $conection->select('CALL '.$functionCall.'(:rol_id);',
             ['rol_id' => $rol_id]
         );
 
@@ -151,7 +151,7 @@ class RolBnImplement
 
     public function insertPermitsRol($conection, $rol_id, $column_id, $create, $read, $update, $delete)
     {
-        $conection->raw('CALL CR_InsertPermitsRol(:rol_id, :column_id, :create, :read, :update, :delete)', [
+        $conection->select('CALL CR_InsertPermitsRol(:rol_id, :column_id, :create, :read, :update, :delete)', [
             'rol_id' => $rol_id,
             'column_id' => $column_id,
             'create' => $create,
@@ -163,7 +163,7 @@ class RolBnImplement
 
     public function updatePermitsRol($conection, $rol_id, $column_id, $create, $read, $update, $delete)
     {
-        $conection->raw('CALL UP_UpdatepermitsRol(:rol_id, :column_id, :create, :read, :update, :delete)', [
+        $conection->select('CALL UP_UpdatepermitsRol(:rol_id, :column_id, :create, :read, :update, :delete)', [
             'rol_id' => $rol_id,
             'column_id' => $column_id,
             'create' => $create,
@@ -175,7 +175,7 @@ class RolBnImplement
 
     public function selectFilterRols($conection, $search)
     {
-        return $conection->raw('CALL RD_SelectFilteredRols(:search)', ['search' => $search]);
+        return $conection->select('CALL RD_SelectFilteredRols(:search)', ['search' => $search]);
     }
 
 }

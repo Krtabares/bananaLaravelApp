@@ -8,13 +8,13 @@ class PriceListBnImplement
 {
 	public function selectPriceLists($conection)
 	{
-		return $conection->raw('SELECT * FROM price_lists ORDER BY updated_at DESC');
+		return $conection->select('SELECT * FROM price_lists ORDER BY updated_at DESC');
 	}
 
 	public function createPriceList($conection,$reference,$name,$valid_from,$valid_until,$tax_include,$currency_id
 	)
 	{
-		$price_list = $conection->raw('CALL CR_InsertPriceList(
+		$price_list = $conection->select('CALL CR_InsertPriceList(
 				:reference,
 				:name,
 				:valid_from,
@@ -46,7 +46,7 @@ class PriceListBnImplement
 		$currency_id
 	)
 	{
-		$conection->raw('CALL UP_UpdatePriceList(
+		$conection->select('CALL UP_UpdatePriceList(
 				:id,
 				:reference,
 				:name,
@@ -66,7 +66,7 @@ class PriceListBnImplement
 			]
 		);
 
-		$price_list = $conection->raw('SELECT * FROM price_lists WHERE id = :id', [
+		$price_list = $conection->select('SELECT * FROM price_lists WHERE id = :id', [
 			'id' => $id
 		]);
 
@@ -75,11 +75,11 @@ class PriceListBnImplement
 
 	public function deletePriceList($conection, $id)
 	{
-		$conection->raw('CALL DL_DeletePriceList(:id)', [
+		$conection->select('CALL DL_DeletePriceList(:id)', [
 			'id' => $id
 		]);
 
-		$delete = $conection->raw('SELECT * FROM price_lists WHERE id = :id', [
+		$delete = $conection->select('SELECT * FROM price_lists WHERE id = :id', [
 			'id' => $id
 		]);
 

@@ -9,12 +9,12 @@ class WarehouseBnImplement {
 
 //   public function selectWarehouses($conection)
 	// {
-	// 	return $conection->raw('SELECT * FROM warehouses ORDER BY updated_at DESC');
+	// 	return $conection->select('SELECT * FROM warehouses ORDER BY updated_at DESC');
 	// }
 
     // public function createWarehouse($conection, $reference, $name, $warehouses_col, $notes)
     // {
-    //     $warehouse = $conection->raw('CALL CR_InsertWarehouse(:reference, :name, :warehouses_col, :notes)',[
+    //     $warehouse = $conection->select('CALL CR_InsertWarehouse(:reference, :name, :warehouses_col, :notes)',[
     //         'reference' => $reference,
     //         'name' => $name,
     //         'warehouses_col' => $warehouses_col,
@@ -28,7 +28,7 @@ class WarehouseBnImplement {
     
     // public function updateWarehouse($conection, $id, $reference, $name, $warehouses_col, $notes)
     // {
-    //     $conection->raw('CALL UP_UpdateWarehouse(:id, :reference, :name, :warehouses_col, :notes)', [
+    //     $conection->select('CALL UP_UpdateWarehouse(:id, :reference, :name, :warehouses_col, :notes)', [
     //         'id' => $id,
     //         'reference' => $reference,
     //         'name' => $name,
@@ -36,7 +36,7 @@ class WarehouseBnImplement {
     //         'notes' => $notes
     //     ]);
 
-    //     $warehouse = $conection->raw('SELECT * FROM warehouses WHERE id = :id', [
+    //     $warehouse = $conection->select('SELECT * FROM warehouses WHERE id = :id', [
     //         'id' => $id
     //     ]);
 
@@ -46,11 +46,11 @@ class WarehouseBnImplement {
 //---------------------------------------------------------------------------------------------------------------------------------------
     // public function deleteWarehouse($conection, $id)
     // {
-    //     $conection->raw('CALL DL_DeleteWarehouse(:id)', [
+    //     $conection->select('CALL DL_DeleteWarehouse(:id)', [
     //         'id' => $id
     //     ]);
 
-    //     $delete = $conection->raw('SELECT * FROM warehouses WHERE id = :id', [
+    //     $delete = $conection->select('SELECT * FROM warehouses WHERE id = :id', [
     //         'id' => $id
     //     ]);
 
@@ -60,12 +60,12 @@ class WarehouseBnImplement {
 
     public function selectwarehouses($conection)
     {
-        return $conection->raw('SELECT * FROM warehouses ORDER BY updated_at DESC ');
+        return $conection->select('SELECT * FROM warehouses ORDER BY updated_at DESC ');
     }
 
     public function createWarehouse($conection, $reference, $name, $warehouse_col, $notes)
     {
-            $warehouse = $conection->raw('CALL CR_InsertWarehouse(:reference,:name,:warehouse_col,:notes)',
+            $warehouse = $conection->select('CALL CR_InsertWarehouse(:reference,:name,:warehouse_col,:notes)',
             [
                 'reference' => $reference,
                 'name' => $name,
@@ -88,7 +88,7 @@ class WarehouseBnImplement {
             'notes' => $notes
         ]);
 
-        $warehouse = $conection->raw('SELECT * FROM warehouses WHERE id = :id',[
+        $warehouse = $conection->select('SELECT * FROM warehouses WHERE id = :id',[
             'id' =>$id
         ]);
            return $warehouse[0];
@@ -96,11 +96,11 @@ class WarehouseBnImplement {
 
     public function deleteWarehouse($conection, $id){
 
-        $conection->raw('CALL DL_DeleteWarehouse(:id)',[
+        $conection->select('CALL DL_DeleteWarehouse(:id)',[
             'id' => $id
         ]);
 
-        $update = $conection->raw('SELECT * FROM warehouses WHERE id = :id', [
+        $update = $conection->select('SELECT * FROM warehouses WHERE id = :id', [
             'id' => $id
         ]);
         

@@ -26,14 +26,16 @@ class SessionToken{
         if(!isset($app)){
                 throw new \Exception("App es un campo requerido para autenticar", Constant::BAD_REQUEST);
         }
-
-        $result = $connection->raw('SELECT * ,  
+        
+        $result = $connection->select('SELECT * ,  
             if (now() > expires_at, 1, 0) expired
             FROM oauth_access_tokens  
             WHERE user_id = :id  AND name = :app AND revoked = 0', [
             'id' => $user_id,
             'app' => $app
         ]);
+
+        //dd($result);
 
         if(empty($result)){
              throw new \Exception("Sin sesion activa", Constant::UNAUTHORIZED);
@@ -44,12 +46,12 @@ class SessionToken{
         }
         if( $result[0]->expired ){
 
-            $connection->raw('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
+            $connection->statement('UPDATE oauth_access_tokens  SET revoked = 1 WHERE user_id = :id ',['id' => $user_id]);
             
             throw new \Exception("Esta sesion a expirado", Constant::UNAUTHORIZED);
         }else{
 
-            $connection->raw('UPDATE oauth_access_tokens  SET expires_at = DATE_ADD(now(), INTERVAL 60 MINUTE) WHERE user_id = :id ',['id' => $user_id]);
+            $connection->statement('UPDATE oauth_access_tokens  SET expires_at = DATE_ADD(now(), INTERVAL 60 MINUTE) WHERE user_id = :id ',['id' => $user_id]);
         }
         
 

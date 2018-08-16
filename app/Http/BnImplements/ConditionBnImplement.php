@@ -8,12 +8,12 @@ class ConditionBnImplement
 {
 	public function selectConditions($conection)
 	{
-		return $conection->raw('SELECT * FROM conditions ORDER BY updated_at DESC');
+		return $conection->select('SELECT * FROM conditions ORDER BY updated_at DESC');
 	}
 
 	public function createCondition($conection, $tag)
 	{
-		$condition = $conection->raw('CALL CR_InsertCondition(:tag)',[
+		$condition = $conection->select('CALL CR_InsertCondition(:tag)',[
 			'tag' => $tag
 		]);
 
@@ -22,12 +22,12 @@ class ConditionBnImplement
 
 	public function updateCondition($conection, $id, $tag)
 	{
-		$conection->raw('CALL UP_UpdateCondition(:id, :tag)', [
+		$conection->select('CALL UP_UpdateCondition(:id, :tag)', [
 			'id' => $id,
 			'tag' => $tag
 		]);
 
-		$condition = $conection->raw('SELECT * FROM conditions WHERE id = :id', [
+		$condition = $conection->select('SELECT * FROM conditions WHERE id = :id', [
 			'id' => $id
 		]);
 
@@ -36,11 +36,11 @@ class ConditionBnImplement
 
 	public function deleteCondition($conection, $id)
 	{
-		$conection->raw('CALL DL_DeleteCondition(:id)', [
+		$conection->select('CALL DL_DeleteCondition(:id)', [
 			'id' => $id
 		]);
 
-		$delete = $conection->raw('SELECT * FROM conditions WHERE id = :id', [
+		$delete = $conection->select('SELECT * FROM conditions WHERE id = :id', [
 			'id' => $id
 		]);
 
