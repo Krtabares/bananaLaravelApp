@@ -17,7 +17,9 @@ class BananaClient extends Model
 		'client_DB_password',
 		'client_DB_driver',
 		'client_dns',
-		'client_name_conecction_BD'
+		'client_name_conecction_BD',
+		'client_storageURL',
+		'client_name_storageURL'
 	];
 	
 	public $timestamps = false;

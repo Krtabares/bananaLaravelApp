@@ -22,6 +22,7 @@ class UserBnImplement
 		$user = $conection->select('SELECT * FROM users WHERE id = :user_id', [
 			'user_id' => $user_id
 		]);
+		//dd( $user );
 		$permits = $this->selectPermitsUser($conection, $user_id, 2);
 
 		return ['user' => $user, 'permissions' => $permits];
@@ -169,6 +170,7 @@ class UserBnImplement
 	public function getUserByEmail($conection,$email)
 	{
 		$result = $conection->select('CALL RD_LoginUser(:email_user)',['email_user' => $email]);
+		//dd($result);
 		if (count($result)==0) {
 			throw new \Exception('User : ' . $email.' '.Constant::MSG_NOT_FOUND, Constant::NOT_FOUND);
         }else{
