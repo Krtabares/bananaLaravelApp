@@ -17,6 +17,16 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Headers: origin, x-requested-with, content-type');
+// header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS');
+
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Requested-With, app, token');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Credentials: true');
+
+
 /* Rutas de Acceso */
 
 Route::get('/test/server', 'ThirdsController@test');
