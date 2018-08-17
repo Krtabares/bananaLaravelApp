@@ -8,11 +8,11 @@ use App\Constant;
 
 class signinBananaController extends Controller
 {
-    public $signinBananaImplement;
-
+    public $signinBananaBnImplement;
+            
     public function __construct(signinBananaBnImplement $signinBananaBnImplement )
     {
-        $this->signinBananaImplement = $signinBananaBnImplement;
+        $this->signinBananaBnImplement = $signinBananaBnImplement;
     }
 
     public function createSignin (Request $request){
@@ -24,9 +24,9 @@ class signinBananaController extends Controller
                 throw new \Exception('Name is required', Constant::BAD_REQUEST);
             }
 
-            if(!$request->filled('description')){
+          /*  if(!$request->filled('description')){
                 throw new \Exception('Description is required', Constant::BAD_REQUEST);
-            }
+            }*/
 
             if(!$request->filled('bdname')){
                 throw new \Exception('name of BD is required', Constant::BAD_REQUEST);
@@ -52,8 +52,15 @@ class signinBananaController extends Controller
             if(!$request->filled('nameConBD')){
                 throw new \Exception('Client name conection is required', Constant::BAD_REQUEST);
             }
+            /*if(!$request->filled('storageURL')){
+                throw new \Exception('Storage URL is required', Constant::BAD_REQUEST);
+            }
+
+            if(!$request->filled('NamestorageURL')){
+                throw new \Exception('Name of the storage URL is required', Constant::BAD_REQUEST);
+            }*/
             
-            $banana_client = $this->signinBananaImplement->createClient(
+            $banana_client = $this->signinBananaBnImplement->createClient(
                 $request->nombre,
                 $request->description,
                 $request->bdname,
@@ -62,7 +69,9 @@ class signinBananaController extends Controller
                 $request->bdpassword,
                 $request->bddriver,
                 $request->dns,
-                $request->nameConBD
+                $request->nameConBD,
+                $request->storageURL,
+                $request->NamestorageURL
             );
 
         } catch (\Exception $e) {
@@ -77,18 +86,22 @@ class signinBananaController extends Controller
         return response( ['register' => $banana_client] , Constant::OK)->header('Content-Type', 'application/json');
     }
 
-    public function updateSignin (Request $requet)
+    public function updateSignin (Request $request)
     {
 
         try{
+
+            if(!$request->filled('id')){
+                throw new \Exception('Id is not either incorrect or in the database', Constant::BAD_REQUEST);
+            }
 
             if(!$request->filled('nombre')){
                 throw new \Exception('Name is required', Constant::BAD_REQUEST);
             }
 
-            if(!$request->filled('description')){
+           /* if(!$request->filled('description')){
                 throw new \Exception('Description is required', Constant::BAD_REQUEST);
-            }
+            }*/
 
             if(!$request->filled('bdname')){
                 throw new \Exception(' name of BD is required', Constant::BAD_REQUEST);
@@ -110,7 +123,17 @@ class signinBananaController extends Controller
             if(!$request->filled('nameConBD')){
                 throw new \Exception('Client name conection is required', Constant::BAD_REQUEST);
             }
-                $banana_client_Update=$this->signinBananaImplement->updatesignin(
+
+           /* if(!$request->filled('storageURL')){
+                throw new \Exception('Storage URL is required', Constant::BAD_REQUEST);
+            }
+
+            if(!$request->filled('NamestorageURL')){
+                throw new \Exception('Name of the storage URL is required', Constant::BAD_REQUEST);
+            }*/
+
+                $banana_client_Update=$this->signinBananaBnImplement->updateClient(
+                $request->id,
                 $request->nombre,
                 $request->description,
                 $request->bdname,
@@ -118,8 +141,12 @@ class signinBananaController extends Controller
                 $request->bduser,
                 $request->bdpassword,
                 $request->bddriver,
-                $request->bddn,
-                $request->nameConBD);
+                $request->dns,
+                $request->nameConBD,
+                $request->storageURL,
+                $request->NamestorageURL
+                );
+
         }catch(\Exception $e){
             return ExceptionAnalizer::analizerHTTPResponse($e);
         }
