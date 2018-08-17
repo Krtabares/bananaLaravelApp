@@ -894,7 +894,7 @@ class ThirdsController extends Controller
 			$db_manager->terminateClientBDConecction();
 		}
 
-		return response($customers, Constant::OK)->header('Content-Type', 'application/json');
+		return response(['clients' => $customers], Constant::OK)->header('Content-Type', 'application/json');
 	}
 	
 	public function test()
