@@ -78,10 +78,7 @@ class signinBananaController extends Controller
 
             return ExceptionAnalizer::analizerHTTPResponse($e);
 
-        } finally {
-
-            //$db_manager->terminateClientBDConecction();
-        }
+        } 
 
         return response( ['register' => $banana_client] , Constant::OK)->header('Content-Type', 'application/json');
     }
